@@ -1,46 +1,60 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
-let options = {}
-if (process.env.NODE_ENV === 'production'){
-  options.schema = process.env.SCHEMA
-}
-module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
+const { Model, Validator } = require('sequelize');
+
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    static associate(models) {
+      // define association here
+    }
+  };
+
+  User.init(
+    {
       username: {
-        type: Sequelize.STRING(30),
+        type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        validate: {
+          len: [4, 30],
+          isNotEmail(value) {
+            if (Validator.isEmail(value)) {
+              throw new Error("Cannot be an email.");
+            }
+          }
+        }
       },
       email: {
-        type: Sequelize.STRING(256),
+        type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        validate: {
+          len: [3, 256],
+          isEmail: true
+        }
       },
       hashedPassword: {
-        type: Sequelize.STRING.BINARY,
-        allowNull: false
-      },
-      createdAt: {
+        type: DataTypes.STRING.BINARY,
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        validate: {
+          len: [60, 60]
+        }
       }
-    }, options);
-  },
-  async down(queryInterface, Sequelize) {
-    options.tableName = "Users"
-    await queryInterface.dropTable('Users');
-  }
+    },
+    {
+      sequelize,
+      modelName: "User",
+      defaultScope: {
+        attributes: {
+          exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
+        }
+      },
+      scopes: {
+        currentUser: {
+          attributes: { exclude: ["hashedPassword"] }
+        },
+        loginUser: {
+          attributes: {}
+        }
+      }
+    }
+  );
+  return User;
 };
