@@ -5,6 +5,7 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
+// Sign up
 router.post('/', async (req, res, next) => {
     const { credential, password } = req.body;
 
@@ -31,6 +32,7 @@ router.delete('/', (_req, res) => {
     return res.json({ message: 'success' });
 });
 
+// Restore session user
 router.get('/', restoreUser, (req, res) => {
     const { user } = req;
     if (user) {
