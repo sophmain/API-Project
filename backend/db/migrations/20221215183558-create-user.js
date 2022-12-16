@@ -1,60 +1,55 @@
-'use strict';
-const { Model, Validator } = require('sequelize');
+"use strict";
 
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate(models) {
-      // define association here
-    }
-  };
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 
-  User.init(
-    {
-      username: {
-        type: DataTypes.STRING,
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    return queryInterface.createTable("Users", {
+      id: {
         allowNull: false,
-        validate: {
-          len: [4, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
-        }
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      firstName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      lastName: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       email: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING(256),
         allowNull: false,
-        validate: {
-          len: [3, 256],
-          isEmail: true
-        }
+        unique: true
+      },
+      username: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+        unique: true
       },
       hashedPassword: {
-        type: DataTypes.STRING.BINARY,
-        allowNull: false,
-        validate: {
-          len: [60, 60]
-        }
-      }
-    },
-    {
-      sequelize,
-      modelName: "User",
-      defaultScope: {
-        attributes: {
-          exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
-        }
+        type: Sequelize.STRING.BINARY,
+        allowNull: false
       },
-      scopes: {
-        currentUser: {
-          attributes: { exclude: ["hashedPassword"] }
-        },
-        loginUser: {
-          attributes: {}
-        }
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    }
-  );
-  return User;
+    }, options);
+  },
+  down: async (queryInterface, Sequelize) => {
+    options.tableName = "Users";
+    return queryInterface.dropTable(options);
+  }
 };
