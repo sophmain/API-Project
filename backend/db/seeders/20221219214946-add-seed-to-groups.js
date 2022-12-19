@@ -23,6 +23,7 @@ module.exports = {
    options.tableName = 'Groups'
    return queryInterface.bulkInsert(options, [
     {
+      organizerId: 3,
       name: 'Hiking In Chicago',
       about: 'A group for young adults in Chicago who are looking to socialize in the outdoors',
       type: 'Travel & Outdoor',
@@ -31,6 +32,7 @@ module.exports = {
       state: 'IL'
     },
     {
+      organizerId: 1,
       name: 'Hip Hop Dancers',
       about: 'Beginner friendly for people who want to learn hip-hop or already love it. All levels welcome.',
       type: 'Dancing',
@@ -39,6 +41,7 @@ module.exports = {
       state: 'CA'
     },
     {
+      organizerId: 2,
       name: 'Italian Cooking',
       about: 'Learn to cook like grandma',
       type: 'Hobbies & Passions',
@@ -56,7 +59,8 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-     options.tableName = 'Users';
+     options.tableName = 'Groups';
+     const Op = Sequelize.Op;
      return queryInterface.bulkDelete(options, {
       name: { [Op.in]: ['Hiking In Chicago', 'Hip Hop Dancers', 'Italian Cooking'] }
     }, {});
