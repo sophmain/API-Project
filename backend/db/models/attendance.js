@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       values: ['Going', 'Not Going']
     },
     eventId: DataTypes.INTEGER,
-    userId: Database.INTEGER
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Attendance',

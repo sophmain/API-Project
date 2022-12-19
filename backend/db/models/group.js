@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     about: DataTypes.TEXT,
     type: {
       type: DataTypes.ENUM,
-      values: ['Any Category', 'New Groups',
+      values: ['New Groups',
       'Art & Culture', 'Career & Business',
       'Community & Environment', 'Dancing',
       'Games', 'Health & Wellbeing',
