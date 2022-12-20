@@ -26,7 +26,7 @@ module.exports = {
       organizerId: 3,
       name: 'Hiking In Chicago',
       about: 'A group for young adults in Chicago who are looking to socialize in the outdoors',
-      type: 'Travel & Outdoor',
+      type: 'Online',
       private: false,
       city: 'Chicago',
       state: 'IL'
@@ -35,7 +35,7 @@ module.exports = {
       organizerId: 1,
       name: 'Hip Hop Dancers',
       about: 'Beginner friendly for people who want to learn hip-hop or already love it. All levels welcome.',
-      type: 'Dancing',
+      type: 'Online',
       private: false,
       city: 'Los Angeles',
       state: 'CA'
@@ -44,7 +44,7 @@ module.exports = {
       organizerId: 2,
       name: 'Italian Cooking',
       about: 'Learn to cook like grandma',
-      type: 'Hobbies & Passions',
+      type: 'In person',
       private: true,
       city: 'New York',
       state: 'NY'
