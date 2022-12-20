@@ -9,20 +9,20 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+//check for authentication
 
+
+
+// Get all groups joined or organized by the current user
+router.get('/current', async (req, res) => {
+    
+})
 // Get all groups
 router.get('/', async (req, res) => {
     const groupsObj = {}
 
     const groups = await Group.findAll({
-        //     attributes: {
-        //         include: [
-        //             [
-        //                 sequelize.fn('COUNT', sequelize.col("Memberships.groupId")),
-        //                 "numMembers"
-        //             ]
-        //         ]
-        //     },
+
         include: [
             {
                 model: Membership,
@@ -30,9 +30,7 @@ router.get('/', async (req, res) => {
             {
                 model: GroupImage
             }]
-        //         attributes: [],
-        //     },
-        //    raw: true
+
     })
 
     let groupsList = []
@@ -73,14 +71,3 @@ router.get('/', async (req, res) => {
 
 
 module.exports = router;
-
-//     const num = await Membership.count({
-//         include: {
-//             model: Group,
-//             attributes: []
-//         },
-//         where: {
-//             groupId: group[0].id
-//         }
-//     })
-// console.log(num)
