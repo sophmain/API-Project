@@ -16,14 +16,18 @@ module.exports = {
       eventId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Events'
-        }
+          model: 'Events',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users'
-        }
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       status: {
         type: Sequelize.ENUM('Going', 'Not Going')
