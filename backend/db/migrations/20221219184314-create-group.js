@@ -22,32 +22,26 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       name: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING(60),
+        allowNull: false
       },
       about: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       type: {
-        type: Sequelize.ENUM('Any Category', 'New Groups',
-        'Art & Culture', 'Career & Business',
-        'Community & Environment', 'Dancing',
-        'Games', 'Health & Wellbeing',
-        'Hobbies & Passions', 'Identity & Language',
-        'Movements & Politics', 'Music',
-        'Parents & Famnily', 'Pets & Animals',
-        'Religion & Spirituality', 'Science & Education',
-        'Social Activities', 'Sports & Fitness',
-        'Support & Coaching', 'Technology',
-        'Travel & Outdoor')
+        type: Sequelize.ENUM('In person', 'Online')
       },
       private: {
         type: Sequelize.BOOLEAN
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       state: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

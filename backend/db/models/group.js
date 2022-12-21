@@ -35,9 +35,24 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Group.init({
-    organizerId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    about: DataTypes.TEXT,
+    organizerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        len: [0,60]
+      },
+      allowNull: false
+    },
+    about: {
+      type: DataTypes.TEXT,
+      validate: {
+        len: [50, 1000]
+      },
+      allowNull: false
+    },
     type: {
       type: DataTypes.ENUM,
       values: ['In person', 'Online']
@@ -54,8 +69,14 @@ module.exports = (sequelize, DataTypes) => {
       'Travel & Outdoor'*/
     },
     private: DataTypes.BOOLEAN,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Group',
