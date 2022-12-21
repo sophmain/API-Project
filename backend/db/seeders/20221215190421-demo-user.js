@@ -58,3 +58,7 @@ module.exports = {
      }, {});
   }
 };
+// {
+//   "credential": "john.smith@gmail.com",
+//   "password": "secret password"
+// }
