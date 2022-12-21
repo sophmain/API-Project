@@ -1,11 +1,12 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, Membership, GroupImage, sequelize } = require('../../db/models');
+const { Group, Membership, GroupImage, User, Venue, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { route } = require('./session');
 
 const router = express.Router();
 
@@ -98,6 +99,9 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
 
 
 })
+
+
+
 //Get all groups joined or organized by the current user
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req
@@ -109,10 +113,18 @@ router.get('/current', requireAuth, async (req, res) => {
             },
             {
                 model: GroupImage
-            }],
+            }]
+        // where: {
+        //     [Op.or]: [{
+        //         organizerId: user.id
+        //     },
+        //     {
+        //         Membership.userId: user.id
+        //     }]
+        // }
     })
     let groupsList = []
-
+    // write two different queries -member vs organizer
     groups.forEach(group => {
         console.log('GROUPPPP', group.toJSON())
         if(group.organizerId == user.id && !groupsList.includes(group.toJSON())){
@@ -128,6 +140,7 @@ router.get('/current', requireAuth, async (req, res) => {
         })
         console.log('includes?',groupsList.includes(group.toJSON()))
     })
+            // add member count and image url
     console.log('groupslist', groupsList)
     groupsList.forEach(group => {
         let count = 0;
@@ -157,13 +170,46 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.json(groupsList)
 })
 
+
+// Get details of a group from an id
+router.get('/:groupId', async (req, res) => {
+    const { groupId } = req.params
+    const group = await Group.findByPk(groupId, {
+        include: [
+            {
+                model: Membership
+            },
+            {
+                model: GroupImage,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'groupId']
+                }
+            },
+            {
+                model: User
+            },
+            {
+                model: Venue
+            }]
+    })
+    console.log(group)
+
+    if (!group){
+        const err = new Error("Group couldn't be found")
+        err.status = 404
+        next(err)
+    }
+
+    return res.json(group)
+})
+
 // Get all groups
 router.get('/', async (req, res) => {
     const groups = await Group.findAll({
 
         include: [
             {
-                model: Membership,
+                model: Membership
             },
             {
                 model: GroupImage
