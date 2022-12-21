@@ -11,19 +11,19 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE'
+        type: Sequelize.INTEGER
       },
       organizerId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'Users',
           key: 'id'
         },
-//        onDelete: 'CASCADE'
+        onDelete: 'CASCADE'
       },
       name: {
-        type: Sequelize.STRING(60),
+        type: Sequelize.STRING,
         allowNull: false
       },
       about: {

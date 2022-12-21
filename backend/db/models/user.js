@@ -45,13 +45,20 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Attendance
       })
       User.hasMany(models.Group, {
-        foreignKey: 'organizerId'
+        foreignKey: 'organizerId',
+        onDelete: 'CASCADE',
+        hooks: true
       })
       User.belongsToMany(models.Group, {
         through: models.Membership
       })
       // User.hasMany(models.Attendance, {
-      //   foreignKey: 'userId'
+      //   foreignKey: 'userId',
+      //   onDelete: 'CASCADE'
+      // })
+      // User.hasMany(models.Membership, {
+      //   foreignKey: 'userId',
+      //   onDelete: 'CASCADE'
       // })
 
     }

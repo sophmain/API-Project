@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: 'groupId'
       // })
       Event.hasMany(models.EventImage, {
-        foreignKey: 'eventId'
+        foreignKey: 'eventId',
+        onDelete: 'CASCADE',
+        hooks: true
       })
     }
   }
