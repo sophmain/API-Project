@@ -23,6 +23,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'GroupImage',
+    scopes: {
+      hideUpdatedCreated: {
+        attributes: {
+          exclude: ['updatedAt', 'createdAt']
+        }
+      }
+    }
   });
   return GroupImage;
 };

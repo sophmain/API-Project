@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     about: DataTypes.TEXT,
     type: {
       type: DataTypes.ENUM,
-      values: ['New Groups',
+      values: ['In person', 'Online']
+      /*'New Groups',
       'Art & Culture', 'Career & Business',
       'Community & Environment', 'Dancing',
       'Games', 'Health & Wellbeing',
@@ -50,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       'Religion & Spirituality', 'Science & Education',
       'Social Activities', 'Sports & Fitness',
       'Support & Coaching', 'Technology',
-      'Travel & Outdoor']
+      'Travel & Outdoor'*/
     },
     private: DataTypes.BOOLEAN,
     city: DataTypes.STRING,
@@ -58,6 +59,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+    scopes: {
+      hideUpdatedCreated: {
+        attributes: {
+          exclude: ['updatedAt', 'createdAt']
+        }
+      }
+    }
   });
   return Group;
 };
