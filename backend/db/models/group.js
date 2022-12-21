@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.ENUM,
-      values: ['In person', 'Online']
+      values: ['Online','In person']
       /*'New Groups',
       'Art & Culture', 'Career & Business',
       'Community & Environment', 'Dancing',
