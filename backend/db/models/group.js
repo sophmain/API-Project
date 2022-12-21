@@ -55,14 +55,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.ENUM,
-      values: ['Online','In person']
+      values: ['Online', 'In person']
       /*'New Groups',
       'Art & Culture', 'Career & Business',
       'Community & Environment', 'Dancing',
       'Games', 'Health & Wellbeing',
       'Hobbies & Passions', 'Identity & Language',
       'Movements & Politics', 'Music',
-      'Parents & Famnily', 'Pets & Animals',
+      'Parents & Family', 'Pets & Animals',
       'Religion & Spirituality', 'Science & Education',
       'Social Activities', 'Sports & Fitness',
       'Support & Coaching', 'Technology',
