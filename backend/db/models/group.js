@@ -59,6 +59,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+    scopes: {
+      hideUpdatedCreated: {
+        attributes: {
+          exclude: ['updatedAt', 'createdAt']
+        }
+      }
+    }
   });
   return Group;
 };
