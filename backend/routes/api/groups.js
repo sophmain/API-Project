@@ -36,9 +36,28 @@ const validateGroup = [
         .withMessage("State is required"),
     handleValidationErrors
 ];
-
+// User authorization middleware
+const userAuthorize = async (req, res, next) =>{
+    const { groupId } = req.params
+    const { user } = req
+    const group = await Group.findByPk(groupId)
+    if (!group){
+        const err = new Error("Group couldn't be found")
+        err.errors = `Couldn't find a group with the specified id`
+        err.status = 404
+        return next(err)
+    }
+    if (group.organizerId != user.id){
+        const err = new Error('Group does not belong to this user')
+        err.title= 'Forbidden request'
+        err.errors= 'Forbidden request'
+        err.status = 403
+        return next(err)
+    }
+    next()
+}
 // POST image to a group
-router.post('/:groupId/images', requireAuth, async (req, res, next) => {
+router.post('/:groupId/images', requireAuth, userAuthorize, async (req, res, next) => {
     const { groupId } = req.params
     const { url, preview } = req.body
     const { user } = req
@@ -48,7 +67,7 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
             exclude: ['createdAt', 'updatedAt']
         }
     })
-    console.log(group)
+
     if (group && group.organizerId == user.id) {
         const image = await group.createGroupImage({
             url,
@@ -61,17 +80,6 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
             preview: image.preview
         })
     }
-    if (!group) {
-        const err = new Error("Group couldn't be found")
-        err.status = 404
-        return next(err);
-    }
-    if (group.organizerId != user.id) {
-        const err = new Error('Current User must be the organizer for the group');
-        err.status = 400;
-        return next(err);
-    }
-
 })
 
 // POST a group
@@ -97,8 +105,6 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
         //err.errors = ['The provided group data was invalid.'];
         return next(err);
     }
-
-
 })
 
 
@@ -195,7 +201,6 @@ router.get('/:groupId', async (req, res, next) => {
             }]
     })
 
-
     if (!group) {
         const err = new Error("Group couldn't be found")
         err.status = 404
@@ -265,9 +270,31 @@ router.get('/', async (req, res) => {
 })
 
 // PUT edit a group
-router.put('/:groupId', requireAuth, async (req, res, next) => {
-    
+router.put('/:groupId', validateGroup, userAuthorize, requireAuth, async (req, res, next) => {
+    const { groupId } = req.params
+    const { name, about, type, private, city, state } = req.body
+
+    const groupToEdit = await Group.findByPk(groupId)
+        await groupToEdit.update({
+            name,
+            about,
+            type,
+            private,
+            city,
+            state
+        })
+        return res.json(groupToEdit)
 })
 
+// DELETE a group
+router.delete('/:groupId', userAuthorize, requireAuth, async (req, res, next) => {
+    const { groupId } = req.params
+    const groupToDelete = await Group.findByPk(groupId)
+
+    await groupToDelete.destroy()
+    return res.json({
+      message: 'Successfully deleted'
+    })
+})
 
 module.exports = router;
