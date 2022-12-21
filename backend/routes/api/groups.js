@@ -10,7 +10,6 @@ const { route } = require('./session');
 
 const router = express.Router();
 
-//validation check to create a group
 const validateGroup = [
     check('name')
         .exists({ checkFalsy: true })
@@ -36,6 +35,25 @@ const validateGroup = [
         .withMessage("State is required"),
     handleValidationErrors
 ];
+
+const validateVenue = [
+    check('address')
+    .exists({ checkFalsy: true })
+    .withMessage("Street address is required"),
+check('city')
+    .exists({ checkFalsy: true })
+    .withMessage("City is required"),
+check('state')
+    .exists({ checkFalsy: true })
+    .withMessage("State is required"),
+check('lat')
+    .exists({ checkFalsy: true })
+    .withMessage("Latitude is not valid"),
+check('lng')
+    .exists({ checkFalsy: true })
+    .withMessage("Longitute is not valid"),
+handleValidationErrors
+]
 // User authorization middleware
 const userAuthorize = async (req, res, next) =>{
     const { groupId } = req.params
@@ -82,6 +100,30 @@ router.post('/:groupId/images', requireAuth, userAuthorize, async (req, res, nex
     }
 })
 
+//POST a new venue for a group specified by its id
+router.post('/:groupId/venues', requireAuth, userAuthorize, validateVenue, async (req, res, next) => {
+    const { groupId } = req.params
+    const { address, city, state, lat, lng } = req.body
+
+    const newVenue = await Venue.create({
+        groupId: parseInt(groupId),
+        address,
+        city,
+        state,
+        lat,
+        lng
+    })
+    const findNewVenue = await Venue.scope('defaultScope').findByPk(newVenue.id)
+    if (findNewVenue) {
+        res.json(findNewVenue)
+    } else {
+        const err = new Error('Validation Error');
+        err.status = 400;
+        //err.errors = ['The provided group data was invalid.'];
+        return next(err);
+    }
+})
+
 // POST a group
 router.post('/', requireAuth, validateGroup, async (req, res, next) => {
     const { user } = req
@@ -107,7 +149,16 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
     }
 })
 
-
+//GET all venues for a group specified by its id
+router.get('/:groupId/venues', userAuthorize, requireAuth, async (req, res, next) => {
+    const { groupId } = req.params
+    const venues = await Venue.findAll({
+        where: {
+            groupId: groupId
+        }
+    })
+    return res.json(venues)
+})
 
 //GET all groups joined or organized by the current user
 router.get('/current', requireAuth, async (req, res) => {
@@ -131,7 +182,7 @@ groups.forEach(group => {
     }
 
     group.Memberships.forEach(membership => {
-        if (membership.userId == user.id && membership.status == 'Member' && !groupsList.includes(group.toJSON())) {
+        if (membership.userId == user.id && membership.status == 'member' && !groupsList.includes(group.toJSON())) {
             groupsList.push(group.toJSON())
         }
     })
