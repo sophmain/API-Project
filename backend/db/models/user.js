@@ -42,7 +42,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.belongsToMany(models.Event, {
-        through: models.Attendance
+        through: models.Attendance,
+        foreignKey: 'eventId',
+        otherKey: 'userId'
       })
       User.hasMany(models.Group, {
         foreignKey: 'organizerId',
@@ -50,7 +52,9 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true
       })
       User.belongsToMany(models.Group, {
-        through: models.Membership
+        through: models.Membership,
+        foreignKey: 'userId',
+        otherKey: 'groupId'
       })
       // User.hasMany(models.Attendance, {
       //   foreignKey: 'userId',
@@ -105,19 +109,19 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
-      defaultScope: {
-        attributes: {
-          exclude: ["hashedPassword", "email", "username", "createdAt", "updatedAt"]
-        }
-      },
-      scopes: {
-        currentUser: {
-          attributes: { exclude: ["hashedPassword"] }
-        },
-        loginUser: {
-          attributes: {}
-        }
-      }
+      // defaultScope: {
+      //   attributes: {
+      //     exclude: ["hashedPassword", "email", "username", "createdAt", "updatedAt"]
+      //   }
+      // },
+      // scopes: {
+      //   currentUser: {
+      //     attributes: { exclude: ["hashedPassword"] }
+      //   },
+      //   loginUser: {
+      //     attributes: {}
+      //   }
+      // }
     }
   );
   return User;

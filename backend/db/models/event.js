@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Event.belongsToMany(models.User, {
-        through: models.Attendance
+        through: models.Attendance,
+        foreignKey: 'userId',
+        otherKey: 'eventId'
       })
       Event.belongsTo(models.Venue, {
         foreignKey: 'venueId'
@@ -43,18 +45,18 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Event',
-    defaultScope: {
-      attributes: {
-        exclude: ["createdAt", "updatedAt"]
-      }
-    },
-    scopes: {
-      hideDetails: {
-        attributes: {
-          exclude: ['description', 'capacity', 'price']
-        }
-      }
-    }
+    // defaultScope: {
+    //   attributes: {
+    //     exclude: ["createdAt", "updatedAt"]
+    //   }
+    // },
+    // scopes: {
+    //   hideDetails: {
+    //     attributes: {
+    //       exclude: ['description', 'capacity', 'price']
+    //     }
+    //   }
+    // }
   });
   return Event;
 };
