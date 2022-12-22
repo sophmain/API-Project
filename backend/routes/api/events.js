@@ -12,29 +12,31 @@ const router = express.Router();
 
 const validateVenue = [
     check('address')
-    .exists({ checkFalsy: true })
-    .withMessage("Street address is required"),
-check('city')
-    .exists({ checkFalsy: true })
-    .withMessage("City is required"),
-check('state')
-    .exists({ checkFalsy: true })
-    .withMessage("State is required"),
-check('lat')
-    .exists({ checkFalsy: true })
-    .withMessage("Latitude is not valid"),
-check('lng')
-    .exists({ checkFalsy: true })
-    .withMessage("Longitute is not valid"),
-handleValidationErrors
+        .exists({ checkFalsy: true })
+        .withMessage("Street address is required"),
+    check('city')
+        .exists({ checkFalsy: true })
+        .withMessage("City is required"),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage("State is required"),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .withMessage("Latitude is not valid"),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .withMessage("Longitute is not valid"),
+    handleValidationErrors
 ]
 
+//POST add an image to a event based on the events id
+// router.get('/:eventId/images', requireAuth, async (req, res, next) => {
 
+// })
 //GET all events
 router.get('/', async (req, res) => {
     const events = await Event.scope('defaultScope').findAll({
         include: [
-
             {
                 model: User
             },
@@ -47,9 +49,9 @@ router.get('/', async (req, res) => {
             {
                 model: EventImage
             },],
-            attributes: {
-                exclude: ['description', 'price', 'capacity']
-            }
+        attributes: {
+            exclude: ['description', 'price', 'capacity']
+        }
     })
     let eventsList = []
     events.forEach(event => {
@@ -76,13 +78,13 @@ router.get('/', async (req, res) => {
         if (!event.previewImage) {
             event.previewImage = 'No event image found'
         }
-        if(!event.Venue){
+        if (!event.Venue) {
             event.Venue = 'Null'
         }
         delete event.EventImages
         delete event.Users
     })
-    let Events = {"Events": eventsList}
+    let Events = { "Events": eventsList }
     return res.json(Events)
 })
 
