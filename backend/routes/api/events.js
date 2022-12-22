@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
 const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
