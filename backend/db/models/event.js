@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         hooks: true
       })
+      Event.hasMany(models.Attendance, {
+        foreignKey: 'eventId',
+        onDelete: 'CASCADE',
+        hooks: true
+      })
     }
   }
   Event.init({
