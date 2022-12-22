@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, userAuthorize, attendanceAuth } = require('../../utils/auth');
 const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
@@ -30,9 +30,20 @@ const validateVenue = [
 ]
 
 //POST add an image to a event based on the events id
-// router.get('/:eventId/images', requireAuth, async (req, res, next) => {
-
-// })
+router.post('/:eventId/images', requireAuth, attendanceAuth, async (req, res, next) => {
+    const { eventId } = req.params
+    const { url, preview } = req.body
+    const eventAddImage = await Event.findByPk(eventId)
+    const eventImage = await eventAddImage.createEventImage({
+        url,
+        preview
+    })
+    return res.json({
+        id: eventImage.id,
+        url: eventImage.url,
+        preview: eventImage.preview
+    })
+})
 //GET all events
 router.get('/', async (req, res) => {
     const events = await Event.scope('defaultScope').findAll({

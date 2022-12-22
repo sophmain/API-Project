@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Group, Membership } = require('../db/models');
+const { User, Group, Event, Membership, Attendance } = require('../db/models');
+const attendance = require('../db/models/attendance');
 const membership = require('../db/models/membership');
 
 const { secret, expiresIn } = jwtConfig;
@@ -70,10 +71,11 @@ const userAuthorize = async (req, res, next) => {
   const coHost = await Membership.findAll({
     where: {
       groupId: groupId,
-      status: 'co-host'
+      status: 'co-host',
+      userId: user.id
     }
   })
-console.log('cohost', coHost)
+  console.log('cohost', coHost)
   const group = await Group.findByPk(groupId)
   if (!group) {
     const err = new Error("Group couldn't be found")
@@ -93,9 +95,50 @@ console.log('cohost', coHost)
 }
 
 // Current user must be an attendee host or co-host
-const attendanceAuth = async (req, res, next)=> {
-  
+const attendanceAuth = async (req, res, next) => {
+  const { user } = req
+  const { eventId } = req.params
+
+  const event = await Event.findOne({
+    where: {
+      id: eventId
+    }
+  })
+  if (!event) {
+    const err = new Error("Event couldn't be found")
+    err.errors = `Couldn't find a event with the specified id`
+    err.status = 404
+    return next(err)
+  }
+  const group = await Group.findOne({
+    where: {
+      id: event.groupId
+    }
+  })
+  const attendee = await Attendance.findOne({
+    where: {
+      eventId: eventId,
+      userId: user.id,
+      status: 'attending'
+    }
+  })
+  const coHost = await Membership.findAll({
+    where: {
+      groupId: event.groupId,
+      status: 'co-host',
+      userId: user.id
+    }
+  })
+
+  if (user.id !== group.organizerId && !attendee.length && !coHost.length) {
+    const err = new Error('Event does not belong to this user')
+    err.title = 'Forbidden request'
+    err.errors = 'Forbidden request'
+    err.status = 403
+    return next(err)
+  }
+  next()
 }
 
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, userAuthorize };
+module.exports = { setTokenCookie, restoreUser, requireAuth, userAuthorize, attendanceAuth };
