@@ -40,6 +40,13 @@ module.exports = (sequelize, DataTypes) => {
         exclude: ["hashedPassword", "email", "username", "createdAt", "updatedAt"]
       }
     },
+    scopes: {
+      hideDetails: {
+        attributes: {
+          exclude: ['groupId', 'address','lat','lng']
+        }
+      }
+    }
   });
   return Venue;
 };

@@ -221,8 +221,9 @@ groupsList.forEach(group => {
     delete group.GroupImages
     delete group.Memberships
 })
+let Groups = {"Groups": groupsList}
+return res.json(Groups)
 
-return res.json(groupsList)
 })
 
 
@@ -272,6 +273,7 @@ router.get('/:groupId', async (req, res, next) => {
     }
 
     delete jsonGroup.Memberships
+
     return res.json(jsonGroup)
 })
 
@@ -289,10 +291,11 @@ router.get('/', async (req, res) => {
     })
 
     let groupsList = []
+
     groups.forEach(group => {
         groupsList.push(group.toJSON())
     })
-    console.log(groupsList)
+
     groupsList.forEach(group => {
         let count = 0;
         group.Memberships.forEach(member => {
@@ -317,7 +320,8 @@ router.get('/', async (req, res) => {
         delete group.GroupImages
         delete group.Memberships
     })
-    return res.json(groupsList)
+    let Groups = {"Groups": groupsList}
+    return res.json(Groups)
 })
 
 // PUT edit a group
