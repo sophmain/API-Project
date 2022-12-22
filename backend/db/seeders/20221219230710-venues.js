@@ -36,6 +36,14 @@ module.exports = {
         state: 'CA',
         lat: 90.76,
         lng: 123.45
+      },
+      {
+        groupId: 3,
+        address: '47 hello Ln',
+        city: 'Boston',
+        state: 'MA',
+        lat: 50.76,
+        lng: 198.45
       }
     ], {});
   },
