@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, Membership, GroupImage, User, Venue, sequelize } = require('../../db/models');
+const { Group, Membership, Event, GroupImage, User, Venue, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -13,7 +13,7 @@ const router = express.Router();
 const validateGroup = [
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({ max: 60 })
+        .isLength({ min: 1, max: 60 })
         .withMessage("Name must be 60 characters or less."),
     check('about')
         .exists({ checkFalsy: true })
@@ -149,6 +149,18 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
     }
 })
 
+// GET all events of a group specified by its id
+router.get('/:groupId/events', async (req, res, next) => {
+    const { groupId } = req.params
+    const events = await Event.scope(['defaultScope','hideDetails']).findAll({
+        where: {
+            groupId: groupId
+        }
+    })
+    let Events = {'Events': events}
+    return res.json(Events)
+})
+
 //GET all venues for a group specified by its id
 router.get('/:groupId/venues', userAuthorize, requireAuth, async (req, res, next) => {
     const { groupId } = req.params
@@ -157,7 +169,8 @@ router.get('/:groupId/venues', userAuthorize, requireAuth, async (req, res, next
             groupId: groupId
         }
     })
-    return res.json(venues)
+    let Venues = {'Venues': venues}
+    return res.json(Venues)
 })
 
 //GET all groups joined or organized by the current user

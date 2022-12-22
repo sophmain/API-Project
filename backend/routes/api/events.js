@@ -29,6 +29,7 @@ check('lng')
 handleValidationErrors
 ]
 
+
 //GET all events
 router.get('/', async (req, res) => {
     const events = await Event.scope('defaultScope').findAll({
