@@ -92,5 +92,10 @@ console.log('cohost', coHost)
   next()
 }
 
+// Current user must be an attendee host or co-host
+const attendanceAuth = async (req, res, next)=> {
+  
+}
+
 
 module.exports = { setTokenCookie, restoreUser, requireAuth, userAuthorize };
