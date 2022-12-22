@@ -56,7 +56,10 @@ check('lng')
     .withMessage("Longitute is not valid"),
 handleValidationErrors
 ]
+// POST create event for group specified by its id
+// router.post('/:groupId/events', requireAuth, userAuthorize, async (req, res, next) => {
 
+// })
 // POST image to a group
 router.post('/:groupId/images', requireAuth, userAuthorize, async (req, res, next) => {
     const { groupId } = req.params
@@ -285,7 +288,7 @@ router.get('/', async (req, res) => {
                 model: GroupImage
             }]
     })
-
+    console.log('Groups', groups)
     let groupsList = []
 
     groups.forEach(group => {
