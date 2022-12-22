@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, Membership, GroupImage, User, Venue, Event, sequelize } = require('../../db/models');
+const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -29,14 +29,60 @@ check('lng')
 handleValidationErrors
 ]
 
+//GET all events
 router.get('/', async (req, res) => {
-    const events = await Event.findAll({
+    const events = await Event.scope('defaultScope').findAll({
         include: [
+
             {
-                model: Venue
-            }]
+                model: User
+            },
+            {
+                model: Group.scope(['defaultScope', 'hideDetails'])
+            },
+            {
+                model: Venue.scope(['hideDetails', 'defaultScope'])
+            },
+            {
+                model: EventImage
+            },],
+            attributes: {
+                exclude: ['description', 'price', 'capacity']
+            }
     })
-    res.json(events)
+    let eventsList = []
+    events.forEach(event => {
+        eventsList.push(event.toJSON())
+    })
+    eventsList.forEach(event => {
+        let count = 0;
+        event.Users.forEach(user => {
+            if (user) {
+                count++
+                event.numAttending = count
+            }
+        })
+        if (!event.Users.length) {
+            event.numAttending = 0;
+        }
+
+        event.EventImages.forEach(image => {
+            //console.log('groupid', group.id, image.groupId)
+            if (image.eventId == event.id && image.preview == true) {
+                event.previewImage = image.url
+            }
+        })
+        if (!event.previewImage) {
+            event.previewImage = 'No event image found'
+        }
+        if(!event.Venue){
+            event.Venue = 'Null'
+        }
+        delete event.EventImages
+        delete event.Users
+    })
+    let Events = {"Events": eventsList}
+    return res.json(Events)
 })
 
 module.exports = router;
