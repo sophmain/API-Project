@@ -140,5 +140,43 @@ const attendanceAuth = async (req, res, next) => {
   next()
 }
 
+// Current User must be the organizer of the group or a member of the group with a status of "co-host"
+const eventOrganizerOrCohost = async (req, res, next)=>{
+  const { user } = req
+  const { eventId } = req.params
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, userAuthorize, attendanceAuth };
+  const event = await Event.findOne({
+    where: {
+      id: eventId
+    }
+  })
+  if (!event) {
+    const err = new Error("Event couldn't be found")
+    err.errors = `Couldn't find a event with the specified id`
+    err.status = 404
+    return next(err)
+  }
+  const group = await Group.findOne({
+    where: {
+      id: event.groupId
+    }
+  })
+  const coHost = await Membership.findAll({
+    where: {
+      groupId: event.groupId,
+      status: 'co-host',
+      userId: user.id
+    }
+  })
+  if (user.id !== group.organizerId && !coHost.length){
+    const err = new Error('Event does not belong to this user')
+    err.title = 'Forbidden request'
+    err.errors = 'Forbidden request'
+    err.status = 403
+    return next(err)
+  }
+  next()
+}
+
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, userAuthorize, attendanceAuth, eventOrganizerOrCohost };
