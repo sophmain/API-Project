@@ -44,6 +44,47 @@ router.post('/:eventId/images', requireAuth, attendanceAuth, async (req, res, ne
         preview: eventImage.preview
     })
 })
+//GET details of an event specified by its id
+router.get('/:eventId', async (req, res, next) => {
+    const { eventId } = req.params
+    const event = await Event.findByPk(eventId, {
+        include: [{
+            model: Venue
+        },
+        {
+            model: EventImage
+        },
+        {
+            model: Group
+        },
+        {
+            model: Attendance
+        }]
+    })
+
+    if (!event) {
+        const err = new Error("Event couldn't be found")
+        err.status = 404
+        next(err)
+    }
+    let count = 0;
+
+    let jsonEvent = event.toJSON()
+
+    jsonEvent.Attendances.forEach(member => {
+        if (member) {
+            count++
+            jsonEvent.numAttending = count
+        }
+    })
+    if (!jsonEvent.Attendances.length) {
+        jsonEvent.numAttending = 0;
+    }
+
+    delete jsonEvent.Attendances
+
+    return res.json(jsonEvent)
+})
 //GET all events
 router.get('/', async (req, res) => {
     const events = await Event.scope('defaultScope').findAll({

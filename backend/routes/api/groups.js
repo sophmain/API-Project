@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
-const { Group, Membership, Event, GroupImage, User, Venue, sequelize } = require('../../db/models');
+const { Group, Membership, Event, Attendance, EventImage, GroupImage, User, Venue, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -9,6 +9,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { route } = require('./session');
 const group = require('../../db/models/group');
 const event = require('../../db/models/event');
+const eventimage = require('../../db/models/eventimage');
 
 const router = express.Router();
 
@@ -100,19 +101,19 @@ const dateValidateEvent = async (req, res, next) => {
     const currentDate = new Date()
     const year = currentDate.getFullYear()
     const day = currentDate.getDate()
-    const month = currentDate.getMonth()+1
+    const month = currentDate.getMonth() + 1
     const hours = currentDate.getHours()
     const min = currentDate.getMinutes()
     const seconds = currentDate.getSeconds()
     let currentDateString = `${year}-${month}-${day} ${hours}:${min}:${seconds}`
 
-    if (startDate < currentDateString){
+    if (startDate < currentDateString) {
         const err = new Error("Start date must be in the future")
         err.status = 400
         err.title = 'Validation error'
         next(err)
     }
-    if (endDate < startDate){
+    if (endDate < startDate) {
         const err = new Error("End date is less than start date")
         err.status = 400
         err.title = 'Validation error'
@@ -125,29 +126,29 @@ router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, v
     const { groupId } = req.params
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
     const event = await Group.findByPk(groupId)
-        const newEvent = await event.createEvent({
-            venueId,
-            name,
-            type,
-            capacity,
-            price,
-            description,
-            startDate,
-            endDate,
-        }
-        )
-        return res.json({
-            id: newEvent.id,
-            groupId: newEvent.groupId,
-            venueId: newEvent.venueId,
-            name: newEvent.name,
-            type: newEvent.type,
-            capacity: newEvent.capacity,
-            price: newEvent.price,
-            description: newEvent.description,
-            startDate: newEvent.startDate,
-            endDate: newEvent.endDate
-        })
+    const newEvent = await event.createEvent({
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate,
+    }
+    )
+    return res.json({
+        id: newEvent.id,
+        groupId: newEvent.groupId,
+        venueId: newEvent.venueId,
+        name: newEvent.name,
+        type: newEvent.type,
+        capacity: newEvent.capacity,
+        price: newEvent.price,
+        description: newEvent.description,
+        startDate: newEvent.startDate,
+        endDate: newEvent.endDate
+    })
 })
 // POST image to a group
 router.post('/:groupId/images', requireAuth, userAuthorize, async (req, res, next) => {
@@ -227,12 +228,61 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
 // GET all events of a group specified by its id
 router.get('/:groupId/events', async (req, res, next) => {
     const { groupId } = req.params
-    const events = await Event.scope(['defaultScope', 'hideDetails']).findAll({
+    const events = await Event.findAll({
         where: {
             groupId: groupId
-        }
+        },
+        include: [{
+            model: Venue
+        },
+        {
+            model: Group
+        },
+        {
+            model: EventImage
+        },
+        {
+            model: Attendance
+        }]
     })
-    let Events = { 'Events': events }
+    if (!events.length) {
+        const err = new Error("Group couldn't be found");
+        err.status = 404;
+        //err.errors = ['The provided group data was invalid.'];
+        return next(err);
+    }
+    let count = 0;
+    let eventsList = []
+
+    events.forEach(event =>{
+        eventsList.push(event.toJSON())
+    })
+//add image url and attendance
+eventsList.forEach(event => {
+        let count = 0;
+        event.Attendances.forEach(attendance => {
+            if (attendance) {
+                count++
+                event.numAttending = count
+            }
+        })
+        if (!event.Attendances.length) {
+            event.numAttending = 0;
+        }
+
+        event.EventImages.forEach(image => {
+            //console.log('groupid', group.id, image.groupId)
+            if (image.preview == true) {
+                event.previewImage = image.url
+            }
+        })
+        if (!event.previewImage) {
+            event.previewImage = 'No event image found'
+        }
+        delete event.EventImages
+        delete event.Attendances
+    })
+    let Events = { "Events": eventsList }
     return res.json(Events)
 })
 
@@ -265,12 +315,12 @@ router.get('/current', requireAuth, async (req, res) => {
     let groupsList = []
 
     groups.forEach(group => {
-        if (group.organizerId == user.id && !groupsList.includes(group.toJSON())) {
+        if (group.organizerId == user.id) {
             groupsList.push(group.toJSON())
         }
 
         group.Memberships.forEach(membership => {
-            if (membership.userId == user.id && membership.status == 'member' && !groupsList.includes(group.toJSON())) {
+            if (membership.userId == user.id && membership.status == 'member') {
                 groupsList.push(group.toJSON())
             }
         })
