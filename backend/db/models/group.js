@@ -31,9 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       // Group.belongsToMany(models.Venue, {
       //   through: models.Event
       // })
-      // Group.hasMany(models.Event, {
-      //   foreignKey: 'groupId'
-      // })
+      Group.hasMany(models.Event, {
+        foreignKey: 'groupId',
+        onDelete: 'CASCADE',
+        hooks: true
+      })
       Group.hasMany(models.Membership, {
         foreignKey: 'groupId',
         onDelete: 'CASCADE',
@@ -86,10 +88,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+    defaultScope: {
+      attributes: {
+        exclude: ['updatedAt', 'createdAt']
+      }
+    },
     scopes: {
-      hideUpdatedCreated: {
+      hideDetails: {
         attributes: {
-          exclude: ['updatedAt', 'createdAt']
+          exclude: ['organizerId', 'about', 'type', 'private']
         }
       }
     }
