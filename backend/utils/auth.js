@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Group } = require('../db/models');
+const { User, Group, Membership } = require('../db/models');
+const membership = require('../db/models/membership');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -66,7 +67,13 @@ const requireAuth = function (req, _res, next) {
 const userAuthorize = async (req, res, next) => {
   const { groupId } = req.params
   const { user } = req
-
+  const coHost = await Membership.findAll({
+    where: {
+      groupId: groupId,
+      status: 'co-host'
+    }
+  })
+console.log('cohost', coHost)
   const group = await Group.findByPk(groupId)
   if (!group) {
     const err = new Error("Group couldn't be found")
@@ -75,7 +82,7 @@ const userAuthorize = async (req, res, next) => {
     return next(err)
   }
 
-  if (group.organizerId != user.id) {
+  if (group.organizerId != user.id && !coHost.length) {
     const err = new Error('Group does not belong to this user')
     err.title = 'Forbidden request'
     err.errors = 'Forbidden request'

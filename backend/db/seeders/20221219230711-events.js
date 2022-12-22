@@ -27,7 +27,7 @@ module.exports = {
         description: 'Hike the mountains of Asheville',
         type: 'In Person',
         capacity: 50,
-        price: 100,
+        price: 100.00,
         startDate: '2023-04-05',
         endDate: '2023-04-06'
       },
@@ -38,7 +38,7 @@ module.exports = {
         description: 'Group dance class beginner level',
         type: 'In Person',
         capacity: 15,
-        price: 40,
+        price: 40.00,
         startDate: '2023-07-01',
         endDate: '2023-07-01'
       }
