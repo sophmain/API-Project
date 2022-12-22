@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 const { check } = require('express-validator');
@@ -59,4 +59,3 @@ router.post('/', validateSignup, async (req, res) => {
 });
 
 module.exports = router;
-

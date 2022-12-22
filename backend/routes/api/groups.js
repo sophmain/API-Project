@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
 const { Group, Membership, Event, GroupImage, User, Venue, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
@@ -48,32 +48,15 @@ check('state')
     .withMessage("State is required"),
 check('lat')
     .exists({ checkFalsy: true })
+    .isDecimal()
     .withMessage("Latitude is not valid"),
 check('lng')
     .exists({ checkFalsy: true })
+    .isDecimal()
     .withMessage("Longitute is not valid"),
 handleValidationErrors
 ]
-// User authorization middleware
-const userAuthorize = async (req, res, next) =>{
-    const { groupId } = req.params
-    const { user } = req
-    const group = await Group.findByPk(groupId)
-    if (!group){
-        const err = new Error("Group couldn't be found")
-        err.errors = `Couldn't find a group with the specified id`
-        err.status = 404
-        return next(err)
-    }
-    if (group.organizerId != user.id){
-        const err = new Error('Group does not belong to this user')
-        err.title= 'Forbidden request'
-        err.errors= 'Forbidden request'
-        err.status = 403
-        return next(err)
-    }
-    next()
-}
+
 // POST image to a group
 router.post('/:groupId/images', requireAuth, userAuthorize, async (req, res, next) => {
     const { groupId } = req.params
