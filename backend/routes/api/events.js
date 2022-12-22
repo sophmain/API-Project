@@ -1,11 +1,11 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth, userAuthorize, attendanceAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, userAuthorize, attendanceAuth, eventOrganizerOrCohost } = require('../../utils/auth');
 const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { handleValidationErrors, dateValidateEvent, validateEvent } = require('../../utils/validation');
 const { route } = require('./session');
 
 const router = express.Router();
@@ -28,7 +28,35 @@ const validateVenue = [
         .withMessage("Longitute is not valid"),
     handleValidationErrors
 ]
-
+//PUT edit an event specified by its id
+router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, validateEvent, async (req, res, next) => {
+    const { eventId } = req.params
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+    const findVenue = await Venue.findOne({
+        where: {
+            id: venueId
+        }
+    })
+    console.log(findVenue)
+    if(!findVenue){
+        const err = new Error("Venue couldn't be found")
+        err.errors = `Couldn't find a venue with the specified id`
+        err.status = 404
+        return next(err)
+    }
+    const eventToEdit = await Event.findByPk(eventId)
+    await eventToEdit.update({
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+    })
+    return res.json(eventToEdit)
+})
 //POST add an image to a event based on the events id
 router.post('/:eventId/images', requireAuth, attendanceAuth, async (req, res, next) => {
     const { eventId } = req.params
