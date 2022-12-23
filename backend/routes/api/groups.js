@@ -556,14 +556,27 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
 })
 
 // DELETE a group
-router.delete('/:groupId', userAuthorize, requireAuth, async (req, res, next) => {
+router.delete('/:groupId', requireAuth, async (req, res, next) => {
     const { groupId } = req.params
+    const { user }= req
     const groupToDelete = await Group.findByPk(groupId)
-
-    await groupToDelete.destroy()
-    return res.json({
-        message: 'Successfully deleted'
-    })
+    if (!groupToDelete){
+        const err = new Error("Group couldn't be found")
+        err.status= 404
+        next(err)
+    }
+    if (user.id == groupToDelete.organizerId){
+        await groupToDelete.destroy()
+        return res.json({
+            message: 'Successfully deleted'
+        })
+    } else {
+        const err = new Error("Group does not belong to this user")
+        err.title = 'Forbidden request'
+        err.errors = 'Forbidden request'
+        err.status = 403
+        return next(err)
+    }
 })
 
 
