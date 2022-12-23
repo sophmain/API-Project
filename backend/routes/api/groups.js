@@ -132,7 +132,6 @@ router.post('/:groupId/venues', requireAuth, userAuthorize, validateVenue, async
     } else {
         const err = new Error('Validation Error');
         err.status = 400;
-        //err.errors = ['The provided group data was invalid.'];
         return next(err);
     }
 })
@@ -157,7 +156,6 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
     } else {
         const err = new Error('Validation Error');
         err.status = 400;
-        //err.errors = ['The provided group data was invalid.'];
         return next(err);
     }
 })
@@ -185,7 +183,6 @@ router.get('/:groupId/events', async (req, res, next) => {
     if (!events.length) {
         const err = new Error("Group couldn't be found");
         err.status = 404;
-        //err.errors = ['The provided group data was invalid.'];
         return next(err);
     }
     let eventsList = []
@@ -398,6 +395,62 @@ router.get('/', async (req, res) => {
     return res.json(Groups)
 })
 
+//PUT change the status of a membership for a group specified by id
+router.put('/:groupId/membership', requireAuth, userAuthorize, async (req, res, next) => {
+    const { groupId } = req.params
+    const { user } = req
+    const { memberId, status } = req.body
+    const group = await Group.findByPk(groupId)
+    console.log(group)
+    const memberToChange = await Membership.findOne({
+        where: {
+            userId: memberId,
+            groupId: group.id
+        }
+    })
+    if (!memberToChange){
+        const err = new Error("User couldn't be found")
+        err.status = 400
+        err.title= "Validation Error"
+        next(err)
+    }
+
+    if (memberToChange.status == 'pending' && status == 'member'){
+        await memberToChange.update({
+            status: status
+        })
+        return res.json({
+            id: memberToChange.id,
+            groupId: memberToChange.groupId,
+            memberId: memberToChange.userId,
+            status: memberToChange.status
+        })
+    }
+    if (memberToChange.status == 'member' && status == 'co-host' && user.id == group.organizerId){
+        await memberToChange.update({
+            status: status
+        })
+        return res.json({
+            id: memberToChange.id,
+            groupId: memberToChange.groupId,
+            memberId: memberToChange.userId,
+            status: memberToChange.status
+        })
+    }
+    if (status == 'pending'){
+        const err = new Error("Cannot change a membership status to pending")
+        err.status = 400
+        err.title= 'Validation Error'
+        next(err)
+    }
+    if (status === memberToChange.status){
+        const err = new Error(`Member already has status ${status}`)
+        err.status= 400
+        err.title= 'Validation Error'
+        next(err)
+    }
+
+})
 // PUT edit a group
 router.put('/:groupId', validateGroup, userAuthorize, requireAuth, async (req, res, next) => {
     const { groupId } = req.params
