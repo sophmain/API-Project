@@ -35,23 +35,23 @@ router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (r
     const { user } = req
     const { userId, status } = req.body
     const findEvent = await Event.findByPk(eventId)
-    if (!findEvent){
+    if (!findEvent) {
         const err = new Error("Event couldn't be found")
-        err.status= 404
+        err.status = 404
         next(err)
     }
-    if (status == 'pending'){
+    if (status == 'pending') {
         const err = new Error("Cannot change an attendance status to pending")
         err.status = 400
     }
-        //see if current user does not have attendance (nothing to change)
+    //see if current user does not have attendance (nothing to change)
     const attendanceExists = await Attendance.findOne({
         where: {
             eventId: findEvent.id,
             userId: user.id
         }
     })
-    if (!attendanceExists){
+    if (!attendanceExists) {
         const err = new Error("Attendance between the user and the event does not exist")
         err.status = 404
         next(err)
@@ -162,6 +162,76 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         const err = new Error("Attendance has already been requested")
         err.status = 400
         next(err)
+    }
+})
+
+//GET all attendees of an event specified by its id
+router.get('/:eventId/attendees', async (req, res, next) => {
+    const { eventId } = req.params
+    const { user } = req
+    const event = await Event.findOne({
+        where: {
+            id: eventId
+        }
+    })
+    if (!event) {
+        const err = new Error("Event couldn't be found")
+        err.errors = `Couldn't find a event with the specified id`
+        err.status = 404
+        return next(err)
+    }
+    const group = await Group.findOne({
+        where: {
+            id: event.groupId
+        }
+    })
+    const coHost = await Membership.findOne({
+        where: {
+            groupId: event.groupId,
+            status: 'co-host',
+            userId: user.id
+        }
+    })
+    const allAttendees = await Attendance.findAll({
+        include: {
+            model: User
+        },
+        where: {
+            eventId: event.id
+        }
+    })
+    let attendanceList = []
+    allAttendees.forEach(attendee => {
+        if(attendee.status != 'not-attending'){
+            attendanceList.push(attendee.toJSON())
+        }
+    })
+    console.log(attendanceList)
+    let Attendees = []
+    attendanceList.forEach(attendee=>{
+        let attendeeInfo = {
+            id: attendee.User.id,
+            firstName: attendee.User.firstName,
+            lastName: attendee.User.lastName,
+            Attendance: {
+                status: attendee.status
+            }
+        }
+        Attendees.push(attendeeInfo)
+    })
+    const attendeeObj = {"Attendees": Attendees}
+    if (user.id == group.organizerId || coHost) {
+        res.json(attendeeObj)
+    } else {
+        let notPending = []
+        Attendees.forEach(attendee => {
+            if (attendee.Attendance.status != 'pending'){
+                notPending.push(attendee)
+            }
+        })
+        const notPendingObj = {"Attendees": notPending}
+
+        res.json(notPendingObj)
     }
 })
 //GET details of an event specified by its id
