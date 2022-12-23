@@ -235,7 +235,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     const { user } = req
     const { groupId } = req.params
     const group = await Group.findByPk(groupId)
-    if (!group){
+    if (!group) {
         const err = new Error("Group couldn't be found")
         err.status = 404
         next(err)
@@ -261,7 +261,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     })
 
     let Members = []
-    membersList.forEach(member=>{
+    membersList.forEach(member => {
         let memberInfo = {
             id: member.User.id,
             firstName: member.User.firstName,
@@ -272,17 +272,17 @@ router.get('/:groupId/members', async (req, res, next) => {
         }
         Members.push(memberInfo)
     })
-    const memberObj = {"Members": Members}
+    const memberObj = { "Members": Members }
     if (user.id == group.organizerId || coHost) {
         res.json(memberObj)
     } else {
         let notPending = []
         Members.forEach(member => {
-            if (member.Membership.status != 'pending'){
+            if (member.Membership.status != 'pending') {
                 notPending.push(member)
             }
         })
-        const notPendingObj = {"Members": notPending}
+        const notPendingObj = { "Members": notPending }
         console.log(notPending)
         res.json(notPendingObj)
     }
@@ -524,6 +524,37 @@ router.put('/:groupId', validateGroup, userAuthorize, requireAuth, async (req, r
     return res.json(groupToEdit)
 })
 
+//DELETE a membership by group id
+router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
+    const { user } = req
+    const { groupId } = req.params
+    const group = await Group.findByPk(groupId)
+    const membershipToDelete = await Membership.findOne({
+        where: {
+            groupId: groupId,
+            userId: user.id
+        }
+    })
+    if(!membershipToDelete){
+        const err = new Error("User couldn't be found")
+        err.status= 400
+        err.title= 'Validation Error'
+        next(err)
+    }
+    if (group.organizerId == user.id || membershipToDelete.userId == user.id){
+        await membershipToDelete.destroy()
+        return res.json({
+            message: "Successfully deleted membership from group"
+        })
+    } else {
+        const err = new Error("Must be the host of the group, or the user whose membership is being deleted")
+        err.title = 'Forbidden request'
+        err.errors = 'Forbidden request'
+        err.status = 403
+        next(err)
+    }
+})
+
 // DELETE a group
 router.delete('/:groupId', userAuthorize, requireAuth, async (req, res, next) => {
     const { groupId } = req.params
@@ -534,5 +565,7 @@ router.delete('/:groupId', userAuthorize, requireAuth, async (req, res, next) =>
         message: 'Successfully deleted'
     })
 })
+
+
 
 module.exports = router;
