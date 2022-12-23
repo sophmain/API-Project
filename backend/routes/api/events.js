@@ -72,7 +72,7 @@ router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, 
             id: venueId
         }
     })
-    console.log(findVenue)
+
     if (!findVenue) {
         const err = new Error("Venue couldn't be found")
         err.errors = `Couldn't find a venue with the specified id`
@@ -207,7 +207,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
             attendanceList.push(attendee.toJSON())
         }
     })
-    console.log(attendanceList)
+
     let Attendees = []
     attendanceList.forEach(attendee => {
         let attendeeInfo = {
@@ -278,28 +278,49 @@ router.get('/:eventId', async (req, res, next) => {
 })
 //GET all events
 router.get('/', async (req, res) => {
-    const events = await Event.scope('defaultScope').findAll({
+    let { page, size } = req.query
+
+    page = parseInt(page)
+    size = parseInt(size)
+
+    if (Number.isNaN(page)) page = 1;
+    if (Number.isNaN(size)) size = 20;
+
+    if (size > 20) size = 20;
+    if (page > 10) page = 10;
+    console.log('PAGE AND SIZE', page, size)
+    const pagination = {}
+
+    if (page >= 1 && size >= 1){
+        pagination.limit = size;
+        pagination.offset = size * (page-1)
+    }
+    const where = {}
+    const events = await Event.findAll({
         include: [
             {
                 model: User
             },
             {
-                model: Group.scope(['defaultScope', 'hideDetails'])
+                model: Group
             },
             {
-                model: Venue.scope(['hideDetails', 'defaultScope'])
+                model: Venue
             },
             {
                 model: EventImage
             },],
         attributes: {
             exclude: ['description', 'price', 'capacity']
-        }
+        },
+        ...pagination
     })
     let eventsList = []
     events.forEach(event => {
         eventsList.push(event.toJSON())
     })
+
+    console.log('PAGINATION',pagination)
     eventsList.forEach(event => {
         let count = 0;
         event.Users.forEach(user => {
@@ -313,7 +334,7 @@ router.get('/', async (req, res) => {
         }
 
         event.EventImages.forEach(image => {
-            //console.log('groupid', group.id, image.groupId)
+
             if (image.eventId == event.id && image.preview == true) {
                 event.previewImage = image.url
             }
