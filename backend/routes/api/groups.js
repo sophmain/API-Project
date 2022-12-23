@@ -13,7 +13,51 @@ const eventimage = require('../../db/models/eventimage');
 
 const router = express.Router();
 
-
+//POST request membership for a group based on the group's id
+router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
+    const { groupId } = req.params
+    const { user } = req
+    const memberId = user.id
+    const group = await Group.findByPk(groupId)
+    if (!group){
+        const err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    const findMembership = await Membership.findAll({
+        where: {
+            groupId: groupId,
+            userId: user.id,
+            status: 'pending'
+        }
+    })
+    console.log(findMembership)
+    if (findMembership.length){
+        const err = new Error("Membership has already been requested");
+        err.status = 400;
+        return next(err);
+    }
+    const alreadyMember = await Membership.findAll({
+        where: {
+            groupId: groupId,
+            userId: user.id,
+            status: 'member'
+        }
+    })
+    if (alreadyMember.length){
+        const err = new Error("User is already a member of the group");
+        err.status = 400;
+        return next(err);
+    }
+    const addMember = await group.createMembership({
+        userId: memberId,
+        status: 'pending'
+    })
+    return res.json({
+        memberId: addMember.userId,
+        status: addMember.status
+    })
+})
 // POST create event for group specified by its id
 router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, validateEvent, async (req, res, next) => {
     const { groupId } = req.params
