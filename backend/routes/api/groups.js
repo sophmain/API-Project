@@ -259,7 +259,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     allMembers.forEach(member => {
         membersList.push(member.toJSON())
     })
-    console.log(membersList)
+
     let Members = []
     membersList.forEach(member=>{
         let memberInfo = {
