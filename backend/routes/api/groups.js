@@ -19,7 +19,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
     const { user } = req
     const memberId = user.id
     const group = await Group.findByPk(groupId)
-    if (!group){
+    if (!group) {
         const err = new Error("Group couldn't be found");
         err.status = 404;
         return next(err);
@@ -32,7 +32,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
         }
     })
     console.log(findMembership)
-    if (findMembership.length){
+    if (findMembership.length) {
         const err = new Error("Membership has already been requested");
         err.status = 400;
         return next(err);
@@ -44,7 +44,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
             status: 'member'
         }
     })
-    if (alreadyMember.length){
+    if (alreadyMember.length) {
         const err = new Error("User is already a member of the group");
         err.status = 400;
         return next(err);
@@ -230,7 +230,63 @@ router.get('/:groupId/venues', userAuthorize, requireAuth, async (req, res, next
     let Venues = { 'Venues': venues }
     return res.json(Venues)
 })
-
+//GET all members of a group specified by its id
+router.get('/:groupId/members', async (req, res, next) => {
+    const { user } = req
+    const { groupId } = req.params
+    const group = await Group.findByPk(groupId)
+    if (!group){
+        const err = new Error("Group couldn't be found")
+        err.status = 404
+        next(err)
+    }
+    const coHost = await Membership.findOne({
+        where: {
+            groupId: groupId,
+            status: 'co-host',
+            userId: user.id
+        }
+    })
+    const allMembers = await Membership.findAll({
+        include: {
+            model: User
+        },
+        where: {
+            groupId: groupId
+        }
+    })
+    let membersList = []
+    allMembers.forEach(member => {
+        membersList.push(member.toJSON())
+    })
+    console.log(membersList)
+    let Members = []
+    membersList.forEach(member=>{
+        let memberInfo = {
+            id: member.User.id,
+            firstName: member.User.firstName,
+            lastName: member.User.lastName,
+            Membership: {
+                status: member.status
+            }
+        }
+        Members.push(memberInfo)
+    })
+    const memberObj = {"Members": Members}
+    if (user.id == group.organizerId || coHost) {
+        res.json(memberObj)
+    } else {
+        let notPending = []
+        Members.forEach(member => {
+            if (member.Membership.status != 'pending'){
+                notPending.push(member)
+            }
+        })
+        const notPendingObj = {"Members": notPending}
+        console.log(notPending)
+        res.json(notPendingObj)
+    }
+})
 //GET all groups joined or organized by the current user
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req
@@ -408,14 +464,14 @@ router.put('/:groupId/membership', requireAuth, userAuthorize, async (req, res, 
             groupId: group.id
         }
     })
-    if (!memberToChange){
+    if (!memberToChange) {
         const err = new Error("User couldn't be found")
         err.status = 400
-        err.title= "Validation Error"
+        err.title = "Validation Error"
         next(err)
     }
 
-    if (memberToChange.status == 'pending' && status == 'member'){
+    if (memberToChange.status == 'pending' && status == 'member') {
         await memberToChange.update({
             status: status
         })
@@ -426,7 +482,7 @@ router.put('/:groupId/membership', requireAuth, userAuthorize, async (req, res, 
             status: memberToChange.status
         })
     }
-    if (memberToChange.status == 'member' && status == 'co-host' && user.id == group.organizerId){
+    if (memberToChange.status == 'member' && status == 'co-host' && user.id == group.organizerId) {
         await memberToChange.update({
             status: status
         })
@@ -437,16 +493,16 @@ router.put('/:groupId/membership', requireAuth, userAuthorize, async (req, res, 
             status: memberToChange.status
         })
     }
-    if (status == 'pending'){
+    if (status == 'pending') {
         const err = new Error("Cannot change a membership status to pending")
         err.status = 400
-        err.title= 'Validation Error'
+        err.title = 'Validation Error'
         next(err)
     }
-    if (status === memberToChange.status){
+    if (status === memberToChange.status) {
         const err = new Error(`Member already has status ${status}`)
-        err.status= 400
-        err.title= 'Validation Error'
+        err.status = 400
+        err.title = 'Validation Error'
         next(err)
     }
 
