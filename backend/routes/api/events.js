@@ -28,6 +28,40 @@ const validateVenue = [
         .withMessage("Longitute is not valid"),
     handleValidationErrors
 ]
+
+//PUT change the status of an attendance for an event specified by id
+router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (req, res, next) => {
+    const { eventId } = req.params
+    const { user } = req
+    const { userId, status } = req.body
+    const findEvent = await Event.findByPk(eventId)
+    if (!findEvent){
+        const err = new Error("Event couldn't be found")
+        err.status= 404
+        next(err)
+    }
+    if (status == 'pending'){
+        const err = new Error("Cannot change an attendance status to pending")
+        err.status = 400
+    }
+        //see if current user does not have attendance (nothing to change)
+    const attendanceExists = await Attendance.findOne({
+        where: {
+            eventId: findEvent.id,
+            userId: user.id
+        }
+    })
+    if (!attendanceExists){
+        const err = new Error("Attendance between the user and the event does not exist")
+        err.status = 404
+        next(err)
+    }
+    await attendanceExists.update({
+        userId: userId,
+        status: status
+    })
+    return res.json(attendanceExists.id)
+})
 //PUT edit an event specified by its id
 router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, validateEvent, async (req, res, next) => {
     const { eventId } = req.params
@@ -38,7 +72,7 @@ router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, 
         }
     })
     console.log(findVenue)
-    if(!findVenue){
+    if (!findVenue) {
         const err = new Error("Venue couldn't be found")
         err.errors = `Couldn't find a venue with the specified id`
         err.status = 404
@@ -74,7 +108,7 @@ router.post('/:eventId/images', requireAuth, attendanceAuth, async (req, res, ne
 })
 
 //POST request to attend an event based on the events Id
-router.post('/:eventId/attendance', requireAuth, async (req, res, next)=> {
+router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const { eventId } = req.params
     const { user } = req
     const event = await Event.findOne({
@@ -82,9 +116,9 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next)=> {
             id: eventId
         }
     })
-    if (!event){
+    if (!event) {
         const err = new Error("Event couldn't be found")
-        err.status= 404;
+        err.status = 404;
         next(err)
     }
     const group = await Group.findOne({
@@ -98,7 +132,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next)=> {
             userId: user.id
         }
     })
-        //see if user already has a pending attendance for this event
+    //see if user already has a pending attendance for this event
     const attendanceCheck = await Attendance.findOne({
         where: {
             eventId: eventId,
@@ -106,17 +140,17 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next)=> {
             status: 'pending'
         }
     })
-        //check if they are a member of the group hosting this event
-    if (!isMember){
+    //check if they are a member of the group hosting this event
+    if (!isMember) {
         const err = new Error('Must be a member of the group to attend this event')
         err.title = 'Forbidden request'
         err.errors = 'Forbidden request'
         err.status = 403
         next(err)
     }
-        //if they are a member, and they dont have a pending attendance, proceed
-    if (isMember && !attendanceCheck){
-        const newAttendance= await event.createAttendance({
+    //if they are a member, and they dont have a pending attendance, proceed
+    if (isMember && !attendanceCheck) {
+        const newAttendance = await event.createAttendance({
             userId: user.id,
             status: 'pending'
         })
