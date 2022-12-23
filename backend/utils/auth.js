@@ -64,7 +64,7 @@ const requireAuth = function (req, _res, next) {
   return next(err);
 }
 
-// User authorization middleware
+// User authorization middleware - must be cohost or organizer
 const userAuthorize = async (req, res, next) => {
   const { groupId } = req.params
   const { user } = req
