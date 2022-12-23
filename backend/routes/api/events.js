@@ -7,6 +7,7 @@ const { Op } = require("sequelize");
 const { check } = require('express-validator');
 const { handleValidationErrors, dateValidateEvent, validateEvent } = require('../../utils/validation');
 const { route } = require('./session');
+const event = require('../../db/models/event');
 
 const router = express.Router();
 
@@ -328,6 +329,47 @@ router.get('/', async (req, res) => {
     })
     let Events = { "Events": eventsList }
     return res.json(Events)
+})
+
+//DELETE attendance to an event specified by id
+router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
+    const {eventId}= req.params
+    const { user }= req
+    const { userId } = req.body
+    const event = await Event.findByPk(eventId)
+    if (!event){
+        const err = new Error("Event couldn't be found")
+        err.status = 404
+        next(err)
+    }
+    const group = await Group.findOne({
+        where: {
+            id: event.groupId
+        }
+    })
+    if (userId == user.id || group.organizerId == user.id){
+        const attendanceToDelete = await Attendance.findOne({
+            where: {
+                eventId: event.id,
+                userId: user.id
+            }
+        })
+        if (!attendanceToDelete){
+            const err = new Error("Attendance does not exist for this User")
+            err.status = 404
+            next(err)
+        }
+        await attendanceToDelete.destroy()
+        return res.json({
+            message: 'Successfully deleted attendance from event'
+        })
+    }
+    if (userId != user.id && group.organizerId != user.id){
+        const err = new Error("Only the User or organizer may delete an Attendance")
+        err.status= 403
+        next(err)
+    }
+
 })
 
 module.exports = router;
