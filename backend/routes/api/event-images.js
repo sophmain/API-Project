@@ -9,48 +9,54 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const group = require('../../db/models/group');
 
+
+
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const { imageId } = req.params
     const { user } = req
 
-    const groupImage = await GroupImage.findOne({
+    const eventImage = await EventImage.findOne({
         where: {
             id: imageId
         }
     })
-    if (!groupImage){
-        const err = new Error("Group Image couldn't be found")
-        err.status= 404
+    if (!eventImage) {
+        const err = new Error("Event Image couldn't be found")
+        err.status = 404
         next(err)
     }
 
+    const event = await Event.findOne({
+        where: {
+            id: eventImage.eventId
+        }
+    })
     const group = await Group.findOne({
         where: {
-            id: groupImage.groupId
+            id: event.groupId
+        }
+    })
+    const coHost = await Membership.findOne({
+        where: {
+            groupId: group.id,
+            status: 'co-host',
+            userId: user.id
         }
     })
 
-    const coHost = await Membership.findOne({
-        where: {
-          groupId: group.id,
-          status: 'co-host',
-          userId: user.id
-        }
-      })
-  
-    if (user.id == group.organizerId || coHost){
-        await groupImage.destroy()
+    if (user.id == group.organizerId || coHost) {
+        await eventImage.destroy()
         return res.json({
             message: 'Successfully deleted'
         })
-    } else {
-        const err = new Error("Must be the organizer or 'co-host' of the Group to delete an image")
+    }  else {
+        const err = new Error("Must be the organizer or 'co-host' of the Group hosting this Event to delete an image")
         err.title = 'Forbidden request'
         err.errors = 'Forbidden request'
         err.status = 403
         return next(err)
     }
-})
 
+})
 
 module.exports = router;
