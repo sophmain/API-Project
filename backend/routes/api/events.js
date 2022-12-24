@@ -79,7 +79,11 @@ router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, 
         err.status = 404
         return next(err)
     }
-    const eventToEdit = await Event.findByPk(eventId)
+    const eventToEdit = await Event.findByPk(eventId, {
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
     await eventToEdit.update({
         venueId,
         name,
@@ -240,17 +244,30 @@ router.get('/:eventId', async (req, res, next) => {
     const { eventId } = req.params
     const event = await Event.findByPk(eventId, {
         include: [{
-            model: Venue
+            model: Venue,
+            attributes: {
+                exclude: ['groupId', 'createdAt', 'updatedAt']
+            }
         },
         {
-            model: EventImage
+            model: EventImage,
+            attributes: {
+                exclude: ['eventId', 'createdAt', 'updatedAt']
+            }
         },
         {
-            model: Group
+            model: Group,
+            attributes: {
+                exclude: ['organizerId', 'about', 'type', 'createdAt', 'updatedAt']
+            }
         },
         {
             model: Attendance
-        }]
+        }],
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+
+        }
     })
 
     if (!event) {
@@ -302,16 +319,22 @@ router.get('/', async (req, res) => {
                 model: User
             },
             {
-                model: Group
+                model: Group,
+                attributes: {
+                    exclude: ['organizerId', 'about', 'type', 'private', 'createdAt', 'updatedAt']
+                }
             },
             {
-                model: Venue
+                model: Venue,
+                attributes: {
+                    exclude: ['groupId', 'address', 'lat', 'lng', 'createdAt', 'updatedAt']
+                }
             },
             {
                 model: EventImage
             },],
         attributes: {
-            exclude: ['description', 'price', 'capacity']
+            exclude: ['description', 'price', 'capacity', 'createdAt', 'updatedAt']
         },
         ...pagination
     })
@@ -387,17 +410,19 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
     if (userId != user.id && group.organizerId != user.id) {
         const err = new Error("Only the User or organizer may delete an Attendance")
+        err.title = 'Forbidden request'
+        err.errors = 'Forbidden request'
         err.status = 403
-        next(err)
+        return next(err)
     }
 })
 
 //DELETE event by id
 router.delete('/:eventId', requireAuth, eventOrganizerOrCohost, async (req, res, next) => {
     const { eventId } = req.params
-    const { user } = req
     const eventToDelete = await Event.findByPk(eventId)
     await eventToDelete.destroy()
+
     res.json({
         message: "Successfully deleted"
     })

@@ -68,14 +68,14 @@ const requireAuth = function (req, _res, next) {
 const userAuthorize = async (req, res, next) => {
   const { groupId } = req.params
   const { user } = req
-  const coHost = await Membership.findAll({
+  const coHost = await Membership.findOne({
     where: {
       groupId: groupId,
       status: 'co-host',
       userId: user.id
     }
   })
-  console.log('cohost', coHost)
+
   const group = await Group.findByPk(groupId)
   if (!group) {
     const err = new Error("Group couldn't be found")
@@ -84,7 +84,7 @@ const userAuthorize = async (req, res, next) => {
     return next(err)
   }
 
-  if (group.organizerId != user.id && !coHost.length) {
+  if (group.organizerId != user.id && !coHost) {
     const err = new Error('Group does not belong to this user')
     err.title = 'Forbidden request'
     err.errors = 'Forbidden request'
@@ -122,7 +122,7 @@ const attendanceAuth = async (req, res, next) => {
       status: 'attending'
     }
   })
-  const coHost = await Membership.findAll({
+  const coHost = await Membership.findOne({
     where: {
       groupId: event.groupId,
       status: 'co-host',
@@ -130,7 +130,7 @@ const attendanceAuth = async (req, res, next) => {
     }
   })
 
-  if (user.id !== group.organizerId && !attendee.length && !coHost.length) {
+  if (user.id !== group.organizerId && !attendee && !coHost) {
     const err = new Error('Event does not belong to this user')
     err.title = 'Forbidden request'
     err.errors = 'Forbidden request'
@@ -161,14 +161,14 @@ const eventOrganizerOrCohost = async (req, res, next)=>{
       id: event.groupId
     }
   })
-  const coHost = await Membership.findAll({
+  const coHost = await Membership.findOne({
     where: {
       groupId: event.groupId,
       status: 'co-host',
       userId: user.id
     }
   })
-  if (user.id !== group.organizerId && !coHost.length){
+  if (user.id !== group.organizerId && !coHost){
     const err = new Error('Event does not belong to this user')
     err.title = 'Forbidden request'
     err.errors = 'Forbidden request'
