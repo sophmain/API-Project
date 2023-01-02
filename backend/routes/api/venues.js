@@ -3,8 +3,7 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Group, Membership, Venue } = require('../../db/models');
 
-const { check } = require('express-validator');
-const { handleValidationErrors, validateVenue } = require('../../utils/validation');
+const { validateVenue } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -70,8 +69,8 @@ router.put('/:venueId', requireAuth, validateVenue, async (req, res, next) => {
         return res.json(findVenue)
     } else {
         const err = new Error('Venue does not belong to this user')
-        err.title = 'Forbidden request'
-        err.errors = 'Forbidden request'
+        err.title = 'Forbidden'
+        err.errors = 'Forbidden'
         err.status = 403
         return next(err)
     }

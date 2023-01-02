@@ -126,8 +126,8 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     //check if they are a member of the group hosting this event
     if (!isMember) {
         const err = new Error('Must be a member of the group to attend this event')
-        err.title = 'Forbidden request'
-        err.errors = 'Forbidden request'
+        err.title = 'Forbidden'
+        err.errors = 'Forbidden'
         err.status = 403
         next(err)
     }
@@ -387,8 +387,8 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
     if (userId != user.id && group.organizerId != user.id) {
         const err = new Error("Only the User or organizer may delete an Attendance")
-        err.title = 'Forbidden request'
-        err.errors = 'Forbidden request'
+        err.title = 'Forbidden'
+        err.errors = 'Forbidden'
         err.status = 403
         return next(err)
     }
