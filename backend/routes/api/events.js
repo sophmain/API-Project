@@ -1,34 +1,11 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth, userAuthorize, attendanceAuth, eventOrganizerOrCohost } = require('../../utils/auth');
-const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage, sequelize } = require('../../db/models');
-const { Op } = require("sequelize");
+const { requireAuth, attendanceAuth, eventOrganizerOrCohost } = require('../../utils/auth');
+const { Group, Membership, User, Attendance, Venue, Event, EventImage } = require('../../db/models');
 
-const { check } = require('express-validator');
-const { handleValidationErrors, dateValidateEvent, validateEvent } = require('../../utils/validation');
-const { route } = require('./session');
-const event = require('../../db/models/event');
+const { dateValidateEvent, validateEvent } = require('../../utils/validation');
 
 const router = express.Router();
-
-const validateVenue = [
-    check('address')
-        .exists({ checkFalsy: true })
-        .withMessage("Street address is required"),
-    check('city')
-        .exists({ checkFalsy: true })
-        .withMessage("City is required"),
-    check('state')
-        .exists({ checkFalsy: true })
-        .withMessage("State is required"),
-    check('lat')
-        .exists({ checkFalsy: true })
-        .withMessage("Latitude is not valid"),
-    check('lng')
-        .exists({ checkFalsy: true })
-        .withMessage("Longitute is not valid"),
-    handleValidationErrors
-]
 
 //PUT change the status of an attendance for an event specified by id
 router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (req, res, next) => {
@@ -96,6 +73,7 @@ router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, 
     })
     return res.json(eventToEdit)
 })
+
 //POST add an image to a event based on the events id
 router.post('/:eventId/images', requireAuth, attendanceAuth, async (req, res, next) => {
     const { eventId } = req.params

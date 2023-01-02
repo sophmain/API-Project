@@ -1,13 +1,10 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
-const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage, sequelize } = require('../../db/models');
-const { Op } = require("sequelize");
+const { requireAuth } = require('../../utils/auth');
+const { Group, Membership, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-const { route } = require('./session');
-const user = require('../../db/models/user');
+const { handleValidationErrors, validateVenue } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -28,26 +25,7 @@ const router = express.Router();
 //     })
 //     console.log(groups)
 // }
-const validateVenue = [
-    check('address')
-    .exists({ checkFalsy: true })
-    .withMessage("Street address is required"),
-check('city')
-    .exists({ checkFalsy: true })
-    .withMessage("City is required"),
-check('state')
-    .exists({ checkFalsy: true })
-    .withMessage("State is required"),
-check('lat')
-    .exists({ checkFalsy: true })
-    .isDecimal()
-    .withMessage("Latitude is not valid"),
-check('lng')
-    .exists({ checkFalsy: true })
-    .isDecimal()
-    .withMessage("Longitute is not valid"),
-handleValidationErrors
-]
+
 //PUT edit a venue specified by its id
 router.put('/:venueId', requireAuth, validateVenue, async (req, res, next) => {
     const { address, city, state, lat, lng } = req.body

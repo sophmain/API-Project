@@ -1,13 +1,9 @@
 const express = require('express')
 
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { Group, Membership, GroupImage, User, Attendance, Venue, Event, EventImage } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
+const { Group, Membership, GroupImage } = require('../../db/models');
 
 const router = express.Router();
-
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-const group = require('../../db/models/group');
 
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const { imageId } = req.params
@@ -37,7 +33,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
           userId: user.id
         }
       })
-  
+
     if (user.id == group.organizerId || coHost){
         await groupImage.destroy()
         return res.json({
