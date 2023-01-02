@@ -1,15 +1,9 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth, userAuthorize } = require('../../utils/auth');
-const { Group, Membership, Event, Attendance, EventImage, GroupImage, User, Venue, sequelize } = require('../../db/models');
-const { Op } = require("sequelize");
+const { requireAuth, userAuthorize } = require('../../utils/auth');
+const { Group, Membership, Event, Attendance, EventImage, GroupImage, User, Venue } = require('../../db/models');
 
-const { check } = require('express-validator');
-const { handleValidationErrors, dateValidateEvent, validateEvent, validateVenue, validateGroup } = require('../../utils/validation');
-const { route } = require('./session');
-const group = require('../../db/models/group');
-const event = require('../../db/models/event');
-const eventimage = require('../../db/models/eventimage');
+const { dateValidateEvent, validateEvent, validateVenue, validateGroup } = require('../../utils/validation');
 
 const router = express.Router();
 
