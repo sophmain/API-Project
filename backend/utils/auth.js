@@ -86,8 +86,8 @@ const userAuthorize = async (req, res, next) => {
 
   if (group.organizerId != user.id && !coHost) {
     const err = new Error('Group does not belong to this user')
-    err.title = 'Forbidden request'
-    err.errors = 'Forbidden request'
+    err.title = 'Forbidden'
+    err.errors = 'Forbidden'
     err.status = 403
     return next(err)
   }
@@ -132,8 +132,8 @@ const attendanceAuth = async (req, res, next) => {
 
   if (user.id !== group.organizerId && !attendee && !coHost) {
     const err = new Error('Event does not belong to this user')
-    err.title = 'Forbidden request'
-    err.errors = 'Forbidden request'
+    err.title = 'Forbidden'
+    err.errors = 'Forbidden'
     err.status = 403
     return next(err)
   }
@@ -170,8 +170,8 @@ const eventOrganizerOrCohost = async (req, res, next) => {
   })
   if (user.id !== group.organizerId && !coHost) {
     const err = new Error('Event does not belong to this user')
-    err.title = 'Forbidden request'
-    err.errors = 'Forbidden request'
+    err.title = 'Forbidden'
+    err.errors = 'Forbidden'
     err.status = 403
     return next(err)
   }
