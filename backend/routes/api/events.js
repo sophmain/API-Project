@@ -71,7 +71,18 @@ router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, 
         startDate,
         endDate
     })
-    return res.json(eventToEdit)
+    return res.json({
+        id: eventToEdit.id,
+        groupId: eventToEdit.groupId,
+        venueId: eventToEdit.venueId,
+        name: eventToEdit.name,
+        type: eventToEdit.type,
+        capacity: eventToEdit.capacity,
+        price: eventToEdit.price,
+        description: eventToEdit.description,
+        startDate: eventToEdit.startDate,
+        endDate: eventToEdit.endDate
+    })
 })
 
 //POST add an image to a event based on the events id
