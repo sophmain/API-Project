@@ -141,7 +141,7 @@ const attendanceAuth = async (req, res, next) => {
 }
 
 // Current User must be the organizer of the group or a member of the group with a status of "co-host"
-const eventOrganizerOrCohost = async (req, res, next)=>{
+const eventOrganizerOrCohost = async (req, res, next) => {
   const { user } = req
   const { eventId } = req.params
 
@@ -168,7 +168,7 @@ const eventOrganizerOrCohost = async (req, res, next)=>{
       userId: user.id
     }
   })
-  if (user.id !== group.organizerId && !coHost){
+  if (user.id !== group.organizerId && !coHost) {
     const err = new Error('Event does not belong to this user')
     err.title = 'Forbidden request'
     err.errors = 'Forbidden request'
