@@ -343,7 +343,6 @@ router.get('/', async (req, res) => {
         eventsList.push(event.toJSON())
     })
 
-    console.log('PAGINATION',pagination)
     eventsList.forEach(event => {
         let count = 0;
         event.Users.forEach(user => {

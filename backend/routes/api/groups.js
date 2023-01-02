@@ -235,7 +235,7 @@ router.get('/:groupId/events', async (req, res, next) => {
 })
 
 //GET all venues for a group specified by its id
-router.get('/:groupId/venues', userAuthorize, requireAuth, async (req, res, next) => {
+router.get('/:groupId/venues', requireAuth, userAuthorize, async (req, res, next) => {
     const { groupId } = req.params
     const venues = await Venue.findAll({
         where: {
@@ -527,7 +527,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
 })
 // PUT edit a group
-router.put('/:groupId', validateGroup, userAuthorize, requireAuth, async (req, res, next) => {
+router.put('/:groupId', requireAuth, userAuthorize, validateGroup, async (req, res, next) => {
     const { groupId } = req.params
     const { name, about, type, private, city, state } = req.body
 
