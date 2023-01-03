@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Membership.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
     userId: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
     status: {
