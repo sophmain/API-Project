@@ -9,6 +9,12 @@
 
 [meetup-dbdiagram]: ./meetup_dbdiagram.png
 
+## Overiew
+This is a clone of the backend of site Meetup created using express. Users can log in then create, edit, and delete Groups, Events, Memberships, Venues, Attendances, and Images. API documentation for each endpoint is below.
+
+## Link to deployed site
+https://meet-yup.onrender.com
+
 ## API Documentation
 
 ## USER AUTHENTICATION/AUTHORIZATION

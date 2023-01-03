@@ -79,18 +79,21 @@ router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, 
         startDate,
         endDate
     })
-    return res.json({
-        id: eventToEdit.id,
-        groupId: eventToEdit.groupId,
-        venueId: eventToEdit.venueId,
-        name: eventToEdit.name,
-        type: eventToEdit.type,
-        capacity: eventToEdit.capacity,
-        price: eventToEdit.price,
-        description: eventToEdit.description,
-        startDate: eventToEdit.startDate,
-        endDate: eventToEdit.endDate
-    })
+
+    return res.json(eventToEdit
+        //{
+        // id: eventToEdit.id,
+        // groupId: eventToEdit.groupId,
+        // venueId: eventToEdit.venueId,
+        // name: eventToEdit.name,
+        // type: eventToEdit.type,
+        // capacity: eventToEdit.capacity,
+        // price: eventToEdit.price,
+        // description: eventToEdit.description,
+        // startDate: eventToEdit.startDate,
+        // endDate: eventToEdit.endDate
+   //}
+    )
 })
 
 //POST add an image to a event based on the events id
@@ -149,8 +152,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
             status: 'pending'
         }
     })
-    console.log(group)
-    console.log(isMember)
+
     //check if they are a member of the group hosting this event
     if (!isMember || isMember.status == 'pending') {
         const err = new Error('Must be a member of the group to attend this event')
