@@ -52,10 +52,10 @@ const dateValidateEvent = async (req, res, next) => {
 }
 const validateQuery = [
     query('page')
-        .custom((page, {req}) => page >=1)
+        .custom((page) => page >=1)
         .withMessage("Page must be greater than or equal to 1"),
     query('size')
-        .custom((size, {req}) => size >=1)
+        .custom((size) => size >=1)
         .withMessage("Size must be greater than or equal to 1"),
     query('name')
         .optional()
@@ -67,10 +67,11 @@ const validateQuery = [
         .withMessage("Type must be 'Online' or 'In person'"),
     query('startDate')
         .optional()
-        .isDate()
-        .withMessage("Start date must be a valid datetime"),
+        .isString()
+       .withMessage("Start date must be a valid datetime"),
     handleValidationErrors
 ]
+
 const validateSignup = [
     check('firstName')
         .exists({checkFalsy: true})
