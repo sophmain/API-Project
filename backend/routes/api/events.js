@@ -292,12 +292,12 @@ router.get('/:eventId', async (req, res, next) => {
     let jsonEvent = event.toJSON()
 
     jsonEvent.Attendances.forEach(member => {
-        if (member) {
+        if (member.status == 'attending') {
             count++
             jsonEvent.numAttending = count
         }
     })
-    if (!jsonEvent.Attendances.length) {
+    if (!jsonEvent.Attendances.length || count == 0) {
         jsonEvent.numAttending = 0;
     }
 
@@ -358,7 +358,7 @@ router.get('/', validateQuery, async (req, res, next) => {
         where,
         include: [
             {
-                model: User
+                model: Attendance
             },
             {
                 model: Group,
@@ -387,13 +387,14 @@ router.get('/', validateQuery, async (req, res, next) => {
 
     eventsList.forEach(event => {
         let count = 0;
-        event.Users.forEach(user => {
-            if (user) {
+        console.log(event)
+        event.Attendances.forEach(user => {
+            if (user.status == 'attending') {
                 count++
                 event.numAttending = count
             }
         })
-        if (!event.Users.length) {
+        if (!event.Attendances.length || count == 0) {
             event.numAttending = 0;
         }
 
@@ -410,7 +411,7 @@ router.get('/', validateQuery, async (req, res, next) => {
             event.Venue = 'Null'
         }
         delete event.EventImages
-        delete event.Users
+        delete event.Attendances
     })
     let Events = { "Events": eventsList }
     return res.json(Events)
