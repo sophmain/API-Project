@@ -202,21 +202,22 @@ router.get('/:groupId/events', async (req, res, next) => {
     events.forEach(event => {
         eventsList.push(event.toJSON())
     })
+
     //add image url and attendance
     eventsList.forEach(event => {
         let count = 0;
         event.Attendances.forEach(attendance => {
-            if (attendance) {
+
+            if (attendance.status == 'attending') {
                 count++
                 event.numAttending = count
             }
         })
-        if (!event.Attendances.length) {
+        if (!event.Attendances.length || count == 0) {
             event.numAttending = 0;
         }
 
         event.EventImages.forEach(image => {
-            //console.log('groupid', group.id, image.groupId)
             if (image.preview == true) {
                 event.previewImage = image.url
             }
@@ -330,8 +331,8 @@ router.get('/current', requireAuth, async (req, res) => {
         })
 
     })
-    //remove groups where member is also organizer
-    let groupIds = []
+    //remove groups where member is also organizer (removes dupes)
+    let groupIds = [] //array for group ids
     groupsList.forEach(group => {
         if (groupIds.includes(group.id)) {
             groupsList.splice(group, 1)
@@ -342,12 +343,13 @@ router.get('/current', requireAuth, async (req, res) => {
     groupsList.forEach(group => {
         let count = 0;
         group.Memberships.forEach(member => {
-            if (member) {
+            console.log(member)
+            if (member.status == 'member') {
                 count++
                 group.numMembers = count
             }
         })
-        if (!group.Memberships.length) {
+        if (!group.Memberships.length || count == 0) {
             group.numMembers = 0;
         }
 
@@ -405,12 +407,12 @@ router.get('/:groupId', async (req, res, next) => {
     let jsonGroup = group.toJSON()
 
     jsonGroup.Memberships.forEach(member => {
-        if (member) {
+        if (member.status == 'member') {
             count++
             jsonGroup.numMembers = count
         }
     })
-    if (!jsonGroup.Memberships.length) {
+    if (!jsonGroup.Memberships.length || count == 0) {
         jsonGroup.numMembers = 0;
     }
 
@@ -441,12 +443,12 @@ router.get('/', async (req, res) => {
     groupsList.forEach(group => {
         let count = 0;
         group.Memberships.forEach(member => {
-            if (member) {
+            if (member.status == 'member') {
                 count++
                 group.numMembers = count
             }
         })
-        if (!group.Memberships.length) {
+        if (!group.Memberships.length || count == 0) {
             group.numMembers = 0;
         }
 
