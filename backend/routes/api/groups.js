@@ -428,7 +428,7 @@ router.get('/', async (req, res) => {
                 model: GroupImage
             }]
     })
-    console.log('Groups', groups)
+
     let groupsList = []
 
     groups.forEach(group => {
@@ -470,16 +470,34 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     const { memberId, status } = req.body
     const group = await Group.findByPk(groupId)
 
+    if (!group) {
+        const err = new Error("Group couldn't be found")
+        err.status = 404
+        next(err)
+    }
+         //see if a member with that id exists at all
+    const memberExists = await Membership.findOne({
+        where: {
+            userId: memberId
+        }
+    })
+    if (!memberExists) {
+        const err = new Error("User couldn't be found")
+        err.status = 400
+        err.title = "Validation Error"
+        next(err)
+    }
+    // see if member with id exists in specific group
     const memberToChange = await Membership.findOne({
         where: {
             userId: memberId,
             groupId: group.id
         }
     })
-    if (!memberToChange) {
-        const err = new Error("User couldn't be found")
-        err.status = 400
-        err.title = "Validation Error"
+
+    if (!memberToChange){
+        const err = new Error("Membership between the user and the group does not exist")
+        err.status = 404
         next(err)
     }
 
