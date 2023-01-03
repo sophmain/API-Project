@@ -440,6 +440,7 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
                 userId: user.id
             }
         })
+        console.log(attendanceToDelete)
         if (!attendanceToDelete) {
             const err = new Error("Attendance does not exist for this User")
             err.status = 404
