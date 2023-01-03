@@ -21,6 +21,7 @@ router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (r
     if (status == 'pending') {
         const err = new Error("Cannot change an attendance status to pending")
         err.status = 400
+        next(err)
     }
     //see if current user does not have attendance (nothing to change)
     const attendanceExists = await Attendance.findOne({
@@ -29,6 +30,7 @@ router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (r
             userId: user.id
         }
     })
+
     if (!attendanceExists) {
         const err = new Error("Attendance between the user and the event does not exist")
         err.status = 404
@@ -38,7 +40,12 @@ router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (r
         userId: userId,
         status: status
     })
-    return res.json(attendanceExists.id)
+    return res.json({
+        id: attendanceExists.id,
+        eventId: attendanceExists.eventId,
+        userId: attendanceExists.userId,
+        status: attendanceExists.status
+    })
 })
 //PUT edit an event specified by its id
 router.put('/:eventId', requireAuth, eventOrganizerOrCohost, dateValidateEvent, validateEvent, async (req, res, next) => {
