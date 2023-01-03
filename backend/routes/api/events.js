@@ -126,8 +126,15 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
             userId: user.id
         }
     })
-    //see if user already has a pending attendance for this event
-    const attendanceCheck = await Attendance.findOne({
+    //see if user already has an attendance for this event
+    const isAttending = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: user.id,
+            status: 'attending'
+        }
+    })
+    const isPending = await Attendance.findOne({
         where: {
             eventId: eventId,
             userId: user.id,
@@ -135,15 +142,21 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         }
     })
     //check if they are a member of the group hosting this event
-    if (!isMember) {
+    if (!isMember || isMember.status == 'pending') {
         const err = new Error('Must be a member of the group to attend this event')
         err.title = 'Forbidden'
         err.errors = 'Forbidden'
         err.status = 403
         next(err)
     }
+    //if they are already an acccepted attendee
+    if (isAttending){
+        const err = new Error("User is already an attendee of the event")
+        err.status = 400
+        next(err)
+    }
     //if they are a member, and they dont have a pending attendance, proceed
-    if (isMember && !attendanceCheck) {
+    if (isMember && !isPending) {
         const newAttendance = await event.createAttendance({
             userId: user.id,
             status: 'pending'
