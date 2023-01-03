@@ -3,7 +3,7 @@ const express = require('express');
 const { requireAuth, attendanceAuth, eventOrganizerOrCohost } = require('../../utils/auth');
 const { Group, Membership, User, Attendance, Venue, Event, EventImage } = require('../../db/models');
 
-const { dateValidateEvent, validateEvent } = require('../../utils/validation');
+const { dateValidateEvent, validateEvent, validateQuery } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -305,8 +305,8 @@ router.get('/:eventId', async (req, res, next) => {
     return res.json(jsonEvent)
 })
 //GET all events
-router.get('/', async (req, res) => {
-    let { page, size } = req.query
+router.get('/', validateQuery, async (req, res, next) => {
+    let { page, size, name, type, startDate } = req.query
 
     page = parseInt(page)
     size = parseInt(size)
@@ -316,7 +316,7 @@ router.get('/', async (req, res) => {
 
     if (size > 20) size = 20;
     if (page > 10) page = 10;
-    console.log('PAGE AND SIZE', page, size)
+
     const pagination = {}
 
     if (page >= 1 && size >= 1){
@@ -324,7 +324,17 @@ router.get('/', async (req, res) => {
         pagination.offset = size * (page-1)
     }
     const where = {}
+    if (name && name !== ""){
+        where.name = name
+    }
+    if (type && type !== ""){
+        where.type = type
+    }
+    if (startDate && startDate !== ""){
+        where.startDate = startDate
+    }
     const events = await Event.findAll({
+        where,
         include: [
             {
                 model: User
