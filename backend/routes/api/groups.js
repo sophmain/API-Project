@@ -559,16 +559,30 @@ router.put('/:groupId', requireAuth, userAuthorize, validateGroup, async (req, r
 router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
     const { user } = req
     const { groupId } = req.params
+    const { memberId } = req.body
     const group = await Group.findByPk(groupId)
+    if (!group){
+        const err = new Error("Group couldn't be found")
+        err.status = 404
+        next(err)
+    }
+    const hasMembership = await Membership.findByPk(memberId)
+
+    if (!hasMembership){
+        const err = new Error("User couldn't be found")
+        err.status = 400
+        err.title = 'Validation Error'
+        next(err)
+    }
     const membershipToDelete = await Membership.findOne({
         where: {
             groupId: groupId,
-            userId: user.id
+            userId: memberId
         }
     })
     if (!membershipToDelete) {
-        const err = new Error("User couldn't be found")
-        err.status = 400
+        const err = new Error("Membership does not exist for this User")
+        err.status = 404
         err.title = 'Validation Error'
         next(err)
     }
