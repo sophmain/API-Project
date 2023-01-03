@@ -24,11 +24,11 @@ router.put('/:eventId/attendance', requireAuth, eventOrganizerOrCohost, async (r
         err.status = 400
         next(err)
     }
-    //see if current user does not have attendance (nothing to change)
+    //see if user does not have attendance (nothing to change)
     const attendanceExists = await Attendance.findOne({
         where: {
             eventId: findEvent.id,
-            userId: user.id
+            userId: userId
         }
     })
 
