@@ -27,16 +27,16 @@ const handleValidationErrors = (req, _res, next) => {
 const dateValidateEvent = async (req, res, next) => {
   const { startDate, endDate } = req.body
 
-  const currentDate = new Date()
-  const year = currentDate.getFullYear()
-  const day = currentDate.getDate()
-  const month = currentDate.getMonth() + 1
-  const hours = currentDate.getHours()
-  const min = currentDate.getMinutes()
-  const seconds = currentDate.getSeconds()
-  let currentDateString = `${year}-${month}-${day} ${hours}:${min}:${seconds}`
+   const currentDate = new Date()
+//   const year = currentDate.getFullYear()
+//   const day = currentDate.getDate()
+//   const month = currentDate.getMonth() + 1
+//   const hours = currentDate.getHours()
+//   const min = currentDate.getMinutes()
+//   const seconds = currentDate.getSeconds()
+//   let currentDateString = `${year}-${month}-${day} ${hours}:${min}:${seconds}`
 
-  if (startDate < currentDateString) {
+  if (new Date(startDate) < currentDate) {
       const err = new Error("Start date must be in the future")
       err.status = 400
       err.title = 'Validation error'
@@ -52,9 +52,11 @@ const dateValidateEvent = async (req, res, next) => {
 }
 const validateQuery = [
     query('page')
+        .optional()
         .custom((page, {req}) => page >=1)
         .withMessage("Page must be greater than or equal to 1"),
     query('size')
+        .optional()
         .custom((size, {req}) => size >=1)
         .withMessage("Size must be greater than or equal to 1"),
     query('name')
