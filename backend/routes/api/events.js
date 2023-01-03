@@ -4,6 +4,7 @@ const { requireAuth, attendanceAuth, eventOrganizerOrCohost } = require('../../u
 const { Group, Membership, User, Attendance, Venue, Event, EventImage } = require('../../db/models');
 
 const { dateValidateEvent, validateEvent, validateQuery } = require('../../utils/validation');
+const { DATE } = require('sequelize');
 
 const router = express.Router();
 
@@ -310,6 +311,7 @@ router.get('/:eventId', async (req, res, next) => {
 router.get('/', validateQuery, async (req, res, next) => {
     let { page, size, name, type, startDate } = req.query
 
+
     page = parseInt(page)
     size = parseInt(size)
 
@@ -325,6 +327,7 @@ router.get('/', validateQuery, async (req, res, next) => {
         pagination.limit = size;
         pagination.offset = size * (page-1)
     }
+        //add fiters to where object
     const where = {}
     if (name && name !== ""){
         where.name = name
@@ -332,8 +335,26 @@ router.get('/', validateQuery, async (req, res, next) => {
     if (type && type !== ""){
         where.type = type
     }
+
     if (startDate && startDate !== ""){
-        where.startDate = startDate
+        try{
+            const date = new Date(startDate)
+            const iso = date.toISOString()
+            if(iso.slice(iso.length-1) !== 'Z'){
+                const err = new Error("Start date must be a valid datetime")
+                err.status = 400
+                err.title = 'Validation error'
+                next(err)
+            } else {
+                where.startDate = iso
+            }
+        } catch{
+            const err = new Error("Start date must be a valid datetime")
+            err.status = 400
+            err.title = 'Validation error'
+            next(err)
+        }
+
     }
     const events = await Event.findAll({
         where,
