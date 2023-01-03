@@ -163,6 +163,7 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
 // GET all events of a group specified by its id
 router.get('/:groupId/events', async (req, res, next) => {
     const { groupId } = req.params
+    const group = await Group.findByPk(groupId)
     const events = await Event.findAll({
         where: {
             groupId: groupId
@@ -189,7 +190,7 @@ router.get('/:groupId/events', async (req, res, next) => {
             exclude: ['createdAt', 'updatedAt', 'description', 'capacity', 'price']
         }
     })
-    if (!events.length) {
+    if (!group) {
         const err = new Error("Group couldn't be found");
         err.status = 404;
         return next(err);

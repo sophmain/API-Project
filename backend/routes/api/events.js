@@ -148,6 +148,8 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
             status: 'pending'
         }
     })
+    console.log(group)
+    console.log(isMember)
     //check if they are a member of the group hosting this event
     if (!isMember || isMember.status == 'pending') {
         const err = new Error('Must be a member of the group to attend this event')
