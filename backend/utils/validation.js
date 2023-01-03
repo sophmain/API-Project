@@ -1,6 +1,7 @@
 // backend/utils/validation.js
 const { validationResult } = require('express-validator');
 const { check } = require('express-validator');
+const { query } = require('express-validator/check');
 // middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
 //validation check to create a group
@@ -49,7 +50,27 @@ const dateValidateEvent = async (req, res, next) => {
   }
   next()
 }
-
+const validateQuery = [
+    query('page')
+        .custom((page, {req}) => page >=1)
+        .withMessage("Page must be greater than or equal to 1"),
+    query('size')
+        .custom((size, {req}) => size >=1)
+        .withMessage("Size must be greater than or equal to 1"),
+    query('name')
+        .optional()
+        .isAlpha()
+        .withMessage("Name must be a string"),
+    query('type')
+        .optional()
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    query('startDate')
+        .optional()
+        .isDate()
+        .withMessage("Start date must be a valid datetime"),
+    handleValidationErrors
+]
 const validateSignup = [
     check('firstName')
         .exists({checkFalsy: true})
@@ -163,5 +184,5 @@ const validateGroup = [
 ];
 
 module.exports = {
-  handleValidationErrors, dateValidateEvent, validateSignup, validateEvent, validateVenue, validateGroup, validateLogin
+  handleValidationErrors, dateValidateEvent, validateQuery, validateSignup, validateEvent, validateVenue, validateGroup, validateLogin
 };
