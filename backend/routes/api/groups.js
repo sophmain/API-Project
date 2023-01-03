@@ -58,15 +58,6 @@ router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, v
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
     const event = await Group.findByPk(groupId)
 
-    //date formatting
-    // console.log('DATE',startDate)
-    // let dateTime = startDate.split(" ")
-    // let dateValues = dateTime[0].split("-")
-    // let timeValues = dateTime[1]
-    // const startDateFormatted = dateValues[1] + '/' + dateValues[2] + '/' + dateValues[0] + ' ' + timeValues
-    // let startDate2 = new Date(startDateFormatted)
-    // console.log(startDateFormatted)
-    // console.log(startDate2)
     const newEvent = await event.createEvent({
         venueId,
         name,

@@ -52,19 +52,10 @@ const dateValidateEvent = async (req, res, next) => {
 }
 const validateQuery = [
     query('page')
-<<<<<<< HEAD
-        .optional()
-        .custom((page, {req}) => page >=1)
-        .withMessage("Page must be greater than or equal to 1"),
-    query('size')
-        .optional()
-        .custom((size, {req}) => size >=1)
-=======
         .custom((page) => page >=1)
         .withMessage("Page must be greater than or equal to 1"),
     query('size')
         .custom((size) => size >=1)
->>>>>>> eb784213ddc679e700c9387e60877c7bf36eba70
         .withMessage("Size must be greater than or equal to 1"),
     query('name')
         .optional()
