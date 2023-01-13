@@ -34,10 +34,10 @@ router.delete('/', (_req, res) => {
     return res.json({ message: 'success' });
 });
 
-// Restore session user
-router.get('/', restoreUser, requireAuth, (req, res) => {
+// Restore session user- removed requireauth
+router.get('/', restoreUser, (req, res) => {
     const { user } = req;
-    console.log(user)
+
     if (user) {
         return res.json({
             user: user.toSafeObject()
