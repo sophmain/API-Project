@@ -387,7 +387,7 @@ router.get('/', validateQuery, async (req, res, next) => {
 
     eventsList.forEach(event => {
         let count = 0;
-        console.log(event)
+
         event.Attendances.forEach(user => {
             if (user.status == 'attending') {
                 count++
