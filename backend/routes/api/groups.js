@@ -68,7 +68,7 @@ router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, v
         startDate,
         endDate,
     })
-    console.log(newEvent)
+
 
     const findNewEvent = await Event.findByPk(newEvent.id, {
         attributes: {
@@ -299,7 +299,7 @@ router.get('/:groupId/members', async (req, res, next) => {
             }
         })
         const notPendingObj = { "Members": notPending }
-        console.log(notPending)
+
         res.json(notPendingObj)
     }
 })
@@ -343,7 +343,7 @@ router.get('/current', requireAuth, async (req, res) => {
     groupsList.forEach(group => {
         let count = 0;
         group.Memberships.forEach(member => {
-            console.log(member)
+
             if (member.status == 'member') {
                 count++
                 group.numMembers = count
@@ -354,7 +354,7 @@ router.get('/current', requireAuth, async (req, res) => {
         }
 
         group.GroupImages.forEach(image => {
-            //console.log('groupid', group.id, image.groupId)
+
             if (image.groupId == group.id && image.preview == true) {
                 group.previewImage = image.url
             }
@@ -453,7 +453,7 @@ router.get('/', async (req, res) => {
         }
 
         group.GroupImages.forEach(image => {
-            //console.log('groupid', group.id, image.groupId)
+
             if (image.groupId == group.id && image.preview == true) {
                 group.previewImage = image.url
             }

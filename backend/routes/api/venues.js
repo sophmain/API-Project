@@ -10,7 +10,7 @@ const router = express.Router();
 // const authorizeVenueEdit = async (req, res, next) => {
 //     const {venueId} = req.params
 //     const venues = await Venue.findByPk(venueId)
-// console.log('VENUES', venues)
+
 //     const groups = await Group.findAll({
 //         where: {
 //             id: venues.groupId
@@ -22,7 +22,6 @@ const router = express.Router();
 //             }
 //         },
 //     })
-//     console.log(groups)
 // }
 
 //PUT edit a venue specified by its id
