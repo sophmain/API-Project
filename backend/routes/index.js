@@ -36,13 +36,13 @@ if (process.env.NODE_ENV !== 'production') {
 	});
   }
 // do i need this?
-router.get("/api/csrf/restore", (req, res) => {
-	const csrfToken = req.csrfToken();
-	res.cookie("XSRF-TOKEN", csrfToken);
-	res.status(200).json({
-		"XSRF-Token": csrfToken,
-	});
-});
+// router.get("/api/csrf/restore", (req, res) => {
+// 	const csrfToken = req.csrfToken();
+// 	res.cookie("XSRF-TOKEN", csrfToken);
+// 	res.status(200).json({
+// 		"XSRF-Token": csrfToken,
+// 	});
+// });
 
 
 module.exports = router;

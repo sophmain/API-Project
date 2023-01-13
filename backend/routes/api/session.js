@@ -45,10 +45,20 @@ router.get('/', restoreUser, (req, res) => {
     } else return res.json({ user: null });
 });
 
-//Log in
+//Log in-signup
 router.post('/', validateLogin, async (req, res, next) => {
     const { credential, password } = req.body;
-
+    // const userExist = await User.findOne({
+    //     where: {
+    //         email: credential
+    //     }
+    // })
+    // if (userExist){
+    //     const err = new Error("User already exists")
+    //     err.status = 403
+    //     err.errors = ["User with that email already exists"]
+    //     return next(err)
+    // }
     const user = await User.login({ credential, password});
 
     if (!user) {
