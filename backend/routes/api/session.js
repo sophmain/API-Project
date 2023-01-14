@@ -7,27 +7,6 @@ const router = express.Router();
 
 const { validateLogin } = require('../../utils/validation');
 
-// Sign up
-// router.post('/', async (req, res, next) => {
-//     const { credential, password } = req.body;
-
-//     const user = await User.login({ credential, password });
-
-//     if (!user) {
-//         const err = new Error('Login failed');
-//         err.status = 401;
-//         err.title = 'Login failed';
-//         err.errors = ['The provided credentials were invalid.'];
-//         return next(err);
-//     }
-
-//     await setTokenCookie(res, user);
-
-//     return res.json({
-//         user: user
-//     });
-// });
-
 // Log out
 router.delete('/', (_req, res) => {
     res.clearCookie('token');
@@ -48,11 +27,24 @@ router.get('/', restoreUser, (req, res) => {
 //Log in-signup
 router.post('/', validateLogin, async (req, res, next) => {
     const { credential, password } = req.body;
-    // const userExist = await User.findOne({
-    //     where: {
-    //         email: credential
+
+    // const users = await User.findAll()
+
+
+    // users.forEach(user => {
+    //     if (credential === user.username){
+    //         const err = new Error("User with that username already exists")
+    //         err.status = 403
+    //         err.message = "User already exists"
+    //         next(err)
     //     }
-    // })
+    //     if (credential === user.email){
+    //         const err = newError("User with that email already exists")
+    //         err.status = 403
+    //         err.message = "User already exists"
+    //         next(err)
+    //     }
+    // });
     // if (userExist){
     //     const err = new Error("User already exists")
     //     err.status = 403
