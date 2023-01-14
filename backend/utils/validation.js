@@ -28,13 +28,6 @@ const dateValidateEvent = async (req, res, next) => {
   const { startDate, endDate } = req.body
 
    const currentDate = new Date()
-//   const year = currentDate.getFullYear()
-//   const day = currentDate.getDate()
-//   const month = currentDate.getMonth() + 1
-//   const hours = currentDate.getHours()
-//   const min = currentDate.getMinutes()
-//   const seconds = currentDate.getSeconds()
-//   let currentDateString = `${year}-${month}-${day} ${hours}:${min}:${seconds}`
 
   if (new Date(startDate) < currentDate) {
       const err = new Error("Start date must be in the future")
