@@ -5,7 +5,8 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupsIndex from "./components/GroupsIndex";
 import GroupDetails from "./components/GroupDetails";
-import CreateGroupForm from "./components/CreateGroupForm"
+import CreateGroupModal from "./components/CreateGroupModal"
+import OpenModalButton from "./components/OpenModalButton";
 
 
 function App() {
@@ -22,7 +23,10 @@ function App() {
         <Switch>
           <Route exact path={'/groups'}>
             <GroupsIndex/>
-            <CreateGroupForm />
+            <OpenModalButton
+              buttonText = "Create a group"
+              modalComponent={<CreateGroupModal />}
+            />
           </Route>
           <Route exact path = {'/groups/:groupId'}>
             <GroupDetails/>
