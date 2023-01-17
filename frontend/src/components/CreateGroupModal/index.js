@@ -7,6 +7,13 @@ import { useModal } from "../../context/Modal";
 const CreateGroupForm = () => {
     const types = ['Online', 'In person']
 
+    const states = ['AL','AK','AZ','AR','CA','CO','CT',
+    'DE','FL','GA','HI','ID','IL','IN','IA','KS','KY',
+    'LA','ME','MD','MA','MI','MN','MS','MO','MT','NE',
+    'NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR',
+    'PA','RI','SC','SD','TN','TX','UT','VT','VA','WA',
+    'WV','WI','WY']
+
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const history = useHistory();
@@ -15,37 +22,48 @@ const CreateGroupForm = () => {
     const [type, setType] = useState(types[0])
     const [isprivate, setIsPrivate] = useState(true)
     const [city, setCity] = useState('')
-    const [state, setState] = useState('')
+    const [state, setState] = useState(states[0])
+    const [errors, setErrors] = useState([])
 
-    //const updateName = (e) => setName(e.target.value)
-    //const updateAbout = (e) => setName(e.target.value)
-    //const updateType = (e) => setName(e.target.value)
-    const updateIsPrivate = (e) => setName(e.target.value)
-    const updateCity = (e) => setName(e.target.value)
-    const updateState = (e) => setName(e.target.value)
+    let createdGroup = useSelector(state => state.groups.allGroups)
+    console.log('newgroup', createdGroup)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors([]);
 
         const payload = {
+            //id,
             name,
             about,
             type,
             isprivate,
             city,
-            state
+            state,
+            //img - second route to create the image
         }
 
-        let createdGroup = await dispatch(thunkCreateGroup(payload))
+        return dispatch(thunkCreateGroup(payload))
+            .then(closeModal)
+            .then(history.push(`/groups`))
+            .catch(
+                async (res) => {
+                  const data = await res.json();
+                  console.log('data', data)
+                  if (data && data.errors) setErrors(data.errors);
+                }
+              );
 
-        if (createdGroup) {
-            history.push(`/groups/${createdGroup.id}`)
-        }
     }
 
     return (
         <div className='new-group-form-holder'>
+            <h1>Create a group</h1>
             <form className="create-group-form" onSubmit={handleSubmit}>
+            <ul>
+            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+            </ul>
                 <label>
                     Name:
                     <input
@@ -64,7 +82,7 @@ const CreateGroupForm = () => {
                         placeholder='Please write at least 50 characters'
                         name="about"
                         value={about}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setAbout(e.target.value)}
                     />
                 </label>
                 <label>
@@ -95,11 +113,37 @@ const CreateGroupForm = () => {
                         onChange={(e) => setIsPrivate(e.target.checked)}
                     />
                 </label>
+                <label>
+                    City:
+                    <input
+                        id="city"
+                        type="text"
+                        name="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />
+                </label>
+                <label>
+                    State:
+                    <select
+                        id="state"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                    >
+                        {states.map(state => (
+                            <option
+                                key={state}
+                                value={state}
+                            >
+                                {state}
+                            </option>
+                        ))}
+                    </select>
+                </label>
                 <button type="submit">Submit</button>
             </form>
         </div>
     )
-
 }
 
 export default CreateGroupForm;
