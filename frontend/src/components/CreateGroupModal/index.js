@@ -23,10 +23,10 @@ const CreateGroupForm = () => {
     const [isprivate, setIsPrivate] = useState(true)
     const [city, setCity] = useState('')
     const [state, setState] = useState(states[0])
+    const [url, setUrl] = useState("")
     const [errors, setErrors] = useState([])
 
-    let createdGroup = useSelector(state => state.groups.allGroups)
-    console.log('newgroup', createdGroup)
+
 
 
     const handleSubmit = async (e) => {
@@ -38,22 +38,39 @@ const CreateGroupForm = () => {
             name,
             about,
             type,
-            isprivate,
+            private: isprivate,
             city,
             state,
             //img - second route to create the image
         }
+        const image = {
+            url,
+            preview: true
+        }
 
-        return dispatch(thunkCreateGroup(payload))
-            .then(closeModal)
+        return dispatch(thunkCreateGroup(payload, image))
+            .then(() => closeModal)
             .then(history.push(`/groups`))
             .catch(
                 async (res) => {
                   const data = await res.json();
-                  console.log('data', data)
                   if (data && data.errors) setErrors(data.errors);
                 }
               );
+
+        // let createdGroup = await dispatch(thunkCreateGroup(payload))
+        // try {
+        //     if (createdGroup) {
+        //         closeModal()
+        //         history.push(`/groups/${createdGroup.id}`)
+        //     }
+        // } catch {
+        //     async (res) => {
+        //         const data = await res.json();
+        //         console.log('data', data)
+        //         if (data && data.errors) setErrors(data.errors);
+        //     }
+        // }
 
     }
 
@@ -139,6 +156,17 @@ const CreateGroupForm = () => {
                             </option>
                         ))}
                     </select>
+                </label>
+                <label>
+                    Add image:
+                    <input
+                        id="url"
+                        placeholder="image URL"
+                        value ={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        >
+
+                    </input>
                 </label>
                 <button type="submit">Submit</button>
             </form>

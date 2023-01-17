@@ -13,14 +13,22 @@ const GroupsIndex = () => {
     const groupsObj = useSelector(state => state.groups.allGroups)
     const groups = Object.values(groupsObj)
 
+
     if (!groups) return null;
 
     return (
         <div>
             <ul>
-                {
-                    groups.map(group => {
-                        return <NavLink to= {`/groups/${group.id}`} key = {group.id}> {group.name} </NavLink>
+                {groups.map(group => {
+                        return (
+                        <div className='group-card'>
+                            <NavLink to= {`/groups/${group.id}`} key = {group.id}>
+                            <img src={group.previewImage} className= 'card-image' />
+                            {group.name}
+                        </NavLink>
+                        </div>
+
+                        )
                     })
                 }
             </ul>

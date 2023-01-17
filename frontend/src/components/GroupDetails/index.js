@@ -1,16 +1,39 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { thunkGetGroupDetails } from '../../store/groups';
+import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
+
 
 
 const GroupDetails = () => {
     const { groupId } = useParams()
     const dispatch = useDispatch()
+    const history = useHistory()
+    const [errors, setErrors] = useState([])
+
+
 
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
-      }, [dispatch])
+      }, [])
+
+      const deleteGroup = (e) => {
+        e.preventDefault()
+        dispatch(thunkDeleteGroup(+groupId))
+
+        .catch(
+            async (res) => {
+              const data = await res.json();
+              console.log('data', data)
+              if (data && data.errors) setErrors(data.errors);
+              console.log('errors', errors)
+            }
+          )
+          .then(history.push(`/groups`))
+
+      }
+      const user = useSelector(state => state.session.user)
+      console.log('id', user.id)
 
       const group = useSelector(state => state.groups.singleGroup)
       if (!group) return null;
@@ -30,6 +53,17 @@ const GroupDetails = () => {
             <div className = 'upcoming-events'>
                 <h2>Upcoming events</h2>
                 <button>See all</button>
+            </div>
+            {/* {function deleteGroup (group) {
+                if (group.organizerId == user.id)
+            }} */}
+            <ul>
+            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+            </ul>
+            <div className='delete-button'>
+
+                <button onClick={deleteGroup}>
+                Delete this group</button>
             </div>
         </div>
       )
