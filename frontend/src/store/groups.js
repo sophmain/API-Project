@@ -4,6 +4,7 @@ import { useParams } from 'react'
 const LOAD_GROUPS = "groups/LOAD_GROUPS"
 const LOAD_GROUPDETAILS = "groups/LOAD_GROUPDETAILS"
 const CREATE_GROUP = "groups/CREATE_GROUP"
+const DELETE_GROUP = "groups/DELETE_GROUP"
 
 
 const actionLoad = (groups) => ({
@@ -16,9 +17,15 @@ const actionGroupDetails = (group) => ({
     group
 })
 
-const actionCreate = (newgroup) => ({
+const actionCreate = (newgroup, newImage) => ({
     type: CREATE_GROUP,
-    newgroup
+    newgroup,
+    newImage
+})
+
+const actionDelete = (id) => ({
+    type: DELETE_GROUP,
+    id
 })
 
 export const thunkGetGroups = () => async (dispatch) => {
@@ -34,13 +41,12 @@ export const thunkGetGroupDetails = (id) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${id}`)
     if (response.ok) {
         const group = await response.json()
-        console.log('groupdetails group', group)
         dispatch(actionGroupDetails(group))
         return group
     }
 }
 
-export const thunkCreateGroup = (payload) => async (dispatch) => {
+export const thunkCreateGroup = (payload, image) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json'},
@@ -48,10 +54,32 @@ export const thunkCreateGroup = (payload) => async (dispatch) => {
     })
     if(response.ok) {
         const newGroup = await response.json()
-        dispatch(actionCreate(newGroup))
-        return newGroup
+        const newImage = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(image)
+        })
+        if (newImage.ok){
+            const imageRes = await newImage.json()
+            console.log('image', imageRes)
+            dispatch(actionCreate(newGroup, imageRes))
+        }
+        return newGroup, newImage
     }
 }
+
+export const thunkDeleteGroup = (id) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${id}`, {
+        method: "DELETE",
+        headers: {'Content-Type': 'application/json'}
+    }
+    )
+    if (response.ok) {
+        const group = await response.json()
+        dispatch(actionDelete(group.id))
+    }
+}
+
 
 // normalize the store object
 const normalize = (arr) => {
@@ -71,12 +99,18 @@ const groupsReducer = (state = initialState, action) => {
         case LOAD_GROUPDETAILS:
             let newState2 = {...state}
             newState2.singleGroup = action.group
-            return newState
+            return newState2
         case CREATE_GROUP:
-            if(!state[action.newgroup.id]){
-            let newState3 = {...state, [action.newgroup.id]: action.newgroup}
+            if(!state.allGroups[action.newgroup.id]){
+                let newState3= {...state}
+                newState3.allGroups[action.newgroup.id]= action.newgroup
+                newState3.allGroups[action.newgroup.id]['previewImage'] = action.newImage.url
             return newState3
             }
+        case DELETE_GROUP:
+            let newState4 = {...state}
+            delete newState4[action.id]
+            return newState4
         default:
             return state
     }
