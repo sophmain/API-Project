@@ -85,7 +85,7 @@ h6 {
     font-weight: lighter;
 
 }
-h2 {
+.groups-header {
     color: rgb(0, 130, 148);
     padding: 2px;
     border-bottom: 4px solid rgb(0, 130, 148);
