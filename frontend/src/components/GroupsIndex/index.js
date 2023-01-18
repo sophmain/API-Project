@@ -19,7 +19,7 @@ const GroupsIndex = () => {
 
     return (
         <div className='groups-container'>
-            <h2>Groups</h2>
+            <h2 className="groups-header">Groups</h2>
             <h3>Group suggestions for you</h3>
             <div className = 'all-groups'>
                 <ul>

@@ -7,6 +7,7 @@ import GroupsIndex from "./components/GroupsIndex";
 import GroupDetails from "./components/GroupDetails";
 import CreateGroupModal from "./components/CreateGroupModal"
 import OpenModalButton from "./components/OpenModalButton";
+import HomePage from "./components/HomePage"
 
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path = {'/'}>
+            <HomePage />
+          </Route>
           <Route exact path={'/groups'}>
             <GroupsIndex/>
             <OpenModalButton
