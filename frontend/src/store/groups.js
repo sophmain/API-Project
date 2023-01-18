@@ -60,6 +60,10 @@ export const thunkCreateGroup = (payload, image) => async (dispatch) => {
     })
     if(response.ok) {
         const newGroup = await response.json()
+
+        console.log('newgroup', newGroup)
+
+
         const newImage = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -67,7 +71,7 @@ export const thunkCreateGroup = (payload, image) => async (dispatch) => {
         })
         if (newImage.ok){
             const imageRes = await newImage.json()
-            console.log('image', imageRes)
+            console.log('image array', imageRes)
             dispatch(actionCreate(newGroup, imageRes))
         }
         return newGroup
@@ -121,9 +125,7 @@ const groupsReducer = (state = initialState, action) => {
         case CREATE_GROUP:
             newState = Object.assign({}, state)
             newState.allGroups = {...newState.allGroups, [action.newgroup.id]: action.newgroup}
-            console.log('new', action.newgroup)
-            //newState.allGroups = {...newState.allGroups, [action.newgroup.id]['previewImage']: action.newImage.url}
-            newState.singleGroup = {...newState.singleGroup, ...action.newgroup, GroupImages: action.newImage }
+            newState.singleGroup = {...newState.singleGroup, ...action.newgroup, GroupImages: [action.newImage] }
             return newState
         case DELETE_GROUP:
             newState = Object.assign({}, state)
