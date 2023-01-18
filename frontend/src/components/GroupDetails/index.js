@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, NavLink, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
 
@@ -15,58 +15,63 @@ const GroupDetails = () => {
 
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
-      }, [])
+    }, [dispatch, groupId])
 
-      const deleteGroup = (e) => {
+    const deleteGroup = (e) => {
         e.preventDefault()
         dispatch(thunkDeleteGroup(+groupId))
 
-        .catch(
-            async (res) => {
-              const data = await res.json();
-              console.log('data', data)
-              if (data && data.errors) setErrors(data.errors);
-              console.log('errors', errors)
-            }
-          )
-          .then(history.push(`/groups`))
+            .catch(
+                async (res) => {
+                    const data = await res.json();
+                    if (data && data.errors) setErrors(data.errors);
+                }
+            )
+            .then(history.push(`/groups`))
 
-      }
-      const user = useSelector(state => state.session.user)
-      console.log('id', user.id)
+    }
+    const user = useSelector(state => state.session.user)
 
-      const group = useSelector(state => state.groups.singleGroup)
-      if (!group) return null;
+    const group = useSelector(state => state.groups.singleGroup)
 
-      return (
+    if (!group) return null;
+
+    let deleteButton;
+    if (group.organizerId == user.id) {
+        deleteButton = (
+            <div className='delete-button'>
+
+            <button onClick={deleteGroup}>
+                Delete this group</button>
+            </div>
+        );
+    } else {
+        deleteButton = null
+    };
+
+    return (
         <div className='group-details'>
-            <div className = 'header'>
+            <div className='header'>
                 <h1>{group.name}</h1>
                 <h3>{group.city}, {group.state}</h3>
                 <h3>{group.numMembers} members</h3>
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
             </div>
-            <div className = 'group-description'>
+            <div className='group-description'>
                 <h2>What we're about</h2>
                 <p> {group.about} </p>
             </div>
-            <div className = 'upcoming-events'>
+            <div className='upcoming-events'>
                 <h2>Upcoming events</h2>
                 <button>See all</button>
             </div>
-            {/* {function deleteGroup (group) {
-                if (group.organizerId == user.id)
-            }} */}
             <ul>
-            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                {errors.map((error, idx) => <li key={idx}>{error}</li>)}
             </ul>
-            <div className='delete-button'>
-
-                <button onClick={deleteGroup}>
-                Delete this group</button>
-            </div>
+            {deleteButton}
         </div>
-      )
+    )
 }
+
 
 export default GroupDetails
