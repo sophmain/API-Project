@@ -1,10 +1,10 @@
 import { csrfFetch } from './csrf';
-import { useParams } from 'react'
 
 const LOAD_GROUPS = "groups/LOAD_GROUPS"
 const LOAD_GROUPDETAILS = "groups/LOAD_GROUPDETAILS"
 const CREATE_GROUP = "groups/CREATE_GROUP"
 const DELETE_GROUP = "groups/DELETE_GROUP"
+const EDIT_GROUP = "groups/EDIT_GROUP"
 
 
 const actionLoad = (groups) => ({
@@ -28,10 +28,16 @@ const actionDelete = (id) => ({
     id
 })
 
+const actionEdit = (group) => ({
+    type: EDIT_GROUP,
+    group
+})
+
 export const thunkGetGroups = () => async (dispatch) => {
     const response = await csrfFetch('/api/groups')
     if (response.ok) {
         const groups = await response.json()
+        console.log('groups', groups.Groups)
         dispatch(actionLoad(groups))
         return groups
     }
@@ -64,22 +70,33 @@ export const thunkCreateGroup = (payload, image) => async (dispatch) => {
             console.log('image', imageRes)
             dispatch(actionCreate(newGroup, imageRes))
         }
-        return newGroup, newImage
+        return newGroup
     }
 }
 
 export const thunkDeleteGroup = (id) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${id}`, {
-        method: "DELETE",
-        headers: {'Content-Type': 'application/json'}
-    }
-    )
+        method: "DELETE"
+    })
     if (response.ok) {
-        const group = await response.json()
-        dispatch(actionDelete(group.id))
+        console.log('response', response)
+        const deleteMessage = await response.json()
+        dispatch(actionDelete(id))
+        return deleteMessage
     }
 }
 
+export const thunkEditGroup = (group, id) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${id}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(group)
+    })
+    if (response.ok) {
+        const editedGroup = await response.json()
+        dispatch(actionEdit(editedGroup))
+    }
+}
 
 // normalize the store object
 const normalize = (arr) => {
@@ -88,29 +105,37 @@ const normalize = (arr) => {
     return resObj
 }
 
-const initialState = { allGroups: {}}
+const initialState = {}
 
 const groupsReducer = (state = initialState, action) => {
+    let newState;
     switch(action.type) {
         case LOAD_GROUPS:
-            let newState = {...state}
+            newState = Object.assign({}, state)
             newState.allGroups = normalize(action.groups.Groups)
             return newState
         case LOAD_GROUPDETAILS:
-            let newState2 = {...state}
-            newState2.singleGroup = action.group
-            return newState2
+            newState = Object.assign({}, state)
+            newState.singleGroup = action.group
+            return newState
         case CREATE_GROUP:
-            if(!state.allGroups[action.newgroup.id]){
-                let newState3= {...state}
-                newState3.allGroups[action.newgroup.id]= action.newgroup
-                newState3.allGroups[action.newgroup.id]['previewImage'] = action.newImage.url
-            return newState3
-            }
+            newState = Object.assign({}, state)
+            newState.allGroups = {...newState.allGroups, [action.newgroup.id]: action.newgroup}
+            console.log('new', action.newgroup)
+            //newState.allGroups = {...newState.allGroups, [action.newgroup.id]['previewImage']: action.newImage.url}
+            newState.singleGroup = {...newState.singleGroup, ...action.newgroup, GroupImages: action.newImage }
+            return newState
         case DELETE_GROUP:
-            let newState4 = {...state}
-            delete newState4[action.id]
-            return newState4
+            newState = Object.assign({}, state)
+            delete newState.allGroups[action.id]
+            newState.allGroups = {...newState.allGroups}
+            newState.singleGroup = {...newState.singleGroup}
+            return newState
+        case EDIT_GROUP:
+            newState = Object.assign({}, state)
+            newState.allGroups = {...newState.allGroups, [action.group.id]: action.group}
+            newState.singleGroup = {...newState.singleGroup, ...action.group}
+            return newState
         default:
             return state
     }

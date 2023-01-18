@@ -9,13 +9,12 @@ const GroupsIndex = () => {
 
     useEffect(() => {
         dispatch(thunkGetGroups())
-    }, [dispatch])
+    }, [])
+
 
     const groupsObj = useSelector(state => state.groups.allGroups)
+    if (!groupsObj) return null;
     const groups = Object.values(groupsObj)
-
-
-    if (!groups) return null;
 
     return (
         <div className='groups-container'>
@@ -26,9 +25,9 @@ const GroupsIndex = () => {
                     {groups.map(group => {
                             return (
                             <div className='group-card'>
-                                <NavLink to= {`/groups/${group.id}`} key = {group.id} className='group-link'>
+                                <NavLink to= {`/groups/${group.id}`} key = {group.name} className='group-link'>
                                     <img src={group.previewImage} className= 'card-image'
-                                    alt= {"added by group organizer"}/>
+                                    alt= {"group"}/>
                                     <div className="group-text-items">
                                         <h4 className = "group-title">
                                             {group.name}
