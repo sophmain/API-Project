@@ -55,7 +55,6 @@ const CreateGroupForm = () => {
         return dispatch(thunkCreateGroup(payload, image))
             .then((res) => {
                 setNewGroup(res)
-                console.log('res',res)
             })
             .then(closeModal)
             .catch(

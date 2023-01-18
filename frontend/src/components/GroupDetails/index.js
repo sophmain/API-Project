@@ -9,7 +9,7 @@ const GroupDetails = () => {
     const { groupId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
-    const [errors, setErrors] = useState([])
+    //const [errors, setErrors] = useState([])
 
 
 
@@ -21,12 +21,12 @@ const GroupDetails = () => {
         e.preventDefault()
         dispatch(thunkDeleteGroup(+groupId))
 
-            .catch(
-                async (res) => {
-                    const data = await res.json();
-                    if (data && data.errors) setErrors(data.errors);
-                }
-            )
+            // .catch(
+            //     async (res) => {
+            //         const data = await res.json();
+            //         if (data && data.errors) setErrors(data.errors);
+            //     }
+            // )
             .then(history.push(`/groups`))
 
     }
@@ -35,6 +35,10 @@ const GroupDetails = () => {
     const group = useSelector(state => state.groups.singleGroup)
 
     if (!group) return null;
+    if (!group.GroupImages.length) return null;
+
+    const groupImg = group.GroupImages[0].url 
+
 
     let deleteButton;
     if (group.organizerId == user.id) {
@@ -50,7 +54,10 @@ const GroupDetails = () => {
     };
 
     return (
-        <div className='group-details'>
+        <div className='group-details-page'>
+            <div className = 'group-image'>
+                <img src={groupImg} alt="group"></img>
+            </div>
             <div className='header'>
                 <h1>{group.name}</h1>
                 <h3>{group.city}, {group.state}</h3>
@@ -66,7 +73,7 @@ const GroupDetails = () => {
                 <button>See all</button>
             </div>
             <ul>
-                {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                {/* {errors.map((error, idx) => <li key={idx}>{error}</li>)} */}
             </ul>
             {deleteButton}
         </div>
