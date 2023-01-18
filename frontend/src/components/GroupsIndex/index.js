@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { actionLoad, thunkGetGroups } from '../../store/groups'
+import { thunkGetGroups } from '../../store/groups'
 import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react'
+import './groupsindex.css'
 
 const GroupsIndex = () => {
     const dispatch = useDispatch()
@@ -17,21 +18,39 @@ const GroupsIndex = () => {
     if (!groups) return null;
 
     return (
-        <div>
-            <ul>
-                {groups.map(group => {
-                        return (
-                        <div className='group-card'>
-                            <NavLink to= {`/groups/${group.id}`} key = {group.id}>
-                            <img src={group.previewImage} className= 'card-image' />
-                            {group.name}
-                        </NavLink>
-                        </div>
+        <div className='groups-container'>
+            <h2>Groups</h2>
+            <h3>Group suggestions for you</h3>
+            <div className = 'all-groups'>
+                <ul>
+                    {groups.map(group => {
+                            return (
+                            <div className='group-card'>
+                                <NavLink to= {`/groups/${group.id}`} key = {group.id} className='group-link'>
+                                    <img src={group.previewImage} className= 'card-image'
+                                    alt= {"added by group organizer"}/>
+                                    <div className="group-text-items">
+                                        <h4 className = "group-title">
+                                            {group.name}
+                                        </h4>
+                                        <h5 className="group-location">
+                                            {group.city}, {group.state}
+                                        </h5>
+                                        <p className = "group-about">
+                                            {group.about}
+                                        </p>
+                                        <h6>
+                                            {group.numMembers} members - {group.type}
+                                        </h6>
+                                    </div>
+                                </NavLink>
+                            </div>
 
-                        )
-                    })
-                }
-            </ul>
+                            )
+                        })
+                    }
+                </ul>
+            </div>
         </div>
     )
 }
