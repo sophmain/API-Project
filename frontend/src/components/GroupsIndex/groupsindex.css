@@ -1,0 +1,98 @@
+
+.groups-container {
+    display: block;
+    flex-direction: column;
+    max-width: 993px;
+    width: 100%
+
+}
+.all-groups {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.group-card {
+    display: flex;
+    flex-direction: row;
+    width: 700px;
+    height: 150px;
+    margin: 30px;
+}
+.card-image {
+    width: 180px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.group-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-decoration: none;
+    position: static;
+    top: 0px;
+    border-top: solid lightgray 1px;
+    padding: 12px 0px;
+}
+
+.group-text-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+    width: 500px;
+    height: 100%;
+
+}
+
+h3 {
+    color: rgb(147, 147, 147);
+    font-weight: lighter;
+}
+h4 {
+    margin: 0px 0px 2px 0px;;
+    font-weight: 600px;
+    color: black;
+    font-size: 20px;
+}
+h5 {
+    margin: 0;
+    text-transform: uppercase;
+    color: rgb(135 116 87);
+    line-height: 1.25rem;
+    font-size: 14px;
+    padding: 0px 0px 18px;
+    font-weight: bold;
+}
+p {
+    font-weight: normal;
+    margin: 0;
+    color:rgb(117 117 117);
+    font-size: 14px;
+    line-height: 1.25rem;
+    padding: 0px 0px 4px;
+    text-overflow: ellipsis;
+}
+h6 {
+    color: rgb(117, 117, 117);
+    font-size: 14px;
+    line-height: 1.25rem;
+    font-weight: lighter;
+
+}
+h2 {
+    color: rgb(0, 130, 148);
+    padding: 2px;
+    border-bottom: 4px solid rgb(0, 130, 148);
+    width: 90px;
+}
+
+ul {
+    margin: 0px;
+    padding: 0px;
+}

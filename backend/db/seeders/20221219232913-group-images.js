@@ -23,17 +23,17 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        url: 'fakeurl1',
+        url: 'https://urbanoutdoors.com/wp-content/uploads/2019/08/34208529984_0062a52df1_k.jpg',
         preview: true
       },
       {
         groupId: 2,
-        url: 'fakeurl2',
-        preview: false
+        url: 'https://global-uploads.webflow.com/5e2b8863ba7fff8df8949888/6165a3bff4efbdd9e5dc8cd3_bam-martin-limelight-sbu-beats-basic.jpg',
+        preview: true
       },
       {
         groupId: 3,
-        url: 'fakeurl3',
+        url: 'https://www.hotelmousai.com/blog/wp-content/uploads/2021/12/Top-10-Traditional-Foods-in-Italy-1140x694.jpg',
         preview: true
       }
     ])
