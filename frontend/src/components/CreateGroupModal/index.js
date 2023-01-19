@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { thunkCreateGroup } from '../../store/groups';
 import { useModal } from "../../context/Modal";
@@ -7,12 +7,12 @@ import { useModal } from "../../context/Modal";
 const CreateGroupForm = () => {
     const types = ['Online', 'In person']
 
-    const states = ['AL','AK','AZ','AR','CA','CO','CT',
-    'DE','FL','GA','HI','ID','IL','IN','IA','KS','KY',
-    'LA','ME','MD','MA','MI','MN','MS','MO','MT','NE',
-    'NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR',
-    'PA','RI','SC','SD','TN','TX','UT','VT','VA','WA',
-    'WV','WI','WY']
+    const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT',
+        'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY',
+        'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE',
+        'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR',
+        'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA',
+        'WV', 'WI', 'WY']
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
@@ -25,12 +25,7 @@ const CreateGroupForm = () => {
     const [state, setState] = useState(states[0])
     const [url, setUrl] = useState("")
     const [errors, setErrors] = useState([])
-    const [newGroup, setNewGroup] = useState()
-
-    //const  user  = useSelector(state => state.sesson)
-
-    // const createdGroup = useSelector(state => state.allGroups[payload.id])
-    // console.log('created', createdGroup)
+    const [createdGroup, setCreatedGroup] = useState()
 
 
     const handleSubmit = async (e) => {
@@ -46,37 +41,37 @@ const CreateGroupForm = () => {
             state,
         }
 
-
         const image = {
             url,
             preview: true
         }
 
         return dispatch(thunkCreateGroup(payload, image))
-            .then((res) => {
-                setNewGroup(res)
+            //wait for group to be returned from dispatch, use useEffect to rerender to be able to grab id from created group
+            .then((group) => {
+                setCreatedGroup(group)
             })
             .then(closeModal)
             .catch(
                 async (res) => {
-                  const data = await res.json();
-                  if (data && data.errors) setErrors(data.errors);
+                    const data = await res.json();
+                    if (data && data.errors) setErrors(data.errors);
                 });
 
     }
-    useEffect(()=> {
-        if (newGroup) {
-            history.push(`/groups/${newGroup.id}`)
+    useEffect(() => {
+        if (createdGroup) {
+            history.push(`/groups/${createdGroup.id}`)
         }
-    }, [newGroup])
+    }, [createdGroup])
 
     return (
         <div className='new-group-form-holder'>
             <h1>Create a group</h1>
             <form className="create-group-form" onSubmit={handleSubmit}>
-            <ul>
-            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-            </ul>
+                <ul>
+                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                </ul>
                 <label>
                     Name:
                     <input
@@ -121,7 +116,7 @@ const CreateGroupForm = () => {
                         id="checkbox"
                         type="checkbox"
                         name="isprivate"
-                        checked = {isprivate}
+                        checked={isprivate}
                         value={isprivate}
                         onChange={(e) => setIsPrivate(e.target.checked)}
                     />
@@ -158,9 +153,9 @@ const CreateGroupForm = () => {
                     <input
                         id="url"
                         placeholder="image URL"
-                        value ={url}
+                        value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        >
+                    >
 
                     </input>
                 </label>

@@ -37,7 +37,6 @@ export const thunkGetGroups = () => async (dispatch) => {
     const response = await csrfFetch('/api/groups')
     if (response.ok) {
         const groups = await response.json()
-        console.log('groups', groups.Groups)
         dispatch(actionLoad(groups))
         return groups
     }
@@ -60,10 +59,6 @@ export const thunkCreateGroup = (payload, image) => async (dispatch) => {
     })
     if(response.ok) {
         const newGroup = await response.json()
-
-        console.log('newgroup', newGroup)
-
-
         const newImage = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -71,7 +66,6 @@ export const thunkCreateGroup = (payload, image) => async (dispatch) => {
         })
         if (newImage.ok){
             const imageRes = await newImage.json()
-            console.log('image array', imageRes)
             dispatch(actionCreate(newGroup, imageRes))
         }
         return newGroup
@@ -83,7 +77,6 @@ export const thunkDeleteGroup = (id) => async (dispatch) => {
         method: "DELETE"
     })
     if (response.ok) {
-        console.log('response', response)
         const deleteMessage = await response.json()
         dispatch(actionDelete(id))
         return deleteMessage
@@ -102,7 +95,7 @@ export const thunkEditGroup = (group, id) => async (dispatch) => {
     }
 }
 
-// normalize the store object
+// normalize the store object for arr
 const normalize = (arr) => {
     const resObj = {}
     arr.forEach((ele) => {resObj[ele.id] = ele})
@@ -115,26 +108,25 @@ const groupsReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
         case LOAD_GROUPS:
-            newState = Object.assign({}, state)
+            newState = {...state}
             newState.allGroups = normalize(action.groups.Groups)
             return newState
         case LOAD_GROUPDETAILS:
-            newState = Object.assign({}, state)
+            newState = {...state}
             newState.singleGroup = action.group
             return newState
         case CREATE_GROUP:
-            newState = Object.assign({}, state)
+            newState = {...state}
             newState.allGroups = {...newState.allGroups, [action.newgroup.id]: action.newgroup}
             newState.singleGroup = {...newState.singleGroup, ...action.newgroup, GroupImages: [action.newImage] }
             return newState
         case DELETE_GROUP:
-            newState = Object.assign({}, state)
+            newState = {...state}
             delete newState.allGroups[action.id]
             newState.allGroups = {...newState.allGroups}
-            newState.singleGroup = {...newState.singleGroup}
             return newState
         case EDIT_GROUP:
-            newState = Object.assign({}, state)
+            newState = {...state}
             newState.allGroups = {...newState.allGroups, [action.group.id]: action.group}
             newState.singleGroup = {...newState.singleGroup, ...action.group}
             return newState
