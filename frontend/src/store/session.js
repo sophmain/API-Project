@@ -55,7 +55,6 @@ const sessionReducer = (state = initialState, action) => {
     case SET_USER:
       newState = Object.assign({}, state);
       newState.user = action.payload;
-      //console.log('hits reducer')
       return newState;
     case REMOVE_USER:
       newState = Object.assign({}, state);

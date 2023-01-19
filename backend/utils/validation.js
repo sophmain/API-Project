@@ -33,12 +33,14 @@ const dateValidateEvent = async (req, res, next) => {
       const err = new Error("Start date must be in the future")
       err.status = 400
       err.title = 'Validation error'
+      err.errors = ["Start date must be in the future"]
       next(err)
   }
   if (endDate < startDate) {
       const err = new Error("End date is less than start date")
       err.status = 400
       err.title = 'Validation error'
+      err.errors = ["End date is less than start date"]
       next(err)
   }
   next()
@@ -129,6 +131,7 @@ const validateEvent = [
   check('description')
       .exists({ checkFalsy: true })
       .withMessage("Description is required"),
+
   handleValidationErrors
 ]
 

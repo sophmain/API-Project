@@ -23,17 +23,22 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         eventId: 1,
-        url: 'fakeurl4',
+        url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC7WCH31Rnp5bwmG1HnqIuNY1hffPEY7bjFQ&usqp=CAU',
         preview: true
       },
       {
         eventId: 2,
-        url: 'fakeurl5',
-        preview: false
+        url: 'https://www.starrstudiossalem.com/wp-content/uploads/2018/01/Hip-Hop-5.jpg',
+        preview: true
       },
       {
-        eventId: 2,
-        url: 'fakeurl6',
+        eventId: 3,
+        url: 'https://www.inspiredtaste.net/wp-content/uploads/2019/03/Spaghetti-with-Meat-Sauce-Recipe-1-1200.jpg',
+        preview: true
+      },
+      {
+        eventId: 4,
+        url: 'https://static01.nyt.com/images/2017/04/05/dining/05COOKING-TIRAMISU1/05COOKING-TIRAMISU1-articleLarge.jpg',
         preview: true
       }
     ])

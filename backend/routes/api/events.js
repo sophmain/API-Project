@@ -254,6 +254,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 //GET details of an event specified by its id
 router.get('/:eventId', async (req, res, next) => {
     const { eventId } = req.params
+
     const event = await Event.findByPk(eventId, {
         include: [{
             model: Venue,
@@ -309,7 +310,6 @@ router.get('/:eventId', async (req, res, next) => {
 router.get('/', validateQuery, async (req, res, next) => {
     let { page, size, name, type, startDate } = req.query
 
-
     page = parseInt(page)
     size = parseInt(size)
 
@@ -333,27 +333,31 @@ router.get('/', validateQuery, async (req, res, next) => {
     if (type && type !== ""){
         where.type = type
     }
+    // let date= (new Date('2023-07-01 13:00:00'))
+    // let string = (date).toString()
+    // console.log('string', string)
+    // if (startDate && startDate !== ""){
+    //     try{
+    //         const date = new Date(startDate)
+    //         console.log('date',date)
+    //         const iso = date.toISOString()
+    //         console.log('iso', iso)
+    //         if(iso.slice(iso.length-1) !== 'Z'){
+    //             const err = new Error("Start date must be a valid datetime")
+    //             err.status = 400
+    //             err.title = 'Validation error'
+    //             next(err)
+    //         } else {
+    //             where.startDate = iso
+    //         }
+    //     } catch{
+    //         const err = new Error("Start date must be a valid datetime")
+    //         err.status = 400
+    //         err.title = 'Validation error'
+    //         next(err)
+    //     }
 
-    if (startDate && startDate !== ""){
-        try{
-            const date = new Date(startDate)
-            const iso = date.toISOString()
-            if(iso.slice(iso.length-1) !== 'Z'){
-                const err = new Error("Start date must be a valid datetime")
-                err.status = 400
-                err.title = 'Validation error'
-                next(err)
-            } else {
-                where.startDate = iso
-            }
-        } catch{
-            const err = new Error("Start date must be a valid datetime")
-            err.status = 400
-            err.title = 'Validation error'
-            next(err)
-        }
-
-    }
+    // }
     const events = await Event.findAll({
         where,
         include: [

@@ -17,9 +17,20 @@ const GroupsIndex = () => {
     const groups = Object.values(groupsObj)
 
     return (
-        <div className='groups-container'>
-            <h2 className="groups-header">Groups</h2>
-            <h3>Group suggestions for you</h3>
+        <div className='container'>
+            <div className='events-groups-headers'>
+                <h2 className ="events-header">
+                    <NavLink to={`/events`} className="events-title-link">
+                        Events
+                    </NavLink>
+                </h2>
+                <h2 className="groups-header">
+                    <NavLink to={`/groups`} className="groups-title-link">
+                        Groups
+                    </NavLink>
+                </h2>
+            </div>
+            <h3 className = "suggestions-title">Group suggestions for you</h3>
             <div className = 'all-groups'>
                 <ul>
                     {groups.map(group => {
@@ -38,7 +49,7 @@ const GroupsIndex = () => {
                                         <p className = "group-about">
                                             {group.about}
                                         </p>
-                                        <h6>
+                                        <h6 className = "group-members">
                                             {group.numMembers} members - {group.type}
                                         </h6>
                                     </div>
