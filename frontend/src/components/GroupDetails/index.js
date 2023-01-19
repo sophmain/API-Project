@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
@@ -9,9 +9,6 @@ const GroupDetails = () => {
     const { groupId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
-    //const [errors, setErrors] = useState([])
-
-
 
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
@@ -20,26 +17,21 @@ const GroupDetails = () => {
     const deleteGroup = (e) => {
         e.preventDefault()
         dispatch(thunkDeleteGroup(+groupId))
-
-            // .catch(
-            //     async (res) => {
-            //         const data = await res.json();
-            //         if (data && data.errors) setErrors(data.errors);
-            //     }
-            // )
             .then(history.push(`/groups`))
 
     }
     const user = useSelector(state => state.session.user)
-
     const group = useSelector(state => state.groups.singleGroup)
 
+    //prevents loading a blank page on submit(newstate has to be updated on rerender with this info)
     if (!group) return null;
+    if (!group.Organizer) return null;
     if (!group.GroupImages.length) return null;
 
-    const groupImg = group.GroupImages[0].url 
+    //GroupImages is an array- this takes first image from that array
+    const groupImg = group.GroupImages[0].url
 
-
+    //only show delete button if the user is authorized (owner) to delete that group
     let deleteButton;
     if (group.organizerId == user.id) {
         deleteButton = (
@@ -72,9 +64,6 @@ const GroupDetails = () => {
                 <h2>Upcoming events</h2>
                 <button>See all</button>
             </div>
-            <ul>
-                {/* {errors.map((error, idx) => <li key={idx}>{error}</li>)} */}
-            </ul>
             {deleteButton}
         </div>
     )

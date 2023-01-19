@@ -35,6 +35,11 @@ module.exports = {
         groupId: 3,
         url: 'https://www.hotelmousai.com/blog/wp-content/uploads/2021/12/Top-10-Traditional-Foods-in-Italy-1140x694.jpg',
         preview: true
+      },
+      {
+        groupId: 4,
+        url: 'https://uploads.guidedogs.ie/400x0/filters:quality(60):format(webp)/f/106081/4769x2683/e2dd940bcc/lulu-v-litter-17.jpg',
+        preview: true
       }
     ])
   },

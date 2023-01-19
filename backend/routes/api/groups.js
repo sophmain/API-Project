@@ -56,6 +56,12 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
 router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, validateEvent, async (req, res, next) => {
     const { groupId } = req.params
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+
+    // let newStartDate = startDate
+    // console.log('STARTDATENEW', newStartDate)
+    // let newEndDate = endDate
+
     const event = await Group.findByPk(groupId)
 
     const newEvent = await event.createEvent({
@@ -66,7 +72,7 @@ router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, v
         price,
         description,
         startDate,
-        endDate,
+        endDate
     })
 
 

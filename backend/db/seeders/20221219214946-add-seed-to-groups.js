@@ -43,11 +43,20 @@ module.exports = {
     {
       organizerId: 2,
       name: 'Italian Cooking',
-      about: 'Learn to cook like grandma',
+      about: 'Learn to cook like grandma through a series of multi-level classes.',
       type: 'In person',
       private: true,
       city: 'New York',
       state: 'NY'
+    },
+    {
+      organizerId: 2,
+      name: 'Dog Observing',
+      about: 'Just looking at good doggos. Big dogs and small dogs alike. How cool is that?',
+      type: 'In person',
+      private: false,
+      city: 'Miami',
+      state: 'FL'
     }
    ], {})
   },
