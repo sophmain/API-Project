@@ -7,7 +7,7 @@ import './createeventmodal.css'
 
 
 const CreateEventModal = () => {
-    const types = ['Online', 'In person']
+    const types = ['Online', 'In Person']
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
