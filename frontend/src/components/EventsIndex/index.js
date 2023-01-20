@@ -16,7 +16,9 @@ const EventsIndex = () => {
     const eventsObj = useSelector((state) => state.events.allEvents)
 
     if (!eventsObj) return null;
+
     const events = Object.values(eventsObj)
+
 
     return (
         <div className='events-container'>
@@ -48,9 +50,12 @@ const EventsIndex = () => {
                                         <h4 className="event-title">
                                             {event.name}
                                         </h4>
-                                        <h5 className="event-location">
+                                        {event.Group &&
+                                        (<h5 className="event-location">
+
                                             {event.Group.city}, {event.Group.state}
-                                        </h5>
+                                        </h5>)
+                                            }
                                         <h6>
                                             {event.numAttending} attending - {event.type}
                                         </h6>

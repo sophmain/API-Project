@@ -42,7 +42,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     } else {
         const err = new Error("Must be the organizer or 'co-host' of the Group to delete an image")
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         return next(err)
     }

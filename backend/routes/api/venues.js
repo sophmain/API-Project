@@ -69,7 +69,7 @@ router.put('/:venueId', requireAuth, validateVenue, async (req, res, next) => {
     } else {
         const err = new Error('Venue does not belong to this user')
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         return next(err)
     }
