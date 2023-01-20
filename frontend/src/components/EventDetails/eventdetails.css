@@ -1,0 +1,139 @@
+.event-details-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-header {
+    display: flex;
+    flex-direction: row;
+    align-items:flex-start;
+    justify-content: center;
+    border-bottom: 2px solid rgb(224, 224, 224);
+    width: 100%;
+    padding: 0px 0px 10px 0px
+}
+.event-header-title {
+    width: 980px;
+}
+.event-main-page {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 900px;
+}
+
+.group-hosting {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 24px;
+    margin: 24px;
+    width: 75%;
+}
+
+.group-image-icon {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+
+.image-vs-text {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin: 0px 0px 0px 16px;
+}
+
+.group-availability-icon {
+    color: rgb(147, 147, 147);
+    font-weight: lighter;
+    font-size: 14px;
+    margin: 4px 0px 0px 0px;
+}
+
+.group-name-icon {
+    margin: 0px;
+}
+
+.event-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 280px;
+}
+
+.date-time-event {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 75%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 24px;
+    margin: 0px 24px 24px 24px;
+}
+
+.start-end-times {
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    justify-content: space-between;
+    color: rgb(147, 147, 147);
+    width: 100%;
+}
+.new-date {
+    margin: 0px;
+}
+.event-times {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    font-size: 14px;
+    justify-content: space-around;
+    margin: 0px 0px 20px 20px;
+}
+.event-loc {
+    display: flex;
+    flex-direction: row;
+}
+.fa-location-dot {
+    color: rgb(147, 147, 147);
+}
+.event-location-pin {
+    font-size: 14px;
+    margin: 0px 0px 0px 20px;
+}
+.bottom-nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* position: fixed;
+    bottom: 0px; */
+    margin-right: auto;
+    margin-left: auto;
+    background-color: white;
+    width: 100%
+}
+.left-bottom-bar {
+    display: flex;
+    flex-direction: column;
+}
+.start-date-bottom {
+    color: #212121;
+    font-size: 16px;
+    font-weight: lighter;
+}
+.event-name-bottom {
+    color: #212121;
+    font-size: 16px;
+    font-weight: bold;
+}
+.event-price {
+    font-weight: bold;
+}
+.event-info {
+    width: 700px;
+}

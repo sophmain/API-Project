@@ -3,14 +3,22 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
 import CreateEventModal from '../CreateEventModal';
+import CreateGroupModal from '../CreateGroupModal'
 import OpenModalButton from "../../components/OpenModalButton";
 import EditGroupModal from '../EditGroupModal';
+import './groupdetails.css'
 
 
 const GroupDetails = () => {
     const { groupId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
+
+    // //modal
+    // const [isLoaded, setIsLoaded] = useState(false);
+    // useEffect(() => {
+    //   dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+    // }, [dispatch]);
 
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
@@ -39,8 +47,8 @@ const GroupDetails = () => {
         deleteButton = (
             <div className='delete-button'>
 
-            <button onClick={deleteGroup}>
-                Delete this group</button>
+                <button onClick={deleteGroup}>
+                    Delete this group</button>
             </div>
         );
     } else {
@@ -50,24 +58,49 @@ const GroupDetails = () => {
 
     return (
         <div className='group-details-page'>
-            <div className = 'group-image'>
-                <img src={groupImg} alt="group"></img>
+            <div className="top-bar">
+                <img src={groupImg} className="group-image" alt="group"></img>
+                <div className='header'>
+                    <h1 className="group-name-title">{group.name}</h1>
+                    <h3 className="header-subs">
+                        <i className="fa-solid fa-location-dot"></i>  {group.city}, {group.state}
+                    </h3>
+                    <h3 className="header-subs">
+                        <i class="fa-solid fa-user-group"></i>  {group.numMembers} members
+                    </h3>
+                    <h3 className="header-subs">
+                        <i class="fa-solid fa-user"></i>  Organized by {group.Organizer.firstName} {group.Organizer.lastName}
+                    </h3>
+
+                </div>
             </div>
-            <div className='header'>
-                <h1>{group.name}</h1>
-                <h3>{group.city}, {group.state}</h3>
-                <h3>{group.numMembers} members</h3>
-                <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
+            <div className="background-color">
+                <div className="bottom-description">
+                    <div className="left-bottom-description">
+                        <div className='group-description'>
+                            <h2>What we're about</h2>
+                            <p> {group.about} </p>
+                        </div>
+                        {/* <div className='upcoming-events'>
+                            <h2>Upcoming events</h2>
+                            <button>
+                                <NavLink to={`/group/${groupId}/events`}
+                                See all
+                            </button>
+                        </div> */}
+                        {deleteButton}
+                    </div>
+                    <div className="right-bottom-description">
+                        <h2 className="organizers-bottom-description">
+                            Organizer
+                        </h2>
+                        <i class="fa-solid fa-user"></i> {group.Organizer.firstName}
+                    </div>
+
+                </div>
             </div>
-            <div className='group-description'>
-                <h2>What we're about</h2>
-                <p> {group.about} </p>
-            </div>
-            <div className='upcoming-events'>
-                <h2>Upcoming events</h2>
-                <button>See all</button>
-            </div>
-            {deleteButton}
+
+
         </div>
     )
 }

@@ -19,3 +19,32 @@
 li {
     list-style: none
 }
+.user-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    width: 45px;
+    background-color: rgb(255, 173, 67);
+    border-radius: 50px;
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    font-size: 18px;
+    font-weight: lighter;
+
+
+}
+.user-button {
+    display: flex;
+    flex-direction: row;
+    border: none;
+    background-color: white;
+    align-items: center;
+
+}
+.fa-angle-down {
+    padding: 0px 0px 0px 6px;
+    color: gray;
+
+}

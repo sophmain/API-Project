@@ -1,0 +1,52 @@
+.group-details-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+
+}
+.top-bar {
+    display: flex;
+    flex-direction: row;
+    height: 377px;
+    padding: 20px 0px 0px;
+    justify-content: left;
+    margin: 0px 170px;
+}
+
+.group-image {
+    width: 600px;
+    height: 337.5px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 0px 0px 48px;
+
+}
+.group-name-title {
+    font-size: 32px;
+    font-weight: bolder;
+}
+.header-subs {
+    color: #212121;
+    font-size: 14px;
+    font-weight: lighter;
+}
+.bottom-description {
+    margin: 10px 170px;
+    color: #212121;
+    display: flex;
+
+}
+.background-color {
+    background-color: rgb(244, 244, 244);
+    height: 500px;
+}
+.left-bottom-description {
+    width: 600px;
+}
+.right-bottom-description {
+    margin: 0px 0px 0px 48px;
+}
