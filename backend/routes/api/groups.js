@@ -53,7 +53,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
     })
 })
 // POST create event for group specified by its id
-router.post('/:groupId/events', requireAuth, userAuthorize, dateValidateEvent, validateEvent, async (req, res, next) => {
+router.post('/:groupId/events', requireAuth, userAuthorize, validateEvent, dateValidateEvent, async (req, res, next) => {
     const { groupId } = req.params
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
