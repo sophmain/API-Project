@@ -32,19 +32,43 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 30px;
-    margin: 90px 110px;
+    padding: 30px 30px 0px 30px;
+    margin: 50px 110px 0px 110px;
 
 }
 .home-container {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    width: 100%
+    width: 100%;
+
 }
 .home-title {
-    font-size: 3rem;
+    font-size: 2.8rem;
     font-weight: bolder;
 }
 .home-subheader {
-    margin: 24px 0px 0px;
+    margin: 0px;
+    line-height: 1.6;
+}
+.link-container {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: space-around;
+    margin: 0px 100px 0px 100px;
+
+}
+
+.home-img {
+    object-fit: cover;
+    height: 200px;
+    width: 360px;
+    border-radius: 8px;
+}
+.find-your {
+    color: #008294;
+    text-decoration: none;
+    margin: 8px 0px 0px;
+    font-size: 16px;
 }

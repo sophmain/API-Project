@@ -27,24 +27,6 @@ function App() {
   const group = useSelector(state => state.groups.singleGroup)
 
 
-  let eventEditModalButton;
-  if (group && user && group.organizerId == user.id) {
-    eventEditModalButton = [
-      <>
-        <EventDetails />
-        <OpenModalButton
-          className="event-modal"
-          buttonText="Edit Event"
-          modalComponent={<EditEventModal />}
-        />
-      </>
-    ]
-  } else {
-    eventEditModalButton = [
-      <EventDetails />
-    ]
-  }
-
   return (
     <>
       <Navigation isLoaded={isLoaded} />
