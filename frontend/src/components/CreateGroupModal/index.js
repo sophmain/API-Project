@@ -74,8 +74,6 @@ const CreateGroupForm = () => {
                     {errors.map((error, index) => <li key={index}>{error}</li>)}
                 </ul>
                 <div className="create-group-inputs">
-
-
                 <label>
                     <p className="input-label-group">
                     Name

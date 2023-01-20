@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { thunkEditGroup } from "../../store/groups"
+import './editgroupmodal.css'
 
 
 const EditGroupModal = () => {
@@ -56,15 +57,19 @@ const EditGroupModal = () => {
 
 
     return (
-        <div className='edit-group-form-holder'>
+        <div className='new-group-form-holder'>
             <h1>Edit group</h1>
-            <form className="edit-group-form" onSubmit={handleSubmit}>
+            <form className="create-group-form" onSubmit={handleSubmit}>
                 <ul>
-                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                    {errors.map((error, index) => <li key={index}>{error}</li>)}
                 </ul>
+                <div className="create-group-inputs">
                 <label>
-                    Name:
+                    <p className="input-label-group">
+                    Name
+                        </p>
                     <input
+                        className="input-box-group"
                         id="name"
                         type="text"
                         name="name"
@@ -73,18 +78,25 @@ const EditGroupModal = () => {
                     />
                 </label>
                 <label>
-                    About:
+                <p className="input-label-group">
+                    About
+                        </p>
                     <textarea
+                        className="input-textarea-group"
                         id="about"
-                        type="text"
+                        type="textarea"
+                        placeholder='Please write at least 50 characters.'
                         name="about"
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
                     />
                 </label>
                 <label>
-                    Type:
+                <p className="input-label-group">
+                    Type
+                        </p>
                     <select
+                        className="input-dropdown-group"
                         id="type"
                         value={type}
                         onChange={(e) => setType(e.target.value)}
@@ -100,8 +112,12 @@ const EditGroupModal = () => {
                     </select>
                 </label>
                 <label>
-                    Make my group private:
+                    <div className="group-checkbox">
+                <p className="input-label-group">
+                    Make my group private
+                        </p>
                     <input
+                        className="input-box-group"
                         id="checkbox"
                         type="checkbox"
                         name="isprivate"
@@ -109,10 +125,14 @@ const EditGroupModal = () => {
                         value={isprivate}
                         onChange={(e) => setIsPrivate(e.target.checked)}
                     />
+                    </div>
                 </label>
                 <label>
-                    City:
+                <p className="input-label-group">
+                    City
+                        </p>
                     <input
+                        className="input-box-group"
                         id="city"
                         type="text"
                         name="city"
@@ -121,8 +141,11 @@ const EditGroupModal = () => {
                     />
                 </label>
                 <label>
-                    State:
+                <p className="input-label-group">
+                    State
+                        </p>
                     <select
+                        className="input-dropdown-group"
                         id="state"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
@@ -137,7 +160,8 @@ const EditGroupModal = () => {
                         ))}
                     </select>
                 </label>
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit-button-group">Submit</button>
+                </div>
             </form>
         </div>
     )

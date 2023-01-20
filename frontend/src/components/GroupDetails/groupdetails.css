@@ -50,3 +50,9 @@
 .right-bottom-description {
     margin: 0px 0px 0px 48px;
 }
+.group-description {
+    overflow-wrap: break-word;
+}
+.delete-group {
+    margin: 60px 0px 0px 0px;
+}
