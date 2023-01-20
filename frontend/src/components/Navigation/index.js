@@ -6,7 +6,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
-import logoImg from './logo.png'
+import logoImg from '../../images/logo.png'
 
 
 function Navigation({ isLoaded }) {

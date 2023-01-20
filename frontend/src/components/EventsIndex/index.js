@@ -21,9 +21,9 @@ const EventsIndex = () => {
 
 
     return (
-        <div className='events-container'>
+        <div className='container'>
             <div className='events-groups-headers'>
-                <h2 className ="events-header">
+                <h2 className="events-header">
                     <NavLink to={`/events`} className="events-title-link">
                         Events
                     </NavLink>
@@ -34,7 +34,7 @@ const EventsIndex = () => {
                     </NavLink>
                 </h2>
             </div>
-            <h3>Event suggestions for you</h3>
+            <h3 className="events-subtitle">Event suggestions for you</h3>
             <div className='all-events'>
                 <ul>
                     {events.map(event => {
@@ -43,22 +43,26 @@ const EventsIndex = () => {
                                 <NavLink to={`/events/${event.id}`} key={event.id} className='event-link'>
                                     <img src={event.previewImage} className='card-image'
                                         alt={"event"} />
-                                    <div className="event-text-items">
-                                        <h3 className = "event-time">
-                                            {event.startDate}
+                                    <div className="group-text-items">
+                                        <h3 className="event-time">
+                                            {event.startDate.replace("Z", ' ').replace("T", ' ').slice(0, 16)} CST
                                         </h3>
                                         <h4 className="event-title">
                                             {event.name}
                                         </h4>
                                         {event.Group &&
-                                        (<h5 className="event-location">
+                                            (
+                                                <>
+                                                    <h4 className="event-group-name">
+                                                        {event.Group.name} - {event.Group.city}, {event.Group.state}
+                                                    </h4>
 
-                                            {event.Group.city}, {event.Group.state}
-                                        </h5>)
-                                            }
-                                        <h6>
-                                            {event.numAttending} attending - {event.type}
-                                        </h6>
+                                                </>
+                                            )
+                                        }
+                                        <h4 className="attending-num">
+                                            {event.numAttending} attendees - {event.type}
+                                        </h4>
                                     </div>
                                 </NavLink>
                             </div>

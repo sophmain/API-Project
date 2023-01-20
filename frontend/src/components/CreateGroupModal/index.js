@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { thunkCreateGroup } from '../../store/groups';
 import { useModal } from "../../context/Modal";
+import './creategroupmodal.css'
 
 const CreateGroupForm = () => {
     const types = ['Online', 'In person']
@@ -72,9 +73,15 @@ const CreateGroupForm = () => {
                 <ul>
                     {errors.map((error, index) => <li key={index}>{error}</li>)}
                 </ul>
+                <div className="create-group-inputs">
+
+
                 <label>
-                    Name:
+                    <p className="input-label-group">
+                    Name
+                        </p>
                     <input
+                        className="input-box-group"
                         id="name"
                         type="text"
                         name="name"
@@ -83,19 +90,25 @@ const CreateGroupForm = () => {
                     />
                 </label>
                 <label>
-                    About:
+                <p className="input-label-group">
+                    About
+                        </p>
                     <textarea
+                        className="input-textarea-group"
                         id="about"
-                        type="text"
-                        placeholder='Please write at least 50 characters'
+                        type="textarea"
+                        placeholder='Please write at least 50 characters.'
                         name="about"
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
                     />
                 </label>
                 <label>
-                    Type:
+                <p className="input-label-group">
+                    Type
+                        </p>
                     <select
+                        className="input-dropdown-group"
                         id="type"
                         value={type}
                         onChange={(e) => setType(e.target.value)}
@@ -111,8 +124,12 @@ const CreateGroupForm = () => {
                     </select>
                 </label>
                 <label>
-                    Make my group private:
+                    <div className="group-checkbox">
+                <p className="input-label-group">
+                    Make my group private
+                        </p>
                     <input
+                        className="input-box-group"
                         id="checkbox"
                         type="checkbox"
                         name="isprivate"
@@ -120,10 +137,14 @@ const CreateGroupForm = () => {
                         value={isprivate}
                         onChange={(e) => setIsPrivate(e.target.checked)}
                     />
+                    </div>
                 </label>
                 <label>
-                    City:
+                <p className="input-label-group">
+                    City
+                        </p>
                     <input
+                        className="input-box-group"
                         id="city"
                         type="text"
                         name="city"
@@ -132,8 +153,11 @@ const CreateGroupForm = () => {
                     />
                 </label>
                 <label>
-                    State:
+                <p className="input-label-group">
+                    State
+                        </p>
                     <select
+                        className="input-dropdown-group"
                         id="state"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
@@ -149,17 +173,21 @@ const CreateGroupForm = () => {
                     </select>
                 </label>
                 <label>
-                    Add image:
+                <p className="input-label-group">
+                    Add image
+                        </p>
                     <input
+                        className="input-box-group"
                         id="url"
-                        placeholder="image URL"
+                        placeholder="Image URL"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                     >
 
                     </input>
                 </label>
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit-button-group">Submit</button>
+                </div>
             </form>
         </div>
     )

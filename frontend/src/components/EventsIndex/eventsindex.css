@@ -1,0 +1,61 @@
+
+.event-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-decoration: none;
+    position: static;
+    top: 0px;
+    border-top: solid lightgray 1px;
+    padding: 12px 0px;
+    width: 600px;
+}
+.all-events {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.event-card {
+    display: flex;
+    flex-direction: row;
+    width: 700px;
+    height: 150px;
+    margin: 30px;
+}
+.event-time {
+    color: rgb(135, 116, 87);
+    font-size: 16px;
+    margin: 0px;
+    padding: 4px 0px;
+    height: 28px;
+}
+.event-title {
+    color: rgb(33, 33, 33);
+    font-size: 16px;
+    padding: 0px 0px 4px;
+    margin: 0px;
+    height: 28px;
+}
+.event-location {
+    color: black;
+    font-size: 14px;
+    font-weight: lighter;
+}
+.event-group-name {
+    color: rgb(117, 117, 117);
+    font-size: 14px;
+    font-weight: lighter;
+}
+.attending-num {
+    font-weight: lighter;
+    color: rgb(117, 117, 117);
+    font-size: 14px;
+}
+.events-subtitle {
+    color: rgb(147, 147, 147);
+    font-weight: lighter;
+}
