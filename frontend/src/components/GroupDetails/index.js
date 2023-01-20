@@ -3,22 +3,15 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
 import CreateEventModal from '../CreateEventModal';
-import CreateGroupModal from '../CreateGroupModal'
 import OpenModalButton from "../../components/OpenModalButton";
 import EditGroupModal from '../EditGroupModal';
 import './groupdetails.css'
 
 
-const GroupDetails = () => {
+const GroupDetails = ({ isLoaded }) => {
     const { groupId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
-
-    // //modal
-    // const [isLoaded, setIsLoaded] = useState(false);
-    // useEffect(() => {
-    //   dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
-    // }, [dispatch]);
 
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
@@ -45,10 +38,9 @@ const GroupDetails = () => {
     let deleteButton;
     if (group.organizerId == user.id) {
         deleteButton = (
-            <div className='delete-button'>
-
-                <button onClick={deleteGroup}>
-                    Delete this group</button>
+            <div >
+                <button onClick={deleteGroup} className='delete-button'>
+                    Delete Group</button>
             </div>
         );
     } else {
@@ -79,7 +71,7 @@ const GroupDetails = () => {
                     <div className="left-bottom-description">
                         <div className='group-description'>
                             <h2>What we're about</h2>
-                            <p> {group.about} </p>
+                            <p className="group-about"> {group.about} </p>
                         </div>
                         {/* <div className='upcoming-events'>
                             <h2>Upcoming events</h2>
@@ -88,9 +80,24 @@ const GroupDetails = () => {
                                 See all
                             </button>
                         </div> */}
+                        <div className="delete-group">
                         {deleteButton}
+                            </div>
                     </div>
                     <div className="right-bottom-description">
+
+                        {isLoaded && group && user && group.organizerId == user.id && (
+                            <>
+                                <OpenModalButton
+                                    buttonText="Edit group"
+                                    modalComponent={<EditGroupModal />}
+                                />
+                                <OpenModalButton
+                                    buttonText="Create event"
+                                    modalComponent={<CreateEventModal />}
+                                />
+                            </>
+                        )}
                         <h2 className="organizers-bottom-description">
                             Organizer
                         </h2>

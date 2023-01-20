@@ -28,8 +28,8 @@ const EventsIndex = () => {
                         Events
                     </NavLink>
                 </h2>
-                <h2 className="groups-header">
-                    <NavLink to={`/groups`} className="groups-title-link">
+                <h2 className="groups-header-event-page">
+                    <NavLink to={`/groups`} className="groups-title-event-page">
                         Groups
                     </NavLink>
                 </h2>

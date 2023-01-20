@@ -19,3 +19,32 @@
     font-size: 42px;
     font-weight: bolder;
 }
+.home-image {
+    height: 400px;
+    object-fit: cover;
+}
+.home-headers {
+    display: flex;
+    flex-direction: column;
+}
+.home-header-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    margin: 90px 110px;
+
+}
+.home-container {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%
+}
+.home-title {
+    font-size: 3rem;
+    font-weight: bolder;
+}
+.home-subheader {
+    margin: 24px 0px 0px;
+}

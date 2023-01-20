@@ -59,3 +59,24 @@
     color: rgb(147, 147, 147);
     font-weight: lighter;
 }
+.events-header {
+    color: rgb(0, 130, 148);
+    padding: 2px 0px;
+    border-bottom: 4px solid rgb(0, 130, 148);
+    width: 70px;
+}
+.events-title-link {
+    text-decoration: none;
+    color: rgb(0, 130, 148);
+    font-size: 20px;
+}
+.groups-header-event-page {
+    color: #757575;
+    padding: 2px 0px 0px 12px;
+    width: 85px;
+}
+.groups-title-event-page {
+    text-decoration: none;
+    color: #757575;
+    font-size: 20px;
+}

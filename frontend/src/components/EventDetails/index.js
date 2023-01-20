@@ -3,14 +3,15 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteEvent, thunkGetEventDetails } from '../../store/events';
 import { thunkGetGroupDetails, thunkGetGroups } from '../../store/groups';
+import OpenModalButton from '../OpenModalButton';
+import EditEventModal from '../EditEventModal';
 import './eventdetails.css'
 
 
-const EventDetails = () => {
+const EventDetails = ({ isLoaded }) => {
     const { eventId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
-    //const [errors, setErrors] = useState([])
 
     useEffect(() => {
         const loadData = async () => {
@@ -23,8 +24,6 @@ const EventDetails = () => {
     const group = useSelector(state => state.groups.singleGroup)
     const user = useSelector(state => state.session.user)
     const event = useSelector(state => state.events.singleEvent)
-
-
 
     if (!event) return null;
     if (!event.Group) return null;
@@ -48,23 +47,13 @@ const EventDetails = () => {
 
     }
 
-    // dispatch(thunkGetGroups())
-    //     .then(groups => {
-    //         console.log('groups', groups)
-    //         let group = groups.Groups.find(group => group.id == event.Group.id)
-    //         console.log('found group', group)
-    //         return group
-    //     })
-    // console.log('group', group)
-
     //only show delete button if the user is authorized (owner) to delete that group
     let deleteButton;
     if (user && group && group.organizerId == user.id) {
         deleteButton = (
-            <div className='delete-button-events'>
-
-                <button onClick={deleteEvent}>
-                    Delete this event</button>
+            <div >
+                <button onClick={deleteEvent} className='delete-button'>
+                    Delete Event</button>
             </div>
         );
     } else {
@@ -145,14 +134,20 @@ const EventDetails = () => {
                         {event.name}
                     </h3>
                 </div>
-                <h3 className='event-price-bottom'>
-                    ${event.price}.00
-                </h3>
-
-
+                <div className="right-bottom-navbar">
+                    <h3 className='event-price-bottom'>
+                        ${event.price}.00
+                    </h3>
+                    {isLoaded && user && group && group.organizerId == user.id && (
+                        <OpenModalButton
+                            className="event-modal"
+                            buttonText="Edit Event"
+                            modalComponent={<EditEventModal />}
+                        />
+                    )}
+                    {deleteButton}
+                </div>
             </div>
-            {deleteButton}
-
         </div>
     )
 }
