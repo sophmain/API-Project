@@ -104,7 +104,7 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
     if (group.organizerId != user.id) {
         const err = new Error('Group does not belong to this user')
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         return next(err)
     } else {
@@ -515,14 +515,14 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     if (memberToChange.status == 'pending' && status == 'member' && user.id != group.organizerId && memberToChange.status != 'co-host') {
         const err = new Error('User is not a co-host or owner of this group')
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         return next(err)
     }
     if (memberToChange.status == 'member' && status == 'co-host' && user.id != group.organizerId) {
         const err = new Error('Group does not belong to this user')
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         return next(err)
     }
@@ -605,7 +605,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
     } else {
         const err = new Error("Must be the host of the group, or the user whose membership is being deleted")
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         next(err)
     }
@@ -629,7 +629,7 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
     } else {
         const err = new Error("Group does not belong to this user")
         err.title = 'Forbidden'
-        err.errors = 'Forbidden'
+        err.errors = ['Forbidden']
         err.status = 403
         return next(err)
     }

@@ -12,6 +12,7 @@ import EditGroupModal from "./components/EditGroupModal";
 import EventsIndex from "./components/EventsIndex";
 import EventDetails from "./components/EventDetails"
 import CreateEventModal from "./components/CreateEventModal"
+import EditEventModal from "./components/EditEventModal";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
   // only render edit/create modals if user is owner of group
   const user = useSelector(state => state.session.user)
   const group = useSelector(state => state.groups.singleGroup)
+
   let editModalButton;
   if (group && user && group.organizerId == user.id) {
     editModalButton = [
@@ -42,6 +44,22 @@ function App() {
   } else {
     editModalButton = [
       <GroupDetails />
+    ]
+  }
+  let eventEditModalButton;
+  if (group && user && group.organizerId == user.id) {
+    eventEditModalButton = [
+      <>
+        <EventDetails />
+        <OpenModalButton
+        buttonText="Edit Event"
+        modalComponent={<EditEventModal />}
+        />
+      </>
+    ]
+  } else {
+    eventEditModalButton = [
+      <EventDetails />
     ]
   }
 
@@ -67,7 +85,7 @@ function App() {
             {editModalButton}
           </Route>
           <Route exact path={'/events/:eventId'}>
-            <EventDetails />
+            {eventEditModalButton}
           </Route>
         </Switch>
       )}

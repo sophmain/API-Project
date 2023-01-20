@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
-
+import CreateEventModal from '../CreateEventModal';
+import OpenModalButton from "../../components/OpenModalButton";
+import EditGroupModal from '../EditGroupModal';
 
 
 const GroupDetails = () => {
@@ -44,6 +46,7 @@ const GroupDetails = () => {
     } else {
         deleteButton = null
     };
+
 
     return (
         <div className='group-details-page'>

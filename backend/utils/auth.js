@@ -79,7 +79,7 @@ const userAuthorize = async (req, res, next) => {
   const group = await Group.findByPk(groupId)
   if (!group) {
     const err = new Error("Group couldn't be found")
-    err.errors = `Couldn't find a group with the specified id`
+    err.errors = [`Couldn't find a group with the specified id`]
     err.status = 404
     return next(err)
   }
@@ -87,7 +87,7 @@ const userAuthorize = async (req, res, next) => {
   if (group.organizerId != user.id && !coHost) {
     const err = new Error('Group does not belong to this user')
     err.title = 'Forbidden'
-    err.errors = 'Forbidden'
+    err.errors = ['Forbidden']
     err.status = 403
     return next(err)
   }
@@ -106,7 +106,7 @@ const attendanceAuth = async (req, res, next) => {
   })
   if (!event) {
     const err = new Error("Event couldn't be found")
-    err.errors = `Couldn't find a event with the specified id`
+    err.errors = [`Couldn't find a event with the specified id`]
     err.status = 404
     return next(err)
   }
@@ -133,7 +133,7 @@ const attendanceAuth = async (req, res, next) => {
   if (user.id !== group.organizerId && !attendee && !coHost) {
     const err = new Error('Event does not belong to this user')
     err.title = 'Forbidden'
-    err.errors = 'Forbidden'
+    err.errors = ['Forbidden']
     err.status = 403
     return next(err)
   }
@@ -152,7 +152,7 @@ const eventOrganizerOrCohost = async (req, res, next) => {
   })
   if (!event) {
     const err = new Error("Event couldn't be found")
-    err.errors = `Couldn't find a event with the specified id`
+    err.errors = [`Couldn't find a event with the specified id`]
     err.status = 404
     return next(err)
   }
@@ -171,7 +171,7 @@ const eventOrganizerOrCohost = async (req, res, next) => {
   if (user.id !== group.organizerId && !coHost) {
     const err = new Error('Event does not belong to this user')
     err.title = 'Forbidden'
-    err.errors = 'Forbidden'
+    err.errors = ['Forbidden']
     err.status = 403
     return next(err)
   }
