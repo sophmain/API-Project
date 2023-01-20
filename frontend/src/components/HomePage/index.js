@@ -33,6 +33,16 @@ function HomePage() {
                     </div>
                     <img className="home-image" src='https://img.freepik.com/free-vector/people-meeting-online-via-video-conference-flat-illustration-cartoon-group-colleagues-virtual-collective-chat-during-lockdown_74855-14136.jpg?w=2000' alt="zoom cartoon" />
                 </div>
+                <div className= "link-container">
+                    <NavLink className= "find-your" to={`/groups`} >
+                        <img className="home-img" src="https://img.huffingtonpost.com/asset/604fc2f2260000cc17d854ff.jpeg?cache=htB0uiPrAE&ops=1778_1000" alt="friends"/>
+                        <h3 className="find-your">Find your group <i className="fa-solid fa-arrow-right"></i></h3>
+                    </NavLink>
+                    <NavLink to={`/events`} className= "find-your">
+                        <img className="home-img" src="https://corporatesport.events/wp-content/uploads/2021/11/BTP11558-1024x683.jpg" alt="team"/>
+                        <h3 className="find-your">Find events happening soon <i className="fa-solid fa-arrow-right"></i></h3>
+                    </NavLink>
+                </div>
             </div>
         )
     }
