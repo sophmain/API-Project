@@ -2,10 +2,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 400px;
+    width: 450px;
     height: 700px;
-    padding: 2.5rem;
+    padding: 50px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+
 }
+
 
 .create-group-inputs{
     display: flex;
@@ -23,7 +28,7 @@
 }
 #checkbox {
     margin: 0px;
-    position: absolute;
+    position: static;
     left: 40px;
 }
 .input-box-group {
