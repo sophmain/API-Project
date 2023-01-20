@@ -60,8 +60,8 @@ const validateQuery = [
         .withMessage("Name must be a string"),
     query('type')
         .optional()
-        .isIn(['Online', 'In person'])
-        .withMessage("Type must be 'Online' or 'In person'"),
+        .isIn(['Online', 'In Person'])
+        .withMessage("Type must be 'Online' or 'In Person'"),
     query('startDate')
         .optional()
         .isString()
@@ -118,7 +118,7 @@ const validateEvent = [
       .withMessage("Name must be at least 5 characters"),
   check('type')
       .exists()
-      .isIn(['Online', 'In person'])
+      .isIn(['Online', 'In Person'])
       .withMessage("Type must be 'Online' or 'In person'"),
   check('capacity')
       .exists()
