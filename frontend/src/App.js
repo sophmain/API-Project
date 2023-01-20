@@ -52,8 +52,9 @@ function App() {
       <>
         <EventDetails />
         <OpenModalButton
-        buttonText="Edit Event"
-        modalComponent={<EditEventModal />}
+          className="event-modal"
+          buttonText="Edit Event"
+          modalComponent={<EditEventModal />}
         />
       </>
     ]
@@ -72,11 +73,8 @@ function App() {
             <HomePage />
           </Route>
           <Route exact path={'/groups'}>
-            <GroupsIndex />
-            <OpenModalButton
-              buttonText="Create a group"
-              modalComponent={<CreateGroupModal />}
-            />
+            <GroupsIndex isLoaded={isLoaded}/>
+            
           </Route>
           <Route exact path={'/events'}>
             <EventsIndex />

@@ -15,14 +15,21 @@ const EditEventModal = () => {
     const { closeModal } = useModal();
     const history = useHistory();
 
+    //function to format date to put into datetime-local form type
+    function datetimeLocal(datetime) {
+        const dt = new Date(datetime);
+        dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
+        return dt.toISOString().slice(0, 16);
+    }
+
     const [venueId, setVenueId] = useState(eventToEdit.venueId)
     const [name, setName] = useState(eventToEdit.name)
     const [type, setType] = useState(eventToEdit.type)
     const [capacity, setCapacity] = useState(eventToEdit.capacity)
     const [price, setPrice] = useState(eventToEdit.price)
     const [description, setDescription] = useState(eventToEdit.description)
-    const [startDate, setStartDate] = useState(eventToEdit.startDate)
-    const [endDate, setEndDate] = useState(eventToEdit.endDate)
+    const [startDate, setStartDate] = useState(datetimeLocal(eventToEdit.startDate))
+    const [endDate, setEndDate] = useState(datetimeLocal(eventToEdit.endDate))
     const [errors, setErrors] = useState([])
     const [createdEvent, setCreatedEvent] = useState()
     const newStartDate = startDate.replace("T", ' ').concat(':00')
