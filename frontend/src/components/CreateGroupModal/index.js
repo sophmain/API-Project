@@ -71,7 +71,7 @@ const CreateGroupForm = () => {
             <h1>Create a group</h1>
             <form className="create-group-form" onSubmit={handleSubmit}>
                 <ul>
-                    {errors.map((error, index) => <li key={index}>{error}</li>)}
+                    {errors.map((error, index) => <li className="errors-text" key={index}>{error}</li>)}
                 </ul>
                 <div className="create-group-inputs">
                 <label>
