@@ -110,7 +110,7 @@ const validateLogin = [
 //validation errors for an event
 const validateEvent = [
   check('venueId')
-      .exists()
+      .exists({ checkFalsy: true })
       .withMessage("Venue does not exist"),
   check('name')
       .exists()
@@ -119,7 +119,7 @@ const validateEvent = [
   check('type')
       .exists()
       .isIn(['Online', 'In Person'])
-      .withMessage("Type must be 'Online' or 'In person'"),
+      .withMessage("Type must be 'Online' or 'In Person'"),
   check('capacity')
       .exists()
       .isInt()
@@ -129,7 +129,7 @@ const validateEvent = [
       .isDecimal()
       .withMessage("Price is invalid"),
   check('description')
-      .exists()
+      .exists({ checkFalsy: true })
       .withMessage("Description is required"),
 
   handleValidationErrors
@@ -160,7 +160,7 @@ const validateGroup = [
   check('name')
       .exists()
       .isLength({ min: 1, max: 60 })
-      .withMessage("Name must be 60 characters or less."),
+      .withMessage("Name must be between 1 and 60 characters."),
   check('about')
       .exists()
       .isLength({ min: 50 })
@@ -174,8 +174,8 @@ const validateGroup = [
       .isBoolean()
       .withMessage("Private must be a boolean"),
   check('city')
-      .exists()
-      .withMessage('City is required'),
+      .exists({ checkFalsy: true })
+      .withMessage('City is required.'),
   check('state')
       .exists({ checkFalsy: true })
       .withMessage("State is required"),
