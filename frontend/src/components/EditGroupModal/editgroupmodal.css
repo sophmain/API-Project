@@ -1,0 +1,11 @@
+.edit-group-form-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    height: 700px;
+}
+.edit-group-form {
+    display: flex;
+    flex-direction: column;
+}

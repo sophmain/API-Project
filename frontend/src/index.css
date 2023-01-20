@@ -11,3 +11,11 @@ body {
     font-size: 16px;
     color: white;
 }
+.delete-button {
+    border-radius: 25px;
+    background-color: rgb(0, 130, 148);
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    color: white;
+}

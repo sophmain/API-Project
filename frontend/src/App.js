@@ -26,26 +26,7 @@ function App() {
   const user = useSelector(state => state.session.user)
   const group = useSelector(state => state.groups.singleGroup)
 
-  let editModalButton;
-  if (group && user && group.organizerId == user.id) {
-    editModalButton = [
-      <>
-        <GroupDetails />
-        <OpenModalButton
-          buttonText="Edit group"
-          modalComponent={<EditGroupModal />}
-        />
-        <OpenModalButton
-          buttonText="Create event"
-          modalComponent={<CreateEventModal />}
-        />
-      </>
-    ]
-  } else {
-    editModalButton = [
-      <GroupDetails />
-    ]
-  }
+
   let eventEditModalButton;
   if (group && user && group.organizerId == user.id) {
     eventEditModalButton = [
@@ -73,17 +54,16 @@ function App() {
             <HomePage />
           </Route>
           <Route exact path={'/groups'}>
-            <GroupsIndex isLoaded={isLoaded}/>
-            
+            <GroupsIndex isLoaded={isLoaded} />
           </Route>
           <Route exact path={'/events'}>
             <EventsIndex />
           </Route>
           <Route exact path={'/groups/:groupId'}>
-            {editModalButton}
+            <GroupDetails isLoaded={isLoaded} />
           </Route>
           <Route exact path={'/events/:eventId'}>
-            {eventEditModalButton}
+            <EventDetails isLoaded={isLoaded} />
           </Route>
         </Switch>
       )}

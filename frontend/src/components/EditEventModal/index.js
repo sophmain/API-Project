@@ -63,14 +63,17 @@ const EditEventModal = () => {
     }
     return (
         <div className='new-event-form-holder'>
-            <h1>Create an event</h1>
             <form className="create-event-form" onSubmit={handleSubmit}>
+                <h1>Edit event</h1>
                 <ul>
                     {errors.map((error, index) => <li key={index}>{error}</li>)}
                 </ul>
                 <label>
-                    venueId:
+                    <p className="input-label-event">
+                        VenueId
+                    </p>
                     <input
+                        className="input-box-event"
                         id="venueId"
                         type="number"
                         step="1"
@@ -80,8 +83,11 @@ const EditEventModal = () => {
                     />
                 </label>
                 <label>
-                    Name:
+                    <p className="input-label-event">
+                        Name
+                    </p>
                     <input
+                        className="input-box-event"
                         id="name"
                         type="text"
                         name="name"
@@ -90,8 +96,11 @@ const EditEventModal = () => {
                     />
                 </label>
                 <label>
-                    Type:
+                    <p className="input-label-event">
+                        Type
+                    </p>
                     <select
+                        className="input-dropdown-event"
                         id="type"
                         value={type}
                         onChange={(e) => setType(e.target.value)}
@@ -107,8 +116,11 @@ const EditEventModal = () => {
                     </select>
                 </label>
                 <label>
-                    Capacity:
+                    <p className="input-label-event">
+                        Capacity
+                    </p>
                     <input
+                        className="input-box-event"
                         id="capacity"
                         type="number"
                         name="capacity"
@@ -117,8 +129,11 @@ const EditEventModal = () => {
                     />
                 </label>
                 <label>
-                    Price:
+                    <p className="input-label-event">
+                        Price
+                    </p>
                     <input
+                        className="input-box-event"
                         id="price"
                         type="number"
                         placeholder='00.00'
@@ -128,8 +143,11 @@ const EditEventModal = () => {
                     />
                 </label>
                 <label>
-                    Description:
+                    <p className="input-label-event">
+                        Description
+                    </p>
                     <textarea
+                        className="input-textarea-event"
                         id="description"
                         type="text"
                         name="description"
@@ -137,27 +155,34 @@ const EditEventModal = () => {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </label>
-                <lable>
-                    Start Date:
+                <label>
+                    <p className="input-label-event">
+                        Start Date
+                    </p>
                     <input
+                        className="input-date-event"
                         id="startdate"
                         type="datetime-local"
                         name="startdate"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                     />
-                </lable>
-                <lable>
-                    End Date:
+                </label>
+                <label>
+                    <p className="input-label-event">
+                        End Date
+                    </p>
                     <input
+                        className="input-date-event"
                         id="enddate"
                         type="datetime-local"
                         name="enddate"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                     />
-                </lable>
-                <button type="submit">Submit</button>
+                </label>
+
+                <button type="submit" className="submit-button-event">Submit</button>
             </form>
         </div>
     )

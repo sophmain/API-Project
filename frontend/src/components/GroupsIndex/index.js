@@ -23,8 +23,8 @@ const GroupsIndex = ({ isLoaded }) => {
     return (
         <div className='container'>
             <div className='events-groups-headers'>
-                <h2 className="events-header">
-                    <NavLink to={`/events`} className="events-title-link">
+                <h2 className="events-header-group-page">
+                    <NavLink to={`/events`} className="events-title-group-page">
                         Events
                     </NavLink>
                 </h2>
