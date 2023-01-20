@@ -110,26 +110,26 @@ const validateLogin = [
 //validation errors for an event
 const validateEvent = [
   check('venueId')
-      .exists({ checkFalsy: true })
+      .exists()
       .withMessage("Venue does not exist"),
   check('name')
-      .exists({ checkFalsy: true })
+      .exists()
       .isLength({ min: 5 })
       .withMessage("Name must be at least 5 characters"),
   check('type')
-      .exists({ checkFalsy: true })
+      .exists()
       .isIn(['Online', 'In person'])
       .withMessage("Type must be 'Online' or 'In person'"),
   check('capacity')
-      .exists({ checkFalsy: true })
+      .exists()
       .isInt()
       .withMessage("Capacity must be an integer"),
   check('price')
-      .exists({ checkFalsy: true })
+      .exists()
       .isDecimal()
       .withMessage("Price is invalid"),
   check('description')
-      .exists({ checkFalsy: true })
+      .exists()
       .withMessage("Description is required"),
 
   handleValidationErrors
@@ -158,11 +158,11 @@ const validateVenue = [
 
 const validateGroup = [
   check('name')
-      .exists({ checkFalsy: true })
+      .exists()
       .isLength({ min: 1, max: 60 })
       .withMessage("Name must be 60 characters or less."),
   check('about')
-      .exists({ checkFalsy: true })
+      .exists()
       .isLength({ min: 50 })
       .withMessage('About must be 50 characters or more.'),
   check('type')
@@ -174,7 +174,7 @@ const validateGroup = [
       .isBoolean()
       .withMessage("Private must be a boolean"),
   check('city')
-      .exists({ checkFalsy: true })
+      .exists()
       .withMessage('City is required'),
   check('state')
       .exists({ checkFalsy: true })
