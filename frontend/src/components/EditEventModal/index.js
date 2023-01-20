@@ -7,7 +7,7 @@ import { thunkEditEvent } from "../../store/events"
 
 
 const EditEventModal = () => {
-    const types = ['Online', 'In person']
+    const types = ['Online', 'In Person']
 
     const eventToEdit = useSelector(state => state.events.singleEvent)
 
@@ -66,7 +66,7 @@ const EditEventModal = () => {
             <form className="create-event-form" onSubmit={handleSubmit}>
                 <h1>Edit event</h1>
                 <ul>
-                    {errors.map((error, index) => <li key={index}>{error}</li>)}
+                    {errors.map((error, index) => <li className="errors-text" key={index}>{error}</li>)}
                 </ul>
                 <label>
                     <p className="input-label-event">

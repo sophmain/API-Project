@@ -79,7 +79,7 @@ const CreateEventModal = () => {
             <form className="create-event-form" onSubmit={handleSubmit}>
                 <h1>Create an event</h1>
                 <ul>
-                    {errors.map((error, index) => <li key={index}>{error}</li>)}
+                    {errors.map((error, index) => <li className="errors-text" key={index}>{error}</li>)}
                 </ul>
                 <label>
                     <p className="input-label-event">
@@ -89,6 +89,7 @@ const CreateEventModal = () => {
                         className="input-box-event"
                         id="venueId"
                         type="number"
+                        min="1"
                         step="1"
                         name="venueId"
                         value={venueId}
@@ -135,6 +136,7 @@ const CreateEventModal = () => {
                     <input
                         className="input-box-event"
                         id="capacity"
+                        min="1"
                         type="number"
                         name="capacity"
                         value={capacity}
@@ -146,8 +148,10 @@ const CreateEventModal = () => {
                         Price
                     </p>
                     <input
+
                         className="input-box-event"
                         id="price"
+                        min="0"
                         type="number"
                         placeholder='00.00'
                         name="price"
