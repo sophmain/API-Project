@@ -56,3 +56,13 @@
 .delete-group {
     margin: 60px 0px 0px 0px;
 }
+.group-about-details {
+    font-weight: normal;
+    margin: 0;
+    color: rgb(117 117 117);
+    font-size: 14px;
+    line-height: 1.25rem;
+    padding: 0px 0px 44px;
+    width: 400px;
+    height: 44px;
+}
