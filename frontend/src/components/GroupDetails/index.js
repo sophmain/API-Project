@@ -71,7 +71,7 @@ const GroupDetails = ({ isLoaded }) => {
                     <div className="left-bottom-description">
                         <div className='group-description'>
                             <h2>What we're about</h2>
-                            <p className="group-about"> {group.about} </p>
+                            <p className="group-about-detail"> {group.about} </p>
                         </div>
                         {/* <div className='upcoming-events'>
                             <h2>Upcoming events</h2>

@@ -19,6 +19,7 @@ const GroupsIndex = ({ isLoaded }) => {
     if (!groupsObj) return null;
     const groups = Object.values(groupsObj)
 
+    
 
     return (
         <div className='container'>
@@ -49,8 +50,10 @@ const GroupsIndex = ({ isLoaded }) => {
                         return (
                             <div className='group-card'>
                                 <NavLink to={`/groups/${group.id}`} key={group.name} className='group-link'>
-                                    <img src={group.previewImage} className='card-image'
-                                        alt={"group"} />
+                                    <div className="image-container">
+                                        <img src={group.previewImage} className='card-image'
+                                            alt={"group"} />
+                                    </div>
                                     <div className="group-text-items">
                                         <h4 className="group-title">
                                             {group.name}
