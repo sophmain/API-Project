@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -25,6 +25,13 @@ function LoginFormModal() {
       );
   };
 
+  // const demoUser = useEffect(() => {
+  //   const setDemo = () => {
+  //   setCredential('Demo-lition')
+  //   setPassword('password')
+  //   setDemo()
+  // }}, [])
+
   return (
     <>
       <div className="login-container">
@@ -33,7 +40,7 @@ function LoginFormModal() {
         <form onSubmit={handleSubmit}>
           <ul>
             {errors.map((error, idex) => (
-              <li key={idex}>{error}</li>
+              <li className="errors-text" key={idex}>{error}</li>
             ))}
           </ul>
           <div className="login-input">
@@ -62,7 +69,9 @@ function LoginFormModal() {
               />
             </label>
           </div>
+
           <button type="submit" className="login-button">Log In</button>
+          <button type="demo" className="login-button"  onClick={() => {setCredential('Demo-lition'); setPassword('password')}}>Demo User</button>
         </form>
       </div>
     </>

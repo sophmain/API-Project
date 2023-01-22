@@ -4,18 +4,21 @@
     justify-content: center;
 }
 
-.groups-nav-text {
-    color: black;
+.groups-nav {
+    color: white;
     text-decoration: none;
     background-color: #F65858;
     width: fit-content;
+    height: fit-content;
     padding: 15px;
     border-radius: 15px;
+    margin: 24px 63px 0px;
 }
 
 .welcome-message {
     font-size: 42px;
     font-weight: bolder;
+    margin: 24px 63px 0px;
 }
 .home-image {
     height: 400px;

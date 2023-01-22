@@ -85,7 +85,6 @@ const GroupDetails = ({ isLoaded }) => {
                             </div>
                     </div>
                     <div className="right-bottom-description">
-
                         {isLoaded && group && user && group.organizerId == user.id && (
                             <>
                                 <OpenModalButton

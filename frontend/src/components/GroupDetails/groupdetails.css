@@ -8,11 +8,12 @@
 .top-bar {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     height: 377px;
     padding: 20px 0px 0px;
-    justify-content: left;
-    margin: 0px 170px;
+    justify-content: center;
+    width: 100%;
+
 }
 
 .group-image {
@@ -25,34 +26,39 @@
     display: flex;
     flex-direction: column;
     margin: 0px 0px 0px 48px;
+    width: 300px;
 
 }
 .group-name-title {
     font-size: 32px;
     font-weight: bolder;
+    margin: 0px 0px 15px 0px;
 }
 .header-subs {
     color: #212121;
     font-size: 14px;
     font-weight: lighter;
+    margin: 3.5px 0px 0px;
+    line-height: 1.6;
 }
 .bottom-description {
-    margin: 10px 170px;
+    margin: 10px 0px;
     color: #212121;
     display: flex;
-    align-items: center;
-    justify-content: left;
+    justify-content: center;
 
 }
 .background-color {
     background-color: rgb(244, 244, 244);
-    height: 500px;
+    min-height: 500px;
+    height: auto;
 }
 .left-bottom-description {
     width: 600px;
 }
 .right-bottom-description {
     margin: 0px 0px 0px 48px;
+    width: 300px;
 }
 .group-description {
     overflow-wrap: break-word;
