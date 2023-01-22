@@ -1,24 +1,29 @@
 .container {
-    display: block;
+    display: flex;
     flex-direction: column;
-    max-width: 993px;
+    /* max-width: 993px; */
     width: 100%;
-    margin: 0px 0px 64px;
-    padding: 0px 16px;
 }
 
 .events-groups-headers {
     display: flex;
     flex-direction: row;
-
 }
-
-.all-groups {
-    display: inline-flex;
+.events-groups-top-bar {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100%;
+    justify-content: left;
+}
+.events-groups-top-container {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+}
+.all-groups {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     overflow-y: hidden;
     overflow-x: hidden;
 }
@@ -100,7 +105,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-
     word-wrap: break-word;
 
 }

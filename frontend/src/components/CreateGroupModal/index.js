@@ -177,6 +177,7 @@ const CreateGroupForm = () => {
                     <input
                         className="input-box-group"
                         id="url"
+                        type="url"
                         placeholder="Image URL"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}

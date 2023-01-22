@@ -57,15 +57,17 @@ router.post('/:groupId/events', requireAuth, userAuthorize, validateEvent, dateV
     const { groupId } = req.params
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
-
-    // let newStartDate = startDate
-    // console.log('STARTDATENEW', newStartDate)
-    // let newEndDate = endDate
-
+    const venue = await Venue.findByPk(+venueId)
+    if (!venue) {
+        const err = new Error('Venue does not exist.')
+        err.errors =['Venue does not exist.']
+        err.status=400
+        return next(err)
+    }
     const event = await Group.findByPk(groupId)
 
     const newEvent = await event.createEvent({
-        venueId,
+        venueId: +venueId,
         name,
         type,
         capacity,

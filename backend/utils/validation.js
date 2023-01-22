@@ -30,17 +30,17 @@ const dateValidateEvent = async (req, res, next) => {
    const currentDate = new Date()
 
   if (new Date(startDate) < currentDate) {
-      const err = new Error("Start date must be in the future")
+      const err = new Error("Start date must be in the future.")
       err.status = 400
       err.title = 'Validation error'
-      err.errors = ["Start date must be in the future"]
+      err.errors = ["Start date must be in the future."]
       next(err)
   }
   if (endDate < startDate) {
-      const err = new Error("End date is less than start date")
+      const err = new Error("End date is less than start date.")
       err.status = 400
       err.title = 'Validation error'
-      err.errors = ["End date is less than start date"]
+      err.errors = ["End date is less than start date."]
       next(err)
   }
   next()
@@ -111,26 +111,26 @@ const validateLogin = [
 const validateEvent = [
   check('venueId')
       .exists({ checkFalsy: true })
-      .withMessage("Venue does not exist"),
+      .withMessage("Venue does not exist."),
   check('name')
       .exists()
       .isLength({ min: 5 })
-      .withMessage("Name must be at least 5 characters"),
+      .withMessage("Name must be at least 5 characters."),
   check('type')
       .exists()
       .isIn(['Online', 'In Person'])
-      .withMessage("Type must be 'Online' or 'In Person'"),
+      .withMessage("Type must be 'Online' or 'In Person'."),
   check('capacity')
       .exists()
       .isInt()
-      .withMessage("Capacity must be an integer"),
+      .withMessage("Capacity must be an integer."),
   check('price')
       .exists()
       .isDecimal()
-      .withMessage("Price is invalid"),
+      .withMessage("Price is invalid."),
   check('description')
       .exists({ checkFalsy: true })
-      .withMessage("Description is required"),
+      .withMessage("Description is required."),
 
   handleValidationErrors
 ]
@@ -168,17 +168,17 @@ const validateGroup = [
   check('type')
       .exists({ checkFalsy: true })
       .isIn(['Online', 'In person'])
-      .withMessage("Type must be 'Online' or 'In person'"),
+      .withMessage("Type must be 'Online' or 'In person'."),
   check('private')
       .exists()
       .isBoolean()
-      .withMessage("Private must be a boolean"),
+      .withMessage("Private must be a boolean."),
   check('city')
       .exists({ checkFalsy: true })
       .withMessage('City is required.'),
   check('state')
       .exists({ checkFalsy: true })
-      .withMessage("State is required"),
+      .withMessage("State is required."),
   handleValidationErrors
 ];
 
