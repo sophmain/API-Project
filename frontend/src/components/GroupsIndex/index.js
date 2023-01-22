@@ -19,31 +19,38 @@ const GroupsIndex = ({ isLoaded }) => {
     if (!groupsObj) return null;
     const groups = Object.values(groupsObj)
 
-    
+
 
     return (
         <div className='container'>
-            <div className='events-groups-headers'>
-                <h2 className="events-header-group-page">
-                    <NavLink to={`/events`} className="events-title-group-page">
-                        Events
-                    </NavLink>
-                </h2>
-                <h2 className="groups-header">
-                    <NavLink to={`/groups`} className="groups-title-link">
-                        Groups
-                    </NavLink>
-                </h2>
-            </div>
-            <h3 className="suggestions-title">Group suggestions for you</h3>
-            {isLoaded && user.user != null && (
-                <div className="create-group-modal">
-                    <OpenModalButton
-                        buttonText="Create a group"
-                        modalComponent={<CreateGroupModal />}
-                    />
+            <div className="events-groups-top-bar">
+
+                <div className="events-groups-top-container">
+
+
+                    <div className='events-groups-headers'>
+                        <h2 className="events-header-group-page">
+                            <NavLink to={`/events`} className="events-title-group-page">
+                                Events
+                            </NavLink>
+                        </h2>
+                        <h2 className="groups-header">
+                            <NavLink to={`/groups`} className="groups-title-link">
+                                Groups
+                            </NavLink>
+                        </h2>
+                    </div>
+                    <h3 className="suggestions-title">Group suggestions for you</h3>
+                    {isLoaded && user.user != null && (
+                        <div className="create-group-modal">
+                            <OpenModalButton
+                                buttonText="Create a group"
+                                modalComponent={<CreateGroupModal />}
+                            />
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
             <div className='all-groups'>
                 <ul>
                     {groups.map(group => {

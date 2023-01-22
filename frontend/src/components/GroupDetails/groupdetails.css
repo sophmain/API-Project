@@ -3,10 +3,12 @@
     flex-direction: column;
     justify-content: left;
 
+
 }
 .top-bar {
     display: flex;
     flex-direction: row;
+    align-items: center;
     height: 377px;
     padding: 20px 0px 0px;
     justify-content: left;
@@ -38,6 +40,8 @@
     margin: 10px 170px;
     color: #212121;
     display: flex;
+    align-items: center;
+    justify-content: left;
 
 }
 .background-color {

@@ -1,9 +1,7 @@
-.container {
+.home-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0px 16px 56px;
-    margin: 24px 81px 0px;
 }
 
 .groups-nav-text {
