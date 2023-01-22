@@ -10,7 +10,7 @@ function HomePage() {
 
     if (user) {
         return (
-            <div className="container">
+            <div className="home-container">
                 <h1 className="welcome-message">Welcome, {user.firstName} 👋</h1>
                 <NavLink to={`/groups`} className="groups-nav">
                     <h2 className="groups-nav-text">

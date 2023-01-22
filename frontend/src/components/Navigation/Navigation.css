@@ -46,5 +46,7 @@ li {
 .fa-angle-down {
     padding: 0px 0px 0px 6px;
     color: gray;
-
+}
+.login-signup-buttons {
+    background-color: white;
 }

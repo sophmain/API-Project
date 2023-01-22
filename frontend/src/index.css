@@ -5,11 +5,11 @@ body {
 
 .modal-button {
     border-radius: 25px;
-    background-color: rgb(0, 130, 148);
     border: none;
     padding: 16px;
     font-size: 16px;
     color: white;
+    margin: 0px 5px 0px 0px;
 }
 .delete-button {
     border-radius: 25px;
@@ -21,4 +21,36 @@ body {
 }
 .errors-text {
     color: red;
+}
+.profile-dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px lightgray;
+    padding: 12px;
+    color: #212121;
+    font-size: 14px;
+    left: auto;
+    right: 10px;
+    width: 156px;
+
+}
+.logout-button {
+    background-color: white;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+}
+.dropdown-element {
+    margin: 12px 0px 0px;
+    font-size: 14px;
+}
+.logout-button:hover {
+    color: #0070f3;
+}
+.dropdown-line {
+    border-top: 1px solid lightgray;
+    padding: 10px 0px 0px;
 }
