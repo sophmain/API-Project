@@ -122,22 +122,6 @@ const CreateGroupForm = () => {
                     </select>
                 </label>
                 <label>
-                    <div className="group-checkbox">
-                <p className="input-label-group">
-                    Make my group private
-                        </p>
-                    <input
-                        className="input-box-group"
-                        id="checkbox"
-                        type="checkbox"
-                        name="isprivate"
-                        checked={isprivate}
-                        value={isprivate}
-                        onChange={(e) => setIsPrivate(e.target.checked)}
-                    />
-                    </div>
-                </label>
-                <label>
                 <p className="input-label-group">
                     City
                         </p>
@@ -184,6 +168,22 @@ const CreateGroupForm = () => {
                     >
 
                     </input>
+                </label>
+                <label>
+                    <div className="group-checkbox">
+                <p className="input-label-group">
+                    Make my group private
+                        </p>
+                    <input
+                        className="input-box-group"
+                        id="checkbox"
+                        type="checkbox"
+                        name="isprivate"
+                        checked={isprivate}
+                        value={isprivate}
+                        onChange={(e) => setIsPrivate(e.target.checked)}
+                    />
+                    </div>
                 </label>
                 <button type="submit" className="submit-button-group">Submit</button>
                 </div>
