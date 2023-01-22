@@ -42,7 +42,7 @@ const CreateEventModal = () => {
             name,
             type,
             capacity,
-            price,
+            price: price.slice(0,5),
             description,
             startDate: new Date(newStartDate),
             endDate: new Date(newEndDate)
@@ -152,8 +152,9 @@ const CreateEventModal = () => {
                         className="input-box-event"
                         id="price"
                         min="0"
+                        step=".01"
                         type="number"
-                        placeholder='00.00'
+                        placeholder='0.00'
                         name="price"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}

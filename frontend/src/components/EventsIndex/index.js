@@ -22,19 +22,28 @@ const EventsIndex = () => {
 
     return (
         <div className='container'>
-            <div className='events-groups-headers'>
-                <h2 className="events-header">
-                    <NavLink to={`/events`} className="events-title-link">
-                        Events
-                    </NavLink>
-                </h2>
-                <h2 className="groups-header-event-page">
-                    <NavLink to={`/groups`} className="groups-title-event-page">
-                        Groups
-                    </NavLink>
-                </h2>
+            <div className="events-groups-top-bar">
+
+                <div className="events-groups-top-container">
+
+
+                    <div className='events-groups-headers'>
+                        <h2 className="events-header">
+                            <NavLink to={`/events`} className="events-title-link">
+                                Events
+                            </NavLink>
+                        </h2>
+                        <h2 className="groups-header-event-page">
+                            <NavLink to={`/groups`} className="groups-title-event-page">
+                                Groups
+                            </NavLink>
+                        </h2>
+
+                    </div>
+                    <h3 className="events-subtitle">Event suggestions for you</h3>
+                </div>
             </div>
-            <h3 className="events-subtitle">Event suggestions for you</h3>
+
             <div className='all-events'>
                 <ul>
                     {events.map(event => {
