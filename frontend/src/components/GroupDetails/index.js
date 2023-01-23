@@ -36,7 +36,7 @@ const GroupDetails = ({ isLoaded }) => {
 
     //only show delete button if the user is authorized (owner) to delete that group
     let deleteButton;
-    if (group.organizerId == user.id) {
+    if (user && group && group.organizerId == user.id) {
         deleteButton = (
             <div >
                 <button onClick={deleteGroup} className='delete-button'>

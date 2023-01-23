@@ -43,14 +43,14 @@
 }
 .bottom-description {
     margin: 10px 0px;
-    color: #212121;
+    color: rgb(33, 33, 33);
     display: flex;
     justify-content: center;
 
 }
 .background-color {
     background-color: rgb(244, 244, 244);
-    min-height: 500px;
+    min-height: 700px;
     height: auto;
 }
 .left-bottom-description {
@@ -75,4 +75,10 @@
     padding: 0px 0px 44px;
     width: 400px;
     height: 44px;
+}
+.fa-user-group {
+    color: rgb(147, 147, 147);
+}
+.fa-user {
+    color: rgb(147, 147, 147);
 }

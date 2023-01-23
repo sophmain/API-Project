@@ -153,7 +153,7 @@ const EventDetails = ({ isLoaded }) => {
                     <div className="right-bottom-navbar">
                         <div className="price-spots-text">
                             <h3 className='event-price-bottom'>
-                                ${event.price}.00
+                                ${event.price}
                             </h3>
                             <h3 className="spots-left">
                                 {event.capacity - event.numAttending} spots left

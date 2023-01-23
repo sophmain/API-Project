@@ -54,3 +54,9 @@ body {
     border-top: 1px solid lightgray;
     padding: 10px 0px 0px;
 }
+.modal-button:hover {
+    background-color: rgba(246, 88, 88, 0.782);
+}
+.delete-button:hover {
+    background-color: rgba(246, 88, 88, 0.782);
+}

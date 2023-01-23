@@ -3,7 +3,7 @@
 }
 
 .logo-image {
-    height: 52px;
+    height: 50px;
     width: 100%;
     margin: 0px 0px 0px 20px;
 }
@@ -14,6 +14,7 @@
     justify-content: space-between;
     list-style: none;
     border-bottom: 1px solid lightgray;
+    width: 100%;
 }
 
 li {
@@ -25,7 +26,7 @@ li {
     justify-content: center;
     height: 45px;
     width: 45px;
-    background-color: rgb(255, 173, 67);
+    background-color: rgb(250, 173, 73);
     border-radius: 50px;
     border-width: 1px;
     border-color: black;
