@@ -5,8 +5,9 @@
     border-radius: 15px;
     padding: 2.5rem;
     width: 400px;
-    height: 500px;
+    height: 550px;
     overflow-y:scroll;
+    overflow-x: hidden;
 }
 
 .small-logo {
@@ -36,14 +37,38 @@
     height: 20px;
 }
 .login-button {
-    background-color:  #F65858;
+    background-color:  rgb(248, 94, 94);;
     color: white;
     border: none;
     border-radius: 5px;
     width: 100%;
     height: 40px;
     font-size: 20px;
-    margin: 16px 0px 0px;
+    margin: 24px 0px 0px;
     font-weight: bold;
 
+}
+.login-break {
+    position: relative;
+    top: 10px;
+    left: 125px;
+    color: #757575;
+    align-items: center;
+}
+.demo-button {
+    background-color: white;
+    border: 1px solid rgba(248, 94, 94, 0.6);
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    margin: 24px 0px 0px;
+    font-weight: normal;
+    font-size: 16px;
+}
+.login-button:hover {
+    background-color: rgba(248, 94, 94, 0.6);
+}
+.demo-button:hover {
+    background-color: rgba(248, 94, 94, 0.6);
 }

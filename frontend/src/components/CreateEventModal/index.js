@@ -77,7 +77,7 @@ const CreateEventModal = () => {
     return (
         <div className='new-event-form-holder'>
             <form className="create-event-form" onSubmit={handleSubmit}>
-                <h1>Create an event</h1>
+                <h1 className="event-form-header">Create an event</h1>
                 <ul>
                     {errors.map((error, index) => <li className="errors-text" key={index}>{error}</li>)}
                 </ul>
@@ -154,7 +154,7 @@ const CreateEventModal = () => {
                         min="0"
                         step=".01"
                         type="number"
-                        placeholder='0.00'
+                        placeholder='$0.00'
                         name="price"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
