@@ -101,6 +101,9 @@ const GroupDetails = ({ isLoaded }) => {
                             Organizer
                         </h2>
                         <i class="fa-solid fa-user"></i> {group.Organizer.firstName}
+                        <h2 className="members-bottom-description">
+                            Members ({group.numMembers})
+                        </h2>
                     </div>
 
                 </div>
