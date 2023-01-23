@@ -58,7 +58,7 @@
 .link-container {
     display: grid;
     /* flex-direction: row; */
-    grid-template-columns: repeat(3,minmax(0,1fr));
+    grid-template-columns: repeat(3,1fr);
     gap: 20px;
     align-self: center;
     /* justify-content: center; */
