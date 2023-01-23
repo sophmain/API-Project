@@ -87,8 +87,8 @@
 .group-location {
     margin: 0;
     text-transform: uppercase;
-    color: rgb(135 116 87);
-    line-height: 1.25rem;
+    color: rgb(162, 132, 86);
+    line-height: 20px;
     font-size: 14px;
     padding: 0px 0px 18px;
     font-weight: bold;
@@ -99,7 +99,7 @@
     margin: 0;
     color: rgb(117 117 117);
     font-size: 14px;
-    line-height: 1.25rem;
+    line-height: 20px;
     padding: 0px 0px 44px;
     width: 400px;
     height: 44px;
@@ -113,18 +113,18 @@
 .group-members {
     color: rgb(117, 117, 117);
     font-size: 14px;
-    line-height: 1.25rem;
+    line-height: 20px;
     font-weight: lighter;
 }
 
 .events-header-group-page {
-    color: #757575;
+    color: rgb(117, 117, 117);
     padding: 2px 0px 0px 0px;
     width: 80px;
 }
 .events-title-group-page {
     text-decoration: none;
-    color: #757575;
+    color: rgb(117, 117, 117);
     font-size: 20px;
 }
 .groups-header {
