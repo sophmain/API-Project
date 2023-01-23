@@ -16,9 +16,16 @@ JavaScript, HTML, CSS, node.js, express.js, react, redux
 
 ## Landing Page
 Users can log in with 'Demo User' to see site functionality without creating an account.
+
+![Home Page]
+
 [Home Page]: ./HomePage.png
 
+## Groups List Page
 This page shows all the groups a user can browse and click on to show more details.
+
+![All Groups]
+
 [All Groups]: ./AllGroupsPage.png
 
 ## To Do:
