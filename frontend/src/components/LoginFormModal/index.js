@@ -71,7 +71,8 @@ function LoginFormModal() {
           </div>
 
           <button type="submit" className="login-button">Log In</button>
-          <button type="demo" className="login-button"  onClick={() => {setCredential('Demo-lition'); setPassword('password')}}>Demo User</button>
+          <p className="login-break">- or -</p>
+          <button type="demo" className="demo-button"  onClick={() => {setCredential('Demo-lition'); setPassword('password')}}>Demo User</button>
         </form>
       </div>
     </>

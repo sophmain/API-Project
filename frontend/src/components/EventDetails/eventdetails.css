@@ -1,6 +1,7 @@
 .event-details-page {
     display: flex;
     flex-direction: column;
+
 }
 
 .event-header {
@@ -136,13 +137,13 @@
 
 }
 .start-date-bottom {
-    color: #212121;
+    color: rgb(33, 33, 33);
     font-size: 16px;
     font-weight: lighter;
     margin: 4px 0px;
 }
 .event-name-bottom {
-    color: #212121;
+    color: rgb(33, 33, 33);
     font-size: 16px;
     font-weight: bold;
     margin: 4px 0px;
@@ -163,15 +164,15 @@
 .spots-left {
     font-weight: lighter;
     margin: 4px 0px;
-    color: #212121;
+    color: rgb(33, 33, 33);
 }
 .modal-button {
-    background-color: #F65858;
+    background-color: rgb(248, 94, 94);
     border-radius: 10px;
     font-weight: bolder;
 }
 .delete-button {
-    background-color: #F65858;
+    background-color: rgb(248, 94, 94);
     border-radius: 10px;
     font-weight: bolder;
 }

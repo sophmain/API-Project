@@ -14,7 +14,7 @@ function HomePage() {
                 <h1 className="welcome-message">Welcome, {user.firstName} 👋</h1>
                 <NavLink to={`/groups`} className="groups-nav">
                     <h2 className="groups-nav-text">
-                        Find a group to join
+                        Discover groups
                     </h2>
                 </NavLink>
             </div>
@@ -38,10 +38,19 @@ function HomePage() {
                         <img className="home-img" src="https://img.huffingtonpost.com/asset/604fc2f2260000cc17d854ff.jpeg?cache=htB0uiPrAE&ops=1778_1000" alt="friends"/>
                         <h3 className="find-your">Find your group <i className="fa-solid fa-arrow-right"></i></h3>
                     </NavLink>
-                    <NavLink to={`/events`} className= "find-your">
-                        <img className="home-img" src="https://corporatesport.events/wp-content/uploads/2021/11/BTP11558-1024x683.jpg" alt="team"/>
-                        <h3 className="find-your">Find events happening soon <i className="fa-solid fa-arrow-right"></i></h3>
+                    <NavLink to={`/events/3`} className= "find-your">
+                        <img className="home-img" src="https://norwalk.edu/wp-content/uploads/2018/09/Chief-image-2.jpg" alt="cooking"/>
+                        <h3 className="find-your">Learn to cook <i className="fa-solid fa-arrow-right"></i></h3>
                     </NavLink>
+                    <NavLink to={`/events/1`} className= "find-your">
+                        <img className="home-img" src="https://www.planetware.com/wpimages/2022/08/switzerland-best-hikes-bernese-oberland-day-hike.jpg" alt="hiking"/>
+                        <h3 className="find-your">Explore the outdoors <i className="fa-solid fa-arrow-right"></i></h3>
+                    </NavLink>
+
+                </div>
+                <div className="how-meetup-works">
+                    <h1 className="works-header">How MeetYup Works</h1>
+                    <h3 className="works-sub">Meet new people who share your interests through online and in-person events. It’s free to create an account.</h3>
                 </div>
             </div>
         )

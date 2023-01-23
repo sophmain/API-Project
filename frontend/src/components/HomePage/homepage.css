@@ -2,15 +2,17 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+
 }
 
 .groups-nav {
     color: white;
     text-decoration: none;
-    background-color: #F65858;
+    background-color:rgb(248, 94, 94);
     width: fit-content;
     height: fit-content;
-    padding: 15px;
+    padding: 10px;
     border-radius: 15px;
     margin: 24px 63px 0px;
 }
@@ -21,7 +23,8 @@
     margin: 24px 63px 0px;
 }
 .home-image {
-    height: 400px;
+    height: fit-content;
+    width: 50%;
     object-fit: cover;
 }
 .home-headers {
@@ -35,14 +38,14 @@
     justify-content: center;
     padding: 30px 30px 0px 30px;
     margin: 50px 110px 0px 110px;
+    width: 80%;
 
 }
 .home-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 100%;
-
+    align-items: center;
 }
 .home-title {
     font-size: 2.8rem;
@@ -53,23 +56,45 @@
     line-height: 1.6;
 }
 .link-container {
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    justify-content: space-around;
-    margin: 0px 100px 0px 100px;
+    display: grid;
+    /* flex-direction: row; */
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 20px;
+    align-self: center;
+    /* justify-content: center; */
+    width: 80%;
+    padding: 10px 30px;
+    margin: 20px 0px 0px 0px;
 
 }
 
 .home-img {
     object-fit: cover;
     height: 200px;
-    width: 360px;
+    width: 100%;
     border-radius: 8px;
+
 }
 .find-your {
     color: #008294;
     text-decoration: none;
     margin: 8px 0px 0px;
     font-size: 16px;
+}
+.how-meetup-works {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    padding: 80px 0px;
+}
+.works-sub {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 16px;
+    margin: 0px 0px 40px;
+}
+.groups-nav:hover {
+    background-color: rgba(248, 94, 94, 0.6);;
 }
