@@ -27,7 +27,7 @@
     margin: 30px;
 }
 .event-time {
-    color: rgb(135, 116, 87);
+    color: rgb(162, 132, 86);
     font-size: 16px;
     margin: 0px;
     padding: 4px 0px;
@@ -71,12 +71,12 @@
     font-size: 20px;
 }
 .groups-header-event-page {
-    color: #757575;
+    color: rgb(117, 117, 117);
     padding: 2px 0px 0px 12px;
     width: 85px;
 }
 .groups-title-event-page {
     text-decoration: none;
-    color: #757575;
+    color: rgb(117, 117, 117);
     font-size: 20px;
 }
