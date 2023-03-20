@@ -42,7 +42,7 @@ li {
     border: none;
     background-color: white;
     align-items: center;
-
+    cursor: pointer;
 }
 .fa-angle-down {
     padding: 0px 0px 0px 6px;

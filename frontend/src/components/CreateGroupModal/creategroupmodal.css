@@ -73,6 +73,7 @@
     font-size: 20px;
     margin: 16px 0px 0px;
     font-weight: bold;
+    cursor: pointer;
 }
 .submit-button-group:hover {
     background-color: rgba(248, 94, 94, 0.6);

@@ -170,11 +170,13 @@
     background-color: rgb(248, 94, 94);
     border-radius: 10px;
     font-weight: bolder;
+    cursor: pointer;
 }
 .delete-button {
     background-color: rgb(248, 94, 94);
     border-radius: 10px;
     font-weight: bolder;
+    cursor: pointer;
 }
 .other-event-cards {
     display: flex;

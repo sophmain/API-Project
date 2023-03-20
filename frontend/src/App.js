@@ -5,14 +5,9 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupsIndex from "./components/GroupsIndex";
 import GroupDetails from "./components/GroupDetails";
-import CreateGroupModal from "./components/CreateGroupModal"
-import OpenModalButton from "./components/OpenModalButton";
 import HomePage from "./components/HomePage"
-import EditGroupModal from "./components/EditGroupModal";
 import EventsIndex from "./components/EventsIndex";
 import EventDetails from "./components/EventDetails"
-import CreateEventModal from "./components/CreateEventModal"
-import EditEventModal from "./components/EditEventModal";
 
 
 function App() {
@@ -21,10 +16,6 @@ function App() {
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
-
-  // only render edit/create modals if user is owner of group
-  const user = useSelector(state => state.session.user)
-  const group = useSelector(state => state.groups.singleGroup)
 
 
   return (

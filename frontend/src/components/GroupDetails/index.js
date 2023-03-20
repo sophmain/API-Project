@@ -1,20 +1,26 @@
-import { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useHistory, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { thunkDeleteGroup, thunkGetGroupDetails } from '../../store/groups';
 import CreateEventModal from '../CreateEventModal';
 import OpenModalButton from "../../components/OpenModalButton";
 import EditGroupModal from '../EditGroupModal';
+import AllMembers from '../AllMembers';
 import './groupdetails.css'
+import { thunkGetGroupEvents } from '../../store/events';
 
 
 const GroupDetails = ({ isLoaded }) => {
     const { groupId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
+    const [showMembers, setShowMembers] = useState(false)
+    const [showAbout, setShowAbout] = useState(true)
+    const [showEvents, setShowEvents] = useState(false)
 
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
+        dispatch(thunkGetGroupEvents(+groupId))
     }, [dispatch, groupId])
 
     const deleteGroup = (e) => {
@@ -25,14 +31,17 @@ const GroupDetails = ({ isLoaded }) => {
     }
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup)
+    const events = useSelector(state => state.events.groupEvents)
 
     //prevents loading a blank page on submit(newstate has to be updated on rerender with this info)
-    if (!group) return null;
-    if (!group.Organizer) return null;
-    if (!group.GroupImages.length) return null;
+    if (!group || !group.Organizer || !group.GroupImages.length) return null;
+    if (!events) return null
 
     //GroupImages is an array- this takes first image from that array
     const groupImg = group.GroupImages[0].url
+
+    //convert events object to an array so can map
+    const eventsArr = Object.values(events)
 
     //only show delete button if the user is authorized (owner) to delete that group
     let deleteButton;
@@ -46,7 +55,26 @@ const GroupDetails = ({ isLoaded }) => {
     } else {
         deleteButton = null
     };
+    //functions to show/hide bottom tabs
+    const showGroupMembers = () => {
+        setShowMembers(true)
+        setShowAbout(false)
+        setShowEvents(false)
 
+    }
+    const showGroupAbout = () => {
+        setShowMembers(false)
+        setShowAbout(true)
+        setShowEvents(false)
+    }
+    const showGroupEvents = () => {
+        setShowMembers(false)
+        setShowAbout(false)
+        setShowEvents(true)
+    }
+    const joinGroup = () => {
+        
+    }
 
     return (
         <div className='group-details-page'>
@@ -66,47 +94,85 @@ const GroupDetails = ({ isLoaded }) => {
 
                 </div>
             </div>
-            <div className="background-color">
-                <div className="bottom-description">
-                    <div className="left-bottom-description">
-                        <div className='group-description'>
-                            <h2>What we're about</h2>
-                            <p className="group-about-detail"> {group.about} </p>
-                        </div>
-                        {/* <div className='upcoming-events'>
-                            <h2>Upcoming events</h2>
-                            <button>
-                                <NavLink to={`/group/${groupId}/events`}
-                                See all
-                            </button>
-                        </div> */}
-                        <div className="delete-group">
-                        {deleteButton}
-                            </div>
-                    </div>
-                    <div className="right-bottom-description">
-                        {isLoaded && group && user && group.organizerId == user.id && (
-                            <>
-                                <OpenModalButton
-                                    buttonText="Edit group"
-                                    modalComponent={<EditGroupModal />}
-                                />
-                                <OpenModalButton
-                                    buttonText="Create event"
-                                    modalComponent={<CreateEventModal />}
-                                />
-                            </>
-                        )}
-                        <h2 className="organizers-bottom-description">
-                            Organizer
-                        </h2>
-                        <i class="fa-solid fa-user"></i> {group.Organizer.firstName}
-                        <h2 className="members-bottom-description">
-                            Members ({group.numMembers})
-                        </h2>
-                    </div>
 
-                </div>
+            <div className='group-detail-buttons'>
+                <button className='group-detail-about' onClick={showGroupAbout}>About</button>
+                {/* <button className='group-detail-members' onClick={showGroupMembers}>Members</button> */}
+                <button className='group-detail-events' onClick={showGroupEvents}>Events</button>
+                <button className='join-group-button' onClick={joinGroup}>Join this group</button>
+            </div>
+            <div className="background-color">
+                {/* {showMembers && (
+                            <AllMembers />
+                        )} */}
+                {showEvents && eventsArr.map((event) => {
+                    return (
+                        <div className='group-event-card'>
+                            <NavLink to={`/events/${event.id}`} key={event.id} className='event-link'>
+                                <img src={event.previewImage} className='card-image'
+                                    alt={"event"} />
+                                <div className="group-text-items">
+                                    <h3 className="event-time">
+                                        {event.startDate.replace("Z", ' ').replace("T", ' ').slice(0, 16)} CST
+                                    </h3>
+                                    <h4 className="event-title">
+                                        {event.name}
+                                    </h4>
+                                    {event.Group &&
+                                        (
+                                            <>
+                                                <h4 className="event-group-name">
+                                                    {event.Group.city}, {event.Group.state}
+                                                </h4>
+
+                                            </>
+                                        )
+                                    }
+                                    <h4 className="attending-num">
+                                        {event.numAttending} attendees
+                                    </h4>
+                                </div>
+                            </NavLink>
+                        </div>
+                    )
+                })
+
+                }
+                {showAbout && (
+                    <div className="bottom-description">
+
+                        <div className="left-bottom-description">
+                            <div className='group-description'>
+                                <h2>What we're about</h2>
+                                <p className="group-about-detail"> {group.about} </p>
+                            </div>
+                            <div className="delete-group">
+                                {deleteButton}
+                            </div>
+                        </div>
+                        <div className="right-bottom-description">
+                            {isLoaded && group && user && group.organizerId == user.id && (
+                                <>
+                                    <OpenModalButton
+                                        buttonText="Edit group"
+                                        modalComponent={<EditGroupModal />}
+                                    />
+                                    <OpenModalButton
+                                        buttonText="Create event"
+                                        modalComponent={<CreateEventModal />}
+                                    />
+                                </>
+                            )}
+                            <h2 className="organizers-bottom-description">
+                                Organizer
+                            </h2>
+                            <i class="fa-solid fa-user"></i> {group.Organizer.firstName}
+                            <h2 className="members-bottom-description">
+                                Members ({group.numMembers})
+                            </h2>
+                        </div>
+                    </div>
+                )}
             </div>
 
 
