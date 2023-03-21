@@ -6,9 +6,9 @@ import CreateEventModal from '../CreateEventModal';
 import OpenModalButton from "../../components/OpenModalButton";
 import EditGroupModal from '../EditGroupModal';
 import AllMembers from '../AllMembers';
-import './groupdetails.css'
 import { thunkGetGroupEvents } from '../../store/events';
-
+import { thunkLoadMembers, thunkPostMembership, thunkRemoveMembership } from '../../store/members';
+import './groupdetails.css'
 
 const GroupDetails = ({ isLoaded }) => {
     const { groupId } = useParams()
@@ -21,6 +21,7 @@ const GroupDetails = ({ isLoaded }) => {
     useEffect(() => {
         dispatch(thunkGetGroupDetails(+groupId))
         dispatch(thunkGetGroupEvents(+groupId))
+        dispatch(thunkLoadMembers(+groupId))
     }, [dispatch, groupId])
 
     const deleteGroup = (e) => {
@@ -32,6 +33,11 @@ const GroupDetails = ({ isLoaded }) => {
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup)
     const events = useSelector(state => state.events.groupEvents)
+    const members = useSelector(state => state.members.groupMembers)
+
+    if (!members) return null
+    const membersArr = Object.values(members)
+    const isMember = membersArr.filter((member)=> member.id === user.id || member.memberId === user.id).length > 0
 
     //prevents loading a blank page on submit(newstate has to be updated on rerender with this info)
     if (!group || !group.Organizer || !group.GroupImages.length) return null;
@@ -56,24 +62,30 @@ const GroupDetails = ({ isLoaded }) => {
         deleteButton = null
     };
     //functions to show/hide bottom tabs
-    const showGroupMembers = () => {
-        setShowMembers(true)
-        setShowAbout(false)
-        setShowEvents(false)
+    // const showGroupMembers = () => {
+    //     setShowMembers(true)
+    //     setShowAbout(false)
+    //     setShowEvents(false)
 
-    }
+    // }
     const showGroupAbout = () => {
-        setShowMembers(false)
         setShowAbout(true)
         setShowEvents(false)
     }
     const showGroupEvents = () => {
-        setShowMembers(false)
         setShowAbout(false)
         setShowEvents(true)
     }
+    const payload = {
+        groupId,
+        userId: user.id
+    }
     const joinGroup = () => {
-        
+        dispatch(thunkPostMembership(payload))
+    }
+
+    const removeJoinRequest = () => {
+        dispatch(thunkRemoveMembership(payload))
     }
 
     return (
@@ -86,10 +98,10 @@ const GroupDetails = ({ isLoaded }) => {
                         <i className="fa-solid fa-location-dot"></i>  {group.city}, {group.state}
                     </h3>
                     <h3 className="header-subs">
-                        <i class="fa-solid fa-user-group"></i>  {group.numMembers} members
+                        <i className="fa-solid fa-user-group"></i>  {group.numMembers} members
                     </h3>
                     <h3 className="header-subs">
-                        <i class="fa-solid fa-user"></i>  Organized by {group.Organizer.firstName} {group.Organizer.lastName}
+                        <i className="fa-solid fa-user"></i>  Organized by {group.Organizer.firstName} {group.Organizer.lastName}
                     </h3>
 
                 </div>
@@ -99,7 +111,13 @@ const GroupDetails = ({ isLoaded }) => {
                 <button className='group-detail-about' onClick={showGroupAbout}>About</button>
                 {/* <button className='group-detail-members' onClick={showGroupMembers}>Members</button> */}
                 <button className='group-detail-events' onClick={showGroupEvents}>Events</button>
-                <button className='join-group-button' onClick={joinGroup}>Join this group</button>
+                {!isMember && (
+                    <button className='join-group-button' onClick={joinGroup}>Join this group</button>
+                )}
+                {isMember && (
+                    <button className='remove-join-group-button' onClick={removeJoinRequest}>Pending</button>
+                )}
+
             </div>
             <div className="background-color">
                 {/* {showMembers && (
@@ -107,8 +125,8 @@ const GroupDetails = ({ isLoaded }) => {
                         )} */}
                 {showEvents && eventsArr.map((event) => {
                     return (
-                        <div className='group-event-card'>
-                            <NavLink to={`/events/${event.id}`} key={event.id} className='event-link'>
+                        <div className='group-event-card' key={event.id}>
+                            <NavLink to={`/events/${event.id}`} className='event-link'>
                                 <img src={event.previewImage} className='card-image'
                                     alt={"event"} />
                                 <div className="group-text-items">
@@ -166,7 +184,7 @@ const GroupDetails = ({ isLoaded }) => {
                             <h2 className="organizers-bottom-description">
                                 Organizer
                             </h2>
-                            <i class="fa-solid fa-user"></i> {group.Organizer.firstName}
+                            <i className="fa-solid fa-user"></i> {group.Organizer.firstName}
                             <h2 className="members-bottom-description">
                                 Members ({group.numMembers})
                             </h2>

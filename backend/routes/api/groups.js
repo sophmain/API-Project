@@ -297,19 +297,20 @@ router.get('/:groupId/members', async (req, res, next) => {
         Members.push(memberInfo)
     })
     const memberObj = { "Members": Members }
-    if (user.id == group.organizerId || coHost) {
-        res.json(memberObj)
-    } else {
-        let notPending = []
-        Members.forEach(member => {
-            if (member.Membership.status != 'pending') {
-                notPending.push(member)
-            }
-        })
-        const notPendingObj = { "Members": notPending }
+    // if (user.id == group.organizerId || coHost) {
+    //     res.json(memberObj)
+    // } else {
+    //     let notPending = []
+    //     Members.forEach(member => {
+    //         if (member.Membership.status != 'pending') {
+    //             notPending.push(member)
+    //         }
+    //     })
+    //     const notPendingObj = { "Members": notPending }
 
-        res.json(notPendingObj)
-    }
+    //     res.json(notPendingObj)
+    // }
+    res.json(memberObj)
 })
 //GET all groups joined or organized by the current user
 router.get('/current', requireAuth, async (req, res) => {
@@ -572,14 +573,16 @@ router.put('/:groupId', requireAuth, userAuthorize, validateGroup, async (req, r
 router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
     const { user } = req
     const { groupId } = req.params
-    const { memberId } = req.body
+    const { userId }  = req.body
+    console.log('member id in route', userId)
     const group = await Group.findByPk(groupId)
     if (!group){
         const err = new Error("Group couldn't be found")
         err.status = 404
         next(err)
     }
-    const hasMembership = await Membership.findByPk(memberId)
+    const hasMembership = await Membership.findByPk(userId)
+    console.log('membership query', hasMembership)
 
     if (!hasMembership){
         const err = new Error("User couldn't be found")
@@ -590,7 +593,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
     const membershipToDelete = await Membership.findOne({
         where: {
             groupId: groupId,
-            userId: memberId
+            userId: userId
         }
     })
     if (!membershipToDelete) {

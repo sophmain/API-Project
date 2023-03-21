@@ -41,7 +41,7 @@ function ProfileButton({ user }) {
                 <button className="user-button" onClick={openMenu}>
 
                         <div className="user-circle">{userLetter} </div>
-                        <i class="fa-solid fa-angle-down"></i>
+                        <i className="fa-solid fa-angle-down"></i>
 
                     {/* <i className="fas fa-user-circle" /> */}
                 </button>

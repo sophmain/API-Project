@@ -14,7 +14,7 @@ const AllMembers = () => {
     const members = useSelector(state => state.members.groupMembers)
     if (!members) return null
     const membersArr = Object.values(members)
-    console.log('members arr', membersArr)
+
 
     return (
         <div>
